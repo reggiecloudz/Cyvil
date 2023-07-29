@@ -1,0 +1,24 @@
+@model Project
+
+<div class="btn-reveal-trigger position-relative rounded-2 overflow-hidden p-4" style="height: 236px;">
+    <div class="bg-holder" style="background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 39.41%, rgba(0, 0, 0, 0.4) 100%), url(/media/projects/@Model.Photo)"></div>
+    <div class="position-relative h-100 d-flex flex-column justify-content-between">
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="badge badge-phoenix fs--2 light badge-phoenix-primary">@Model.Cause!.Name</span>
+            <div class="z-index-2">
+                <button class="btn btn-icon btn-reveal dropdown-toggle dropdown-caret-none transition-none" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                    <span class="fas fa-ellipsis-v"></span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end py-2">
+                    <a class="dropdown-item" href="#!">View</a>
+                    <a class="dropdown-item" href="#!">Export</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="#!">Remove</a>
+                </div>
+            </div>
+        </div>
+        <h3 class="text-white light fw-bold line-clamp-2">@Model.Name</h3>
+    </div>
+    @* <a class="stretched-link" href="#!" data-project="@Model.Id" data-bs-toggle="modal" data-bs-target="#projectsBoardViewModal"></a> *@
+    <a class="stretched-link" href="#!" data-project="@Model.Id"></a>
+</div>

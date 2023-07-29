@@ -1,0 +1,51 @@
+@model AuthenticationModel
+@{
+    ViewData["Title"] = "Sign in";
+    Layout = "_AccountLayout";
+}
+
+<div class="text-center mb-7">
+    <h3 class="text-1000">Sign In</h3>
+    <p class="text-700">Get access to your account</p>
+</div>
+
+
+<form asp-route-returnurl="@ViewData["ReturnUrl"]" class="mt-sm-4" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3 text-start">
+        <label class="form-label" asp-for="UserName">User Name</label>
+        <div class="form-icon-container">
+            <input class="form-control form-icon-input" asp-for="UserName" placeholder="User Name" />
+            <span class="fas fa-user text-900 fs--1 form-icon"></span>
+        </div>
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+    <div class="mb-3 text-start">
+        <label class="form-label" asp-for="Password">Password</label>
+        <div class="form-icon-container">
+            <input class="form-control form-icon-input" asp-for="Password" type="password" placeholder="Password" />
+            <span class="fas fa-key text-900 fs--1 form-icon"></span>
+        </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="row flex-between-center mb-7">
+        <div class="col-auto">
+            <div class="form-check mb-0">
+                <input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" />
+                <label class="form-check-label mb-0" for="basic-checkbox">Remember me</label>
+            </div>
+        </div>
+        <div class="col-auto">
+            <a class="fs--1 fw-semi-bold" href="!#">
+                Forgot Password?
+            </a>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+    <div class="text-center"><a class="fs--1 fw-bold" href="#!">Create an account</a></div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

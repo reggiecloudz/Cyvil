@@ -1,0 +1,31 @@
+@model Project
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+@section Stylesheets {
+@* <link href="~/vendors/flatpickr/flatpickr.min.css" rel="stylesheet"> *@
+}
+
+<div class="content">
+    @await Html.PartialAsync("Teams/_TeamTable", Model.Teams)
+    <partial name="_Footer" />
+</div>
+
+<vc:save-team></vc:save-team>
+
+@section ProjectNav {
+    @await Html.PartialAsync("Projects/_ProjectNav", Model.Id)
+}
+
+@section VendorScripts {
+@* <script src="~/vendors/echarts/echarts.min.js"></script> *@
+}
+
+@section CustomScripts {
+<script src="~/js/app.js"></script>
+<script>
+    saveTeam();
+</script>
+}

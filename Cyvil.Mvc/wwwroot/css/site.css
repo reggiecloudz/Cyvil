@@ -1,0 +1,6 @@
+.details-img {
+  object-fit: cover; 
+  max-height: 280px;
+  min-height: 150px; 
+  object-position: top;
+}

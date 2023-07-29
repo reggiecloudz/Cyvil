@@ -1,0 +1,59 @@
+@model Project
+
+@{
+ViewData["Title"] = Model.Name;
+}
+
+@section Stylesheets {
+<link href="~/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+}
+
+<div class="content px-0" style="padding-top: 7rem">
+    <div class="row g-0">
+        <div class="col-12 col-xxl-8 px-0 bg-soft">
+            <div class="px-4 px-lg-6 pt-6 pb-9">
+                @await Html.PartialAsync("Projects/_ProjectDetailsHeader", Model)
+                <h3 class="text-1100 mb-4">Project overview</h3>
+                <p class="text-800 mb-4">
+                    @Model.Overview
+                </p>
+                <div class="row gx-0 gx-sm-5 gy-8 mb-8">
+                    <div class="col-12 col-xl-3 col-xxl-4 pe-xl-0">
+                        <div class="card card-body h-100">
+                            @await Html.PartialAsync("Projects/_ProjectInfoTables", Model)
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-9 col-xxl-8">
+                        @await Html.PartialAsync("Projects/_ProjectDetailsToDoList")
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        @await Component.InvokeAsync("ApplicantsCard", new { projectId = Model.Id })
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="card card-body h-100">
+                            @await Html.PartialAsync("Projects/_ProjectVolunteers")
+                            @await Html.PartialAsync("Projects/_ProjectTeams")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xxl-4 px-0 border-start-xxl border-300 border-top-sm">
+            @await Html.PartialAsync("Projects/_ProjectActivity")
+        </div>
+    </div>
+
+    <partial name="_Footer" />
+</div>
+
+@section ProjectNav {
+    @await Html.PartialAsync("Projects/_ProjectNav", Model.Id)
+}
+
+@section VendorScripts {
+<script src="~/vendors/echarts/echarts.min.js"></script>
+}
+
+@section CustomScripts {
+<script src="~/assets/js/project-details.js"></script>
+}

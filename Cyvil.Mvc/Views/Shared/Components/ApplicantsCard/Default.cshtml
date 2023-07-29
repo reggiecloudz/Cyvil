@@ -1,0 +1,55 @@
+@model IEnumerable<Applicant>
+
+<div class="card todo-list" >
+    <div class="card-header border-bottom-0 pb-0">
+        <div class="row justify-content-between align-items-center mb-4">
+            <div class="col-auto">
+                <h3 class="text-1100">Applicants</h3>
+                <p class="mb-0 text-700">People looking to help.</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-0 scrollbar to-do-list-body overflow-scroll" style="max-height:10rem;">
+        <div data-list='{"valueNames":["applicant","position"],"page":6}'>
+            <div class="table-responsive mx-n1 px-1 scrollbar">
+                <table class="table fs--1 mb-0 border-top border-200">
+                   <thead>
+                        <tr>
+                            <th class="sort align-middle" scope="col" data-sort="applicant" style="min-width:200px;">Applicant</th>
+                            <th class="sort align-middle" scope="col" data-sort="position" style="min-width:200px;">Position</th>
+                        </tr>
+                   </thead> 
+                   <tbody class="list" id="table-latest-review-body">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                <td class="align-middle applicant white-space-nowrap">
+                                    <a class="d-flex align-items-center text-900" href="#!">
+                                        <div class="avatar avatar-l">
+                                            <img class="rounded-circle" src="~/media/members/@item.User!.ProfileImage" alt="" />
+                                        </div>
+                                        <h6 class="mb-1 ms-3 text-900">@item.User.FullName</h6>
+                                    </a>
+                                </td>
+                                <td class="align-middle position white-space-nowrap">
+                                    @item.Position!.Title
+                                </td>
+                            </tr>
+                        }
+                        
+                   </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer border-0">
+        <div class="d-flex justify-content-between align-items-end">
+            <a class="fw-bold fs--1 mt-4" asp-controller="Projects" asp-action="Applicants" asp-route-id="@ViewBag.ProjectId">
+                <span class="fas fa-compass me-1"></span>All Applicants
+            </a>
+            <a class="fw-bold fs--1 mt-4" asp-controller="Projects" asp-action="Positions" asp-route-id="@ViewBag.ProjectId">
+                <span class="fas fa-compass me-1"></span>Positions
+            </a>
+        </div>
+    </div>
+</div>

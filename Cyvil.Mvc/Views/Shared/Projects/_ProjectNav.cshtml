@@ -1,0 +1,77 @@
+@model long
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="support-chat-container">
+        <div class="container-fluid support-chat">
+            <div class="card bg-white">
+                <div class="card-header d-flex flex-between-center px-4 py-3 border-bottom">
+                    <h5 class="mb-0 d-flex align-items-center gap-2">
+                        <span class="fa-solid fa-circle text-primary fs--3"></span> Project Navigation
+                    </h5>
+                    <div class="btn-reveal-trigger">
+                        <button class="btn btn-link p-0 dropdown-toggle dropdown-caret-none transition-none d-flex"
+                            type="button" id="support-chat-dropdown" data-bs-toggle="dropdown"
+                            data-boundary="window" aria-haspopup="true" aria-expanded="false"
+                            data-bs-reference="parent">
+                            <span class="fas fa-ellipsis-h text-900"></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end py-2" aria-labelledby="support-chat-dropdown">
+                            <a class="dropdown-item" href="#!">Request a callback</a>
+                            <a class="dropdown-item" href="#!">Search in chat</a>
+                            <a class="dropdown-item" href="#!">Show history</a>
+                            <a class="dropdown-item" href="#!">Report to Admin</a>
+                            <a class="dropdown-item btn-support-chat" href="#!">Close Support</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body chat p-0">
+                    <div class="d-flex flex-column scrollbar p-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model">
+                                    Project
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a asp-controller="Projects" asp-action="Positions" asp-route-id="@Model">
+                                    Positions
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a asp-controller="Projects" asp-action="Applicants" asp-route-id="@Model">
+                                    Applicants
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#!">
+                                    Volunteers
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a asp-controller="Projects" asp-action="Teams" asp-route-id="@Model">
+                                    Teams
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">Objectives</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="#">Events</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn p-0 border border-200 btn-support-chat">
+            
+            <span class="fs-0 btn-text text-primary text-nowrap">
+                <i class="fa-solid fa-compass fs--1 ms-2"></i> Navigate
+            </span>
+            @* <span class="fa-solid fa-circle text-success fs--1 ms-2"></span> *@
+            <span class="fa-solid fa-chevron-down text-primary fs-1"></span>
+        </button>
+    </div>
+}
