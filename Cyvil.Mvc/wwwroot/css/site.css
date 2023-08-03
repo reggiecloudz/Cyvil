@@ -4,3 +4,8 @@
   min-height: 150px; 
   object-position: top;
 }
+
+input[name="MemberId"]:checked ~ .control-me {
+  background-color: #3874ff;
+  color: #fff;
+}

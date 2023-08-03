@@ -35,6 +35,11 @@
                                 </a>
                             </li>
                             <li class="list-group-item">
+                                <a asp-controller="Projects" asp-action="Goal" asp-route-id="@Model">
+                                    Goal
+                                </a>
+                            </li>
+                            <li class="list-group-item">
                                 <a asp-controller="Projects" asp-action="Positions" asp-route-id="@Model">
                                     Positions
                                 </a>
@@ -55,7 +60,9 @@
                                 </a>
                             </li>
                             <li class="list-group-item">
-                                <a href="#">Objectives</a>
+                                <a asp-controller="Projects" asp-action="Objectives" asp-route-id="@Model">
+                                    Objectives
+                                </a>
                             </li>
                             <li class="list-group-item">
                                 <a href="#">Events</a>

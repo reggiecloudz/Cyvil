@@ -39,6 +39,60 @@ namespace Cyvil.Mvc.Controllers
             return View(projects);
         }
 
+        [Route("{id}/[action]")]
+        public async Task<IActionResult> Goal(long? id)
+        {
+            if (id == null || _context.Projects == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .Include(p => p.Manager)
+                .Include(p => p.Goal)
+                .Include(p => p.Proposal)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["ProjectId"] = project.Id;
+
+            return View(project);
+        }
+
+        [Route("{id}/[action]")]
+        public async Task<IActionResult> Objectives(long? id)
+        {
+            if (id == null || _context.Projects == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .Include(p => p.Manager)
+                .Include(p => p.Goal)
+                .Include(p => p.Proposal)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            var objectives = _context.Objectives.Where(o => o.ProjectId == project.Id).ToList();
+
+            var model = new ProjectObjectivesViewModel
+            {
+                Project = project,
+                Objectives = objectives
+            };
+
+            return View(model);
+        }
+
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -97,6 +151,8 @@ namespace Cyvil.Mvc.Controllers
 
             var project = await _context.Projects
                 .Include(p => p.Manager)
+                .Include(p => p.Goal)
+                .Include(p => p.Proposal)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (project == null)

@@ -77,6 +77,7 @@ namespace Cyvil.Mvc.Controllers
             }
 
             var position = await _context.Positions
+                .Include(p => p.Project)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (position == null)
@@ -87,6 +88,7 @@ namespace Cyvil.Mvc.Controllers
             var model = new PositionDetailsModalModel
             {
                 PositionId = position.Id,
+                ProjectId = position.ProjectId,
                 Title = position.Title,
                 Details = position.Details
             };
@@ -96,7 +98,7 @@ namespace Cyvil.Mvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("[action]")]
-        public async Task<JsonResult> Apply([Bind("Id,About,PositionId")] Applicant applicant)
+        public async Task<JsonResult> Apply([Bind("Id,About,PositionId,ProjectId")] Applicant applicant)
         {
             if (!ModelState.IsValid)
             {

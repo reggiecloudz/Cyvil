@@ -23,11 +23,7 @@ ViewData["Title"] = Model.Name;
                     <div class="col-12 col-lg-6">
                         @await Html.PartialAsync("Projects/_ProjectDetailsToDoList")
                     </div>
-                    <div class="col-12">
-                        <div class="card card-body">
-                            @await Html.PartialAsync("Projects/_ProjectVolunteers")
-                        </div>
-                    </div>
+                    @await Html.PartialAsync("Teams/_TeamMembers")
                 </div>
             </div>
         </div>
@@ -39,6 +35,8 @@ ViewData["Title"] = Model.Name;
     <partial name="_Footer" />
 </div>
 
+@await Component.InvokeAsync("SelectableVolunteer", new { id = Model.Id })
+
 @section ProjectNav {
     @await Html.PartialAsync("Projects/_ProjectNav", Model.ProjectId)
 }
@@ -49,4 +47,44 @@ ViewData["Title"] = Model.Name;
 
 @section CustomScripts {
 <script src="~/assets/js/project-details.js"></script>
+<script src="~/js/app.js"></script>
+<script>
+    var form = document.getElementById('add-member-form');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        var myModalEl = document.getElementById('volunteerModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        const formData = new FormData(e.target);
+        const url = "/Teams/" + '@Model.Id' + "/Add-Members";
+
+        function successCallback(response) {
+            modal.hide();
+            form.reset();
+            console.log(response);
+        }
+
+        function errorCallback(xhr, status, error) {
+            modal.hide();
+            form.reset();
+            console.log(error);
+        }
+
+        ajaxFormPost(url, formData, successCallback, errorCallback);
+    })
+
+    /*var checkboxes = $("input[id^='inlineCheckbox_']");
+
+    checkboxes.each(function() {
+        const itemValue = $(this).attr('id');
+        var appId = itemValue.split('_')[1];
+
+        document.getElementById(`inlineCheckbox_${appId}`).addEventListener('click', event => {
+            if(event.target.checked) {
+                alert("Checkbox checked: " + appId);
+            }
+        });
+    });*/
+</script>
 }

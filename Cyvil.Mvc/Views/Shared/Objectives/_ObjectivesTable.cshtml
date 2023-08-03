@@ -1,0 +1,124 @@
+@model IEnumerable<Objective>
+
+<div class="card todo-list" >
+    <div class="card-header border-bottom-0 pb-0">
+        <div class="row justify-content-between align-items-center mb-4">
+            <div class="col-auto">
+                <h3 class="text-1100">Objectives</h3>
+                <p class="mb-0 text-700">Open objectives</p>
+            </div>
+            <div class="col-auto w-100 w-md-auto">
+                <div class="row align-items-center g-0 justify-content-between">
+                    <div class="col-12 col-sm-auto">
+                        <div class="search-box w-100 mb-2 mb-sm-0" style="max-width:30rem;">
+                            <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
+                                <input class="form-control search-input search" type="search" placeholder="Search objectives"
+                                    aria-label="Search" />
+                                <span class="fas fa-search search-box-icon"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex">
+                        <p class="mb-0 ms-sm-3 fs--1 text-700 fw-bold">
+                            <span class="fas fa-filter me-1 fw-extra-bold fs--2"></span>23 objectives
+                        </p>
+                        <button class="btn btn-link p-0 ms-3 fs--1 text-primary fw-bold">
+                            <span class="fas fa-sort me-1 fw-extra-bold fs--2"></span>Sorting
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="objective-list" class="card-body py-0 scrollbar to-do-list-body overflow-scroll" style="max-height:65rem;">
+        @foreach (var item in Model)
+        {
+            <div class="d-flex hover-actions-trigger py-3 border-top">
+                <input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined"
+                    type="checkbox" id="checkbox-todo-@item.Id" data-event-propagation-prevent="data-event-propagation-prevent" />
+                <div class="row justify-content-between align-items-md-center border-200 gx-0 flex-1 cursor-pointer">
+                    <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
+                        <div class="mb-1 mb-md-0 d-flex align-items-center lh-1">
+                            <label class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
+                                <a href="#">@item.Name</a>
+                            </label>
+                            <span class="badge badge-phoenix ms-auto fs--2 badge-phoenix-primary">DRAFT</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-auto col-xl-12 col-xxl-auto mt-2">
+                        <div class="d-flex lh-1 align-items-center">
+                            <a class="text-700 fw-bold fs--2 me-2" href="#!">
+                                <span class="fas fa-people-group me-1"></span>2
+                            </a>
+                            <a class="text-primary fw-bold fs--2 me-2" href="#!">
+                                <span class="fas fa-tasks me-1"></span>3
+                            </a>
+                            <p class="text-700 fs--2 mb-md-0 me-2 me-md-3 me-xl-2 me-xxl-3 mb-0">12 Nov, 2021</p>
+                            <div class="hover-md-hide hover-xl-show hover-xxl-hide">
+                                <p class="text-700 fs--2 fw-bold mb-md-0 mb-0 ps-md-3 ps-xl-0 ps-xxl-3 border-start-md border-xl-0 border-start-xxl border-300">
+                                    12:00 PM
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-md-block d-xl-none d-xxl-block end-0 position-absolute" style="top: 23%;"
+                    data-event-propagation-prevent="data-event-propagation-prevent">
+                    <div class="hover-actions end-0" data-event-propagation-prevent="data-event-propagation-prevent">
+                        <button class="btn btn-phoenix-secondary btn-icon me-1 fs--2 text-900 px-0 me-1"
+                            data-event-propagation-prevent="data-event-propagation-prevent">
+                            <span class="fas fa-edit"></span>
+                        </button>
+                        <button class="btn btn-phoenix-secondary btn-icon fs--2 text-danger px-0"
+                            data-event-propagation-prevent="data-event-propagation-prevent">
+                            <span class="fas fa-trash"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+        
+        @* <div class="d-flex hover-actions-trigger py-3 border-top border-bottom">
+            <input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined"
+                type="checkbox" id="checkbox-todo-8" data-event-propagation-prevent="data-event-propagation-prevent" />
+            <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-200 gx-0 flex-1 cursor-pointer"
+                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
+                    <div class="mb-1 mb-md-0 d-flex align-items-center lh-1">
+                        <label
+                            class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">Make
+                            ready for release</label>
+                    </div>
+                </div>
+                <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
+                    <div class="d-flex lh-1 align-items-center"><a class="text-700 fw-bold fs--2 me-2" href="#!"><span
+                                class="fas fa-paperclip me-1"></span>2</a>
+                        <p class="text-700 fs--2 mb-md-0 me-2 me-md-3 me-xl-2 me-xxl-3 mb-0">2o Nov, 2021</p>
+                        <div class="hover-md-hide hover-xl-show hover-xxl-hide">
+                            <p
+                                class="text-700 fs--2 fw-bold mb-md-0 mb-0 ps-md-3 ps-xl-0 ps-xxl-3 border-start-md border-xl-0 border-start-xxl border-300">
+                                1:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-none d-md-block d-xl-none d-xxl-block end-0 position-absolute" style="top: 23%;"
+                data-event-propagation-prevent="data-event-propagation-prevent">
+                <div class="hover-actions end-0" data-event-propagation-prevent="data-event-propagation-prevent">
+                    <button class="btn btn-phoenix-secondary btn-icon me-1 fs--2 text-900 px-0 me-1"
+                        data-event-propagation-prevent="data-event-propagation-prevent"><span
+                            class="fas fa-edit"></span></button>
+                    <button class="btn btn-phoenix-secondary btn-icon fs--2 text-danger px-0"
+                        data-event-propagation-prevent="data-event-propagation-prevent"><span
+                            class="fas fa-trash"></span></button>
+                </div>
+            </div>
+        </div> *@
+        @* @await Html.PartialAsync("Objectives/_ObjectiveDetailsModal") *@
+    </div>
+    <div class="card-footer border-0">
+        <a class="fw-bold fs--1 mt-4" href="#!" data-bs-toggle="modal" data-bs-target="#saveObjectiveModal">
+            <span class="fas fa-plus me-1"></span>Add objective
+        </a>
+    </div>
+</div>

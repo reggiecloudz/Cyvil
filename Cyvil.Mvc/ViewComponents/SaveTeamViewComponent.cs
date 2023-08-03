@@ -9,9 +9,12 @@ namespace Cyvil.Mvc.ViewComponents
 {
     public class SaveTeamViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(long projectId)
         {
-            return View(new Team());
+            return View(new Team
+            {
+                ProjectId = projectId
+            });
         }
         
     }

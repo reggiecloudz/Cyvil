@@ -64,8 +64,44 @@ namespace Cyvil.Mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = team.ProjectId;
+            
             return View(team);
+        }
+
+        [Route("{id}/Add-Members")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AddMembers([Bind("Role,MemberId")] AddTeamMemberModel model, long? id)
+        {
+            if (id == null || _context.Teams == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            var team = await _context.Teams
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (team == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var json = JsonConvert.SerializeObject(errors);
+
+                return Json(json);
+            }
+
+            team.Members.Add(new TeamMember { MemberId = model.MemberId, Role = model.Role });
+
+            _context.SaveChanges();            
+
+            return new JsonResult("Good for now");
         }
 
         [Route("[action]")]

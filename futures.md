@@ -168,3 +168,42 @@ public class Program
 This function takes two generic lists as input and calculates the percentage of matches between them. It uses the `Intersect` method to find the common elements between the two lists and then calculates the percentage based on the count of matches and the maximum count of the two lists. The result is returned as a double value representing the match percentage.
 
 In the example usage, two integer lists `list1` and `list2` are provided, and the match percentage is calculated and printed to the console. You can modify the lists as per your requirements.
+
+## Correct Answers
+a C# function that calculates the percentage of correct answers on a test:
+
+```csharp
+public double CalculatePercentage(int totalQuestions, int correctAnswers)
+{
+    double percentage = (double)correctAnswers / totalQuestions * 100;
+    return percentage;
+}
+```
+
+You can use this function by passing the total number of questions and the number of correct answers as arguments. It will return the percentage of correct answers as a double value.
+
+## Between dates
+a C# function that uses Entity Framework to retrieve blog posts between a specified date range:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using YourNamespace.Models; // Replace YourNamespace with the actual namespace of your models
+
+public List<BlogPost> GetBlogPostsByDateRange(DateTime startDate, DateTime endDate)
+{
+    using (var dbContext = new YourDbContext()) // Replace YourDbContext with the actual name of your Entity Framework DbContext
+    {
+        return dbContext.BlogPosts
+            .Where(post => post.PublishDate >= startDate && post.PublishDate <= endDate)
+            .ToList();
+    }
+}
+```
+
+In this example, you'll need to replace `YourNamespace` with the actual namespace of your models and `YourDbContext` with the actual name of your Entity Framework DbContext. The `BlogPost` class represents the model for your blog posts.
+
+The function takes two parameters: `startDate` and `endDate`, which define the date range for the blog posts you want to retrieve. It uses the `Where` method to filter the blog posts based on their `PublishDate` property, and then calls `ToList` to execute the query and return the results as a list of `BlogPost` objects.
+
+Make sure you have the necessary Entity Framework packages installed and configured in your project for this code to work.

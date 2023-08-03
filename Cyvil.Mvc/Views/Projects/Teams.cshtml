@@ -13,7 +13,7 @@
     <partial name="_Footer" />
 </div>
 
-<vc:save-team></vc:save-team>
+@await Component.InvokeAsync("SaveTeam", new { projectId = Model.Id })
 
 @section ProjectNav {
     @await Html.PartialAsync("Projects/_ProjectNav", Model.Id)

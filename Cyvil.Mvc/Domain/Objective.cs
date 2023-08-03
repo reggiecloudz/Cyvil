@@ -8,6 +8,8 @@ namespace Cyvil.Mvc.Domain
 {
     public class Objective : Entity
     {
+        public Objective() {}
+        
         public long Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
@@ -28,7 +30,7 @@ namespace Cyvil.Mvc.Domain
         public long GoalId { get; set; }
         public virtual Goal? Goal { get; set; }
 
-        public long TeamId { get; set; }
+        public long? TeamId { get; set; }
         public virtual Team? Team { get; set; }
     }
 }

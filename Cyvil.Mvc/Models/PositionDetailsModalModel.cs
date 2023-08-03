@@ -7,6 +7,8 @@ namespace Cyvil.Mvc.Models
 {
     public class PositionDetailsModalModel
     {
+        public long ProjectId { get; set; }
+        
         public long PositionId { get; set; }
 
         public string Title { get; set; } = string.Empty;

@@ -41,8 +41,13 @@ namespace Cyvil.Mvc.ViewComponents
                 }
                 
             }
+
+            var model = new AddTeamMemberModel
+            {
+                Volunteers = volunteerList
+            };
             
-            return View(volunteerList);
+            return View(model);
         }
     }
 }
