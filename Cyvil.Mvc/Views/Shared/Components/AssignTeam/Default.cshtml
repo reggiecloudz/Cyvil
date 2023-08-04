@@ -1,0 +1,31 @@
+@model AssignTeamModel
+
+<div class="modal fade" id="assignTeamModal" tabindex="-1" aria-labelledby="assignTeamLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignTeamLabel">Assign Team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="assign-team-form" method="post">
+                   <div class="mb-3">
+                    <label for="TeamId" class="form-label">Teams</label>
+                    <select class="form-select" name="TeamId" id="TeamId">
+                        <option selected>Select team</option>
+                        @foreach(var item in Model.Teams!)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                   </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="assign-team-form" class="btn btn-primary">Assign</button>
+                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

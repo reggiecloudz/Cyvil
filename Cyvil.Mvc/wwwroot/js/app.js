@@ -23,6 +23,7 @@ function ajaxFormPost(url, formData, successCallback, errorCallback) {
 }
 
 function sendAjaxRequest(url, data, successCallback, errorCallback) {
+    console.log(JSON.stringify(data))
     $.ajax({
         url: url,
         type: 'POST',
@@ -447,7 +448,7 @@ function insertObjectiveTableData(data) {
             <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
                 <div class="mb-1 mb-md-0 d-flex align-items-center lh-1">
                     <label class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
-                        <a href="#">${data.name}</a>
+                        <a href="/Objectives/${data.id}/Details">${data.name}</a>
                     </label>
                     <span class="badge badge-phoenix ms-auto fs--2 badge-phoenix-primary">DRAFT</span>
                 </div>
@@ -499,6 +500,42 @@ function saveObjective() {
             modal.hide();
             form.reset();
             insertObjectiveTableData(response);
+        }
+
+        function errorCallback(xhr, status, error) {
+            modal.hide();
+            form.reset();
+            console.log(error);
+        }
+
+        ajaxFormPost(url, formData, successCallback, errorCallback);
+    });
+}
+
+function insertTeamName(name) {
+    var tm = $("#team-assignment").html(`
+        <a class="fw-semi-bold d-block lh-sm" href="#!" data-bs-toggle="modal" data-bs-target="#assignTeamModal">
+            ${name} <span class="fa-solid fa-repeat ms-2 text-700 fs--1"></span>
+        </a>
+    `);
+    return tm;
+}
+
+function assignTeam() {
+    var form = document.getElementById("assign-team-form");
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        var myModalEl = document.getElementById('assignTeamModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        var objId = document.getElementById("objective-info").dataset.objective;
+        const formData = new FormData(form);
+        const url = `/Objectives/${objId}/Assign-Team`;
+
+        function successCallback(response) {
+            modal.hide();
+            form.reset();
+            insertTeamName(response);
         }
 
         function errorCallback(xhr, status, error) {

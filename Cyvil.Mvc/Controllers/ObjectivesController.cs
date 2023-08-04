@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cyvil.Mvc.Data;
 using Cyvil.Mvc.Domain;
+using Cyvil.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -48,6 +50,45 @@ namespace Cyvil.Mvc.Controllers
             return new JsonResult(objective);
         }
 
+        [Route("{id}/Assign-Team")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AssignTeam([Bind("TeamId")] AssignTeamModel model, long? id)
+        {
+            
+            if (id == null || _context.Objectives == null)
+            {
+                return new JsonResult("Not Found");
+            }
+
+            var objective = await _context.Objectives
+                .Include(p => p.Team)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (objective == null)
+            {
+                return new JsonResult("Not Found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var json = JsonConvert.SerializeObject(errors);
+
+                return Json(json);
+            }
+
+            objective.TeamId = model.TeamId;
+            _context.Update(objective);
+            _context.SaveChanges();
+
+            var teamName = _context.Teams.Where(t => t.Id == model.TeamId).Select(t => t.Name).FirstOrDefault();
+            return new JsonResult(teamName);
+        }
+
         [Route("{id}/Details")]
         public async Task<IActionResult> Details(long? id)
         {
@@ -58,6 +99,7 @@ namespace Cyvil.Mvc.Controllers
 
             var objective = await _context.Objectives
                 .Include(p => p.Goal)
+                .Include(p => p.Team)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (objective == null)
