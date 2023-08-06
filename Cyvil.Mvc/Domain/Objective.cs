@@ -32,5 +32,7 @@ namespace Cyvil.Mvc.Domain
 
         public long? TeamId { get; set; }
         public virtual Team? Team { get; set; }
+
+        public virtual ICollection<ActionItem> ActionItems { get; set; } = new List<ActionItem>();
     }
 }

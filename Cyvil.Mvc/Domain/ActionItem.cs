@@ -8,6 +8,8 @@ namespace Cyvil.Mvc.Domain
 {
     public class ActionItem : Entity
     {
+        public ActionItem() {}
+        
         public long Id { get; set; }
 
         public string Name { get; set; } = string.Empty;

@@ -22,6 +22,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="row gx-0 gx-sm-5 gy-3 mb-3">
+                    <div class="col-12 col-xl-3 col-xxl-4 pe-xl-0">
+                        @if(Model.Team != null)
+                        {
+                            @await Component.InvokeAsync("TeamMemberGrid", new { teamId = Model.TeamId })
+                        }
+                        else
+                        {
+                            <div class="card card-body mb-3 h-100">
+                                <div class="d-flex pb-4 align-items-end">
+                                    <h3 class="flex-1 mb-0">Team</h3>
+                                    <a class="fw-bold fs--1 me-4" href="#!">Assign</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-12 col-xl-9 col-xxl-8">
+                        @await Html.PartialAsync("ActionItems/_TasksTable", Model.ActionItems)
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -30,7 +50,8 @@
 </div>
 
 @await Component.InvokeAsync("AssignTeam", new { projectId = Model.ProjectId })
-
+@await Component.InvokeAsync("SaveActionItem", new { projectId = Model.ProjectId, objectiveId = Model.Id })
+<vc:make-assignment></vc:make-assignment>
 @section ProjectNav {
     @await Html.PartialAsync("Projects/_ProjectNav", Model.ProjectId)
 }
@@ -45,6 +66,8 @@
 <script>
     $(document).ready(function () {
         assignTeam();
+        saveActionItem();
+        getAssignees();
     });
 </script>
 }

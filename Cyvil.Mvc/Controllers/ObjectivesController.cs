@@ -100,16 +100,18 @@ namespace Cyvil.Mvc.Controllers
             var objective = await _context.Objectives
                 .Include(p => p.Goal)
                 .Include(p => p.Team)
+                .Include(o => o.ActionItems)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (objective == null)
             {
                 return NotFound();
             }
-
+            
             return View(objective);
         }
 
+        [Route("[action]")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
