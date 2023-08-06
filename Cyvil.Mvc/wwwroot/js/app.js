@@ -23,7 +23,6 @@ function ajaxFormPost(url, formData, successCallback, errorCallback) {
 }
 
 function sendAjaxRequest(url, data, successCallback, errorCallback) {
-    console.log(JSON.stringify(data))
     $.ajax({
         url: url,
         type: 'POST',
@@ -639,7 +638,7 @@ function insertAssigneeFormData(data, itemId) {
 function getAssignees() {
 
     var anchors = document.querySelectorAll('a[data-task]');
-    console.log(anchors);
+    
     anchors.forEach((a) => {
         a.addEventListener('click', (e) => {
             e.preventDefault();
@@ -664,4 +663,32 @@ function getAssignees() {
         });
     });
 
+}
+
+function assign() {
+    var form = document.getElementById("add-assignee-form");
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        var myModalEl = document.getElementById('assigneeModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        const formData = new FormData(form);
+        var data = {
+            itemId: formData.get("ItemId"),
+            selected: formData.getAll("Selected")
+        }
+        const url = "/Tasks/Assign";
+
+        function successCallback(response) {
+            modal.hide();
+            console.log(response);
+        }
+
+        function errorCallback(xhr, status, error) {
+            modal.hide();
+            console.log(error);
+        }
+
+        sendAjaxRequest(url, data, successCallback, errorCallback);
+    });
 }

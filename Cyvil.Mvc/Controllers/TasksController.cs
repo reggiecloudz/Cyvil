@@ -52,28 +52,15 @@ namespace Cyvil.Mvc.Controllers
 
         [Route("Assign")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Assign([Bind("ItemId,Selected")] SelectedUsers model)
+        public async Task<JsonResult> Assign([FromBody] SelectedUsers model)
         {
-            if (!ModelState.IsValid)
+
+            foreach (var assignee in model.Selected)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var json = JsonConvert.SerializeObject(errors);
-
-                return Json(json);
+                var assignment = new Assignment { AssigneeId = assignee, ActionItemId = model.ItemId };
+                _context.Add(assignment);
             }
-
-            if (model.Selected != null)
-            {
-                foreach (var assignee in model.Selected)
-                {
-                    var assignment = new Assignment { AssigneeId = assignee, ActionItemId = model.ItemId };
-                    _context.Add(assignment);
-                }
-            }
+            
             await _context.SaveChangesAsync();
 
             return new JsonResult("Assignments were successful.");
@@ -114,16 +101,21 @@ namespace Cyvil.Mvc.Controllers
                 .Where(t => t.TeamId == item!.Objective!.TeamId)
                 .Include(t => t.Member)
                 .ToList();
-            var assignees = new HashSet<string>(item!.Assignees.Select(t => t.AssigneeId));
+            var assignments = _context.Assignments.Where(a => a.ActionItemId == item.Id).ToList();
+            var assignees = new HashSet<string>(assignments.Select(t => t.AssigneeId));
             var assigned = new List<AssignedTask>();
-
+            Console.WriteLine($"====={assignments.Count()}======");
+            foreach (var per in assignees)
+            {
+                Console.WriteLine($"====={per}======");
+            }
             foreach(var member in teamMembers)
             {
                 assigned.Add(new AssignedTask
                 {
                     UserId = member.Member!.Id,
                     Name = member.Member!.FullName,
-                    Assigned = assignees.Contains(member.Member!.Id)
+                    Assigned = assignees.Contains(member.MemberId)
                 });
             }
             return assigned;
