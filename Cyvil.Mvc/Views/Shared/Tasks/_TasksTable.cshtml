@@ -68,12 +68,12 @@
                         {
                             <tr class="position-static">
                                 <td class="align-middle time white-space-nowrap ps-0 name py-4">
-                                    <a class="fw-bold fs-0" herf="#!">
+                                    <a class="fw-bold fs-0" asp-controller="Tasks" asp-action="Details" asp-route-id="@item.Id">
                                         @item.Name
                                     </a>
                                 </td>
                                 <td class="align-middle white-space-nowrap assignees ps-3 py-4">
-                                    <partial name="ActionItems/_TaskAssignees" />
+                                    <partial name="Tasks/_TaskAssignees" />
                                 </td>
                                 <td class="align-middle white-space-nowrap start ps-3 py-4">
                                     <p class="mb-0 fs--1 text-900">Nov 17, 2020</p>

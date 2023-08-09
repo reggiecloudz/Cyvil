@@ -28,6 +28,29 @@ namespace Cyvil.Mvc.Controllers
             _context = context;
         }
 
+        [Route("{id}/Details")]
+        public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null || _context.ActionItems == null)
+            {
+                return NotFound();
+            }
+
+            var actionItem = await _context.ActionItems
+                .Include(p => p.Objective)
+                .Include(o => o.Assignees)
+                    .ThenInclude(a => a.Assignee)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (actionItem == null)
+            {
+                return NotFound();
+            }
+            
+            return View(actionItem);
+        }
+
+
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
