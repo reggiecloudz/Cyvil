@@ -187,7 +187,7 @@ function insertPositionTableData(data) {
                     <input class="form-check-input" type="checkbox" />
                 </div>
             </td>
-            <td class="position align-middle white-space-nowrap fw-semi-bold text-1100 ps-4 py-0">
+            <td class="position align-middle white-space-nowrap fw-semi-bold text-1100 ps-1 py-0">
                 <div class="d-flex align-items-center position-relative">
                     <a class="text-1000 fw-bold stretched-link" href="#!">${data.title}</a>
                 </div>
@@ -204,7 +204,7 @@ function insertPositionTableData(data) {
             </td>
             <td class="status align-middle white-space-nowrap fw-semi-bold text-1100 ps-4 py-0">
                 <div class="d-flex align-items-center position-relative">
-                    Closed
+                    Open
                 </div>
             </td>
             <td class="applicants align-middle white-space-nowrap fw-semi-bold text-1100 ps-4 py-0">
@@ -690,5 +690,61 @@ function assign() {
         }
 
         sendAjaxRequest(url, data, successCallback, errorCallback);
+    });
+}
+
+function insertTimeslotTableData(data) {
+    const options = {
+        //weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    };
+
+    var date = new Date(data.date);
+
+    var tableRow = $("#interview-schedule-tbody").append(`
+        <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+            <td class="align-middle date white-space-nowrap">
+                ${date.toLocaleString("en-US", options)}
+            </td>
+            <td class="align-middle startTime white-space-nowrap">
+                ${data.startTime}
+            </td>
+            <td class="align-middle endTime white-space-nowrap">
+                ${data.endTime}
+            </td>
+            <td class="align-middle isBooked white-space-nowrap">
+                Open
+            </td>
+        </tr>
+    `);
+
+    return tableRow;
+}
+
+function saveTimeslot() {
+    var form = document.getElementById("timeslot-form");
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        var myModalEl = document.getElementById('saveTimeslotModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        const formData = new FormData(form);
+        const url = "/Timeslots/Create";
+
+        function successCallback(response) {
+            modal.hide();
+            form.reset();
+            insertTimeslotTableData(response);
+        }
+
+        function errorCallback(xhr, status, error) {
+            modal.hide();
+            form.reset();
+            console.log(error);
+        }
+
+        ajaxFormPost(url, formData, successCallback, errorCallback);
     });
 }

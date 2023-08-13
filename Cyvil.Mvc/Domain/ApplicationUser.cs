@@ -25,6 +25,8 @@ namespace Cyvil.Mvc.Domain
         public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
         public virtual ICollection<Applicant> Applications { get; set; } = new List<Applicant>();
         public virtual ICollection<Volunteer> Participation { get; set; } = new List<Volunteer>();
+        public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
+        public virtual ICollection<Attendee> Meetings { get; set; } = new List<Attendee>();
         // public virtual ICollection<UserNotification> Notifications { get; set; } = new List<UserNotification>();
         // public virtual ICollection<ChatUser> Chats { get; set; } = new List<ChatUser>();
     }

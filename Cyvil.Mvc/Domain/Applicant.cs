@@ -20,6 +20,8 @@ namespace Cyvil.Mvc.Domain
 
         public long ProjectId { get; set; }
 
+        public virtual Interview? Interview { get; set; }
+
         public long PositionId { get; set; }
         public virtual Position? Position { get; set; }
 

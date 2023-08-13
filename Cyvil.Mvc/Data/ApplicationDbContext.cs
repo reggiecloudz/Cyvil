@@ -27,7 +27,12 @@ namespace Cyvil.Mvc.Data
         public DbSet<Objective> Objectives { get; set; }
         public DbSet<ActionItem> ActionItems { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
-        
+        public DbSet<Meeting> Meetings { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<Attendee> Attendees { get; set; }
+        public DbSet<Interview> Interviews { get; set; }
+        public DbSet<Timeslot> Timeslots { get; set; }
+        public DbSet<InterviewSchedule> InterviewSchedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -81,6 +86,21 @@ namespace Cyvil.Mvc.Data
 
                 obj.HasOne(x => x.User)
                     .WithMany(a => a.Participation)
+                    .HasForeignKey(x => x.UserId)
+                    .IsRequired();
+            });
+
+            builder.Entity<Attendee>(obj =>
+            {
+                obj.HasKey(x => new { x.MeetingId, x.UserId });
+
+                obj.HasOne(x => x.Meeting)
+                    .WithMany(a => a.Attendees)
+                    .HasForeignKey(x => x.MeetingId)
+                    .IsRequired();
+
+                obj.HasOne(x => x.User)
+                    .WithMany(a => a.Meetings)
                     .HasForeignKey(x => x.UserId)
                     .IsRequired();
             });

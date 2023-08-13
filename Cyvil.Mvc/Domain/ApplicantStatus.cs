@@ -8,14 +8,9 @@ namespace Cyvil.Mvc.Domain
         Applied,
         [Description("Withdrawn")]
         Withdrawn,
-        [Description("Inactive")]
-        Inactive,
-        [Description("Selected")]
-        Selected,
-        [Description("Not Selected")]
-        Rejected,
-        [Description("Suspended")]
-        Suspended,
-
+        [Description("Interview")]
+        Interview,
+        [Description("Closed")]
+        Closed
     }
 }

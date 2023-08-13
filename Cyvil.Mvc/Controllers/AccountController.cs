@@ -43,15 +43,15 @@ namespace Cyvil.Mvc.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/members");
-                string imageName = Guid.NewGuid().ToString() + "_" + user.ProfileImageUpload!.FileName;
-                string filePath = Path.Combine(uploadsDir, imageName);
+                var uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/members");
+                var imageName = Guid.NewGuid().ToString() + "_" + user.ProfileImageUpload!.FileName;
+                var filePath = Path.Combine(uploadsDir, imageName);
                 
-                FileStream fs = new FileStream(filePath, FileMode.Create);
+                var fs = new FileStream(filePath, FileMode.Create);
                 await user.ProfileImageUpload.CopyToAsync(fs);
                 fs.Close();
 
-                ApplicationUser newUser = new ApplicationUser 
+                var newUser = new ApplicationUser 
                 { 
                     Id = Guid.NewGuid().ToString(),
                     FullName = user.FullName,

@@ -1,0 +1,65 @@
+@model InterviewSchedule
+
+<div class="card interview-schedule" >
+    <div class="card-header border-bottom-0 pb-0">
+        <div class="row justify-content-between align-items-center mb-4">
+            <div class="col-auto">
+                <h3 class="text-1100">Interview Schedule</h3>
+                <p class="mb-0 text-700">Timeslots to conduct interviews</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-body py-0 scrollbar interview-schedule-body overflow-scroll" style="max-height:10rem;">
+        <div data-list='{"valueNames":["date","startTime", "endTime", "isBooked"],"page":6}'>
+            <div class="table-responsive mx-n1 px-1 scrollbar">
+                <table class="table fs--1 mb-0 border-top border-200">
+                   <thead>
+                        <tr>
+                            <th class="sort align-middle" scope="col" data-sort="date">Date</th>
+                            <th class="sort align-middle" scope="col" data-sort="startTime">Start Time</th>
+                            <th class="sort align-middle" scope="col" data-sort="endTime">End Time</th>
+                            <th class="sort align-middle" scope="col" data-sort="isBooked">Status</th>
+                        </tr>
+                   </thead> 
+                   <tbody class="list" id="interview-schedule-tbody">
+                        @foreach (var item in Model.Timeslots)
+                        {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                <td class="align-middle date white-space-nowrap">
+                                    @item.Date.ToString("MMMM dd, yyyy")
+                                </td>
+                                <td class="align-middle startTime white-space-nowrap">
+                                    @item.StartTime
+                                </td>
+                                 <td class="align-middle endTime white-space-nowrap">
+                                    @item.EndTime
+                                </td>
+                                <td class="align-middle isBooked white-space-nowrap">
+                                    @if (item.IsBooked)
+                                    {
+                                        @: Booked
+                                    }
+                                    else
+                                    {
+                                        @: Open
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        
+                   </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer border-0">
+        <div class="d-flex justify-content-between align-items-end">
+            <a class="fw-bold fs--1 mt-4" href="#!" data-bs-toggle="modal" data-bs-target="#saveTimeslotModal">
+                <span class="fas fa-circle-plus me-1"></span>Add timeslot
+            </a>
+            <a class="fw-bold fs--1 mt-4" href="#!">
+                <span class="fas fa-compass me-1"></span>Interviews
+            </a>
+        </div>
+    </div>
+</div>

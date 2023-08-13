@@ -25,10 +25,12 @@ namespace Cyvil.Mvc.Domain
 
         public uint PositionsFilled { get; set; } = 0;
 
+        public virtual InterviewSchedule? InterviewSchedule { get; set; }
+
         public long ProjectId { get; set; }
-        public Project? Project { get; set; }
+        public virtual Project? Project { get; set; }
 
         // public ICollection<JobRequirement> JobRequirements { get; set; } = new List<JobRequirement>();
-        public ICollection<Applicant> Applicants { get; set; } = new List<Applicant>();
+        public virtual ICollection<Applicant> Applicants { get; set; } = new List<Applicant>();
     }
 }

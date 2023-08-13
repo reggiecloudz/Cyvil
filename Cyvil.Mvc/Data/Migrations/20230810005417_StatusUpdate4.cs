@@ -4,7 +4,7 @@
 
 namespace Cyvil.Mvc.Data.Migrations
 {
-    public partial class ObjUpdate2 : Migration
+    public partial class StatusUpdate4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

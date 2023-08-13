@@ -54,9 +54,11 @@
                                         <input class="form-check-input" type="checkbox" />
                                     </div>
                                 </td>
-                                <td class="position align-middle white-space-nowrap fw-semi-bold text-1100 ps-4 py-0">
+                                <td class="position align-middle white-space-nowrap fw-semi-bold text-1100 ps-1 py-0">
                                     <div class="d-flex align-items-center position-relative">
-                                        <a class="text-1000 fw-bold stretched-link" href="#!">@item.Title</a>
+                                        <a class="text-1000 fw-bold stretched-link" asp-controller="Positions" asp-action="Details" asp-route-id="@item.Id">
+                                            @item.Title
+                                        </a>
                                     </div>
                                 </td>
                                 <td class="peopleNeeded align-middle white-space-nowrap fw-semi-bold text-1100 ps-4 py-0">

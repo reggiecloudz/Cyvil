@@ -59,12 +59,42 @@ namespace Cyvil.Mvc.Controllers
             await _context.AddAsync(position);
             await _context.SaveChangesAsync();
 
+            _context.InterviewSchedules.Add(new InterviewSchedule
+            {
+                PositionId = position.Id
+            });
+            _context.SaveChanges();
+
             return new JsonResult(new PositionInputResponseModel
             {
                 PositionId = position.Id,
                 Title = position.Title,
                 PeopleNeeded = position.PeopleNeeded
             });
+        }
+
+        [Route("{id}/Details")]
+        public async Task<IActionResult> Details(long? id)
+        {
+            if (id == null || _context.Positions == null)
+            {
+                return NotFound();
+            }
+
+            var position = await _context.Positions
+                .Include(p => p.InterviewSchedule)
+                    .ThenInclude(i => i!.Timeslots)
+                .Include(p => p.Project)
+                .Include(p => p.Applicants)
+                    .ThenInclude(a => a.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (position == null)
+            {
+                return NotFound();
+            }
+
+            return View(position);
         }
 
         //[AllowAnonymous]

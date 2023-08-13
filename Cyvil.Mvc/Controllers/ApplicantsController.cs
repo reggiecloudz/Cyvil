@@ -75,22 +75,22 @@ namespace Cyvil.Mvc.Controllers
                 return new JsonResult("Not found");
             }
 
-            if(app.ApplicantStatus != ApplicantStatus.Selected)
-            {
-                app.ApplicantStatus = ApplicantStatus.Selected;
-                app.Position!.PeopleNeeded = app.Position.PeopleNeeded - 1;
-                app.Position!.PositionsFilled = app.Position.PositionsFilled + 1;
-                _context.Applicants.Update(app);
+            // if(app.ApplicantStatus != ApplicantStatus.Selected)
+            // {
+            //     app.ApplicantStatus = ApplicantStatus.Selected;
+            //     app.Position!.PeopleNeeded = app.Position.PeopleNeeded - 1;
+            //     app.Position!.PositionsFilled = app.Position.PositionsFilled + 1;
+            //     _context.Applicants.Update(app);
 
-                _context.Volunteers.Add(new Volunteer
-                {
-                    ProjectId = app.ProjectId,
-                    UserId = app.UserId,
-                    Position = app.Position.Title,
-                });
-                _context.SaveChanges();
-                return new JsonResult(app.ApplicantStatus.GetEnumDescription());
-            }
+            //     _context.Volunteers.Add(new Volunteer
+            //     {
+            //         ProjectId = app.ProjectId,
+            //         UserId = app.UserId,
+            //         Position = app.Position.Title,
+            //     });
+            //     _context.SaveChanges();
+            //     return new JsonResult(app.ApplicantStatus.GetEnumDescription());
+            // }
             return new JsonResult("Well the bottom's fell out");
         }
 
