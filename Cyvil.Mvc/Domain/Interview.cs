@@ -9,14 +9,6 @@ namespace Cyvil.Mvc.Domain
     public class Interview : Entity
     {
         public long Id { get; set; }
-        
-        public DateTime InterviewDate { get; set; }
-
-        [DataType(DataType.Time)]
-        public string StartTime { get; set; } = string.Empty;
-
-        [DataType(DataType.Time)]
-        public string EndTime { get; set; } = string.Empty;
 
         public string InterviewerName { get; set; } = string.Empty;
 
@@ -25,14 +17,11 @@ namespace Cyvil.Mvc.Domain
         public bool IsCancelled { get; set; } = false;
 
         [DataType(DataType.Text)]
-        public string InitialMessage { get; set; } = string.Empty;
-
-        [DataType(DataType.Text)]
         public string Feedback { get; set; } = string.Empty;
 
         public long ProjectId { get; set; }
 
-        public long TimeslotId { get; set; }
+        public long? TimeslotId { get; set; } = null;
         public virtual Timeslot? Timeslot { get; set; }
 
         public long ApplicantId { get; set; }

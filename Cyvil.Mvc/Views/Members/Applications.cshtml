@@ -1,0 +1,11 @@
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<div class="content">
+    @await Html.PartialAsync("Applicants/_ApplicationsTable", Model.Applications)
+
+    <partial name="_Footer" />
+</div>

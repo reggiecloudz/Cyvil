@@ -57,159 +57,30 @@
                                 </div>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle lh-1" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+                        <span class="uil fs-0 me-2 uil-life-ring"></span>Volunteer
+                    </a>
+                    <ul class="dropdown-menu navbar-dropdown-caret">
                         <li>
                             <a class="dropdown-item" asp-controller="Positions" asp-action="Index">
                                 <div class="dropdown-item-wrapper">
-                                    <span class="me-2 uil" data-feather="tool"></span>Help wanted
+                                    <span class="me-2 uil" data-feather="life-buoy"></span>Help wanted
                                 </div>
                             </a>
                         </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle lh-1" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <span class="uil fs-0 me-2 uil-users-alt"></span>Community
-                    </a>
-                    <ul class="dropdown-menu navbar-dropdown-caret dropdown-menu-card py-0">
-                        <div class="border-0 scrollbar" style="max-height: 60vh;">
-                            <div class="px-3 pt-4 pb-3 img-dropdown">
-                                <div class="row gx-4 gy-5">
-                                    <div class="col-12 col-sm-6 col-md-4">
-                                        <div class="dropdown-item-group">
-                                            <span class="me-2" data-feather="file-text" style="stroke-width:2;"></span>
-                                            <h6 class="dropdown-item-title">Forms
-                                        </h6>
-                                        </div>
-                                        <a class="dropdown-link" href="../modules/forms/basic/form-control.html">Form control</a>
-                                        <a class="dropdown-link" href="../modules/forms/basic/input-group.html">Input group</a>
-                                        <a class="dropdown-link" href="../modules/forms/basic/select.html">Select</a>
-                                        <a class="dropdown-link" href="../modules/forms/basic/checks.html">Checks</a>
-                                        <a class="dropdown-link" href="../modules/forms/basic/range.html">Range</a>
-                                        <a class="dropdown-link" href="../modules/forms/basic/floating-labels.html">Floating labels</a>
-                                        <a class="dropdown-link" href="../modules/forms/basic/layout.html">Layout</a>
-                                        <a class="dropdown-link" href="../modules/forms/advance/advance-select.html">Advance select</a>
-                                        <a class="dropdown-link" href="../modules/forms/advance/date-picker.html">Date picker</a>
-                                        <a class="dropdown-link" href="../modules/forms/advance/editor.html">Editor</a>
-                                        <a class="dropdown-link" href="../modules/forms/advance/file-uploader.html">File uploader</a>
-                                        <a class="dropdown-link" href="../modules/forms/advance/rating.html">Rating</a>
-                                        <a class="dropdown-link" href="../modules/forms/advance/emoji-button.html">Emoji button</a>
-                                        <a class="dropdown-link" href="../modules/forms/validation.html">Validation</a>
-                                        <a class="dropdown-link" href="../modules/forms/wizard.html">Wizard</a>
-                                        <div class="dropdown-item-group mt-5">
-                                            <span class="me-2" data-feather="grid" style="stroke-width:2;"></span>
-                                            <h6 class="dropdown-item-title">Icons
-                                            </h6>
-                                        </div>
-                                        <a class="dropdown-link" href="../modules/icons/feather.html">Feather</a>
-                                        <a class="dropdown-link" href="../modules/icons/font-awesome.html">Font awesome</a><a class="dropdown-link" href="../modules/icons/unicons.html">Unicons</a>
-                                        <div class="dropdown-item-group mt-5"><span class="me-2" data-feather="bar-chart-2" style="stroke-width:2;"></span>
-                                        <h6 class="dropdown-item-title">ECharts
-                                        </h6>
-                                        </div><a class="dropdown-link" href="../modules/echarts/line-charts.html">Line charts</a><a class="dropdown-link" href="../modules/echarts/bar-charts.html">Bar charts</a><a class="dropdown-link" href="../modules/echarts/candlestick-charts.html">Candlestick charts</a><a class="dropdown-link" href="../modules/echarts/geo-map.html">Geo map</a><a class="dropdown-link" href="../modules/echarts/scatter-charts.html">Scatter charts</a><a class="dropdown-link" href="../modules/echarts/pie-charts.html">Pie charts</a><a class="dropdown-link" href="../modules/echarts/gauge-chart.html">Gauge chart</a><a class="dropdown-link" href="../modules/echarts/radar-charts.html">Radar charts</a><a class="dropdown-link" href="../modules/echarts/heatmap-charts.html">Heatmap charts</a><a class="dropdown-link" href="../modules/echarts/how-to-use.html">How to use</a>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li>
+                                <a class="dropdown-item" asp-controller="Members" asp-action="Applications" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)!.Value">
+                                    <div class="dropdown-item-wrapper">
+                                        <span class="me-2 uil" data-feather="file-text"></span>My Applications
                                     </div>
-                                    <div class="col-12 col-sm-6 col-md-4">
-                                        <div class="dropdown-item-group"><span class="me-2" data-feather="package" style="stroke-width:2;"></span>
-                                        <h6 class="dropdown-item-title">Components
-                                        </h6>
-                                        </div><a class="dropdown-link" href="../modules/components/accordion.html">Accordion</a><a class="dropdown-link" href="../modules/components/avatar.html">Avatar</a><a class="dropdown-link" href="../modules/components/alerts.html">Alerts</a><a class="dropdown-link" href="../modules/components/badge.html">Badge</a><a class="dropdown-link" href="../modules/components/breadcrumb.html">Breadcrumb</a><a class="dropdown-link" href="../modules/components/button.html">Buttons</a><a class="dropdown-link" href="../modules/components/calendar.html">Calendar</a><a class="dropdown-link" href="../modules/components/card.html">Card</a><a class="dropdown-link" href="../modules/components/carousel/bootstrap.html">Bootstrap</a><a class="dropdown-link" href="../modules/components/carousel/swiper.html">Swiper</a><a class="dropdown-link" href="../modules/components/collapse.html">Collapse</a><a class="dropdown-link" href="../modules/components/dropdown.html">Dropdown</a><a class="dropdown-link" href="../modules/components/list-group.html">List group</a><a class="dropdown-link" href="../modules/components/modal.html">Modals</a><a class="dropdown-link" href="../modules/components/navs-and-tabs/navs.html">Navs</a><a class="dropdown-link" href="../modules/components/navs-and-tabs/navbar.html">Navbar</a><a class="dropdown-link" href="../modules/components/navs-and-tabs/tabs.html">Tabs</a><a class="dropdown-link" href="../modules/components/offcanvas.html">Offcanvas</a><a class="dropdown-link" href="../modules/components/progress-bar.html">Progress bar</a><a class="dropdown-link" href="../modules/components/placeholder.html">Placeholder</a><a class="dropdown-link" href="../modules/components/pagination.html">Pagination</a><a class="dropdown-link" href="../modules/components/popovers.html">Popovers</a><a class="dropdown-link" href="../modules/components/scrollspy.html">Scrollspy</a><a class="dropdown-link" href="../modules/components/sortable.html">Sortable</a><a class="dropdown-link" href="../modules/components/spinners.html">Spinners</a><a class="dropdown-link" href="../modules/components/toast.html">Toast</a><a class="dropdown-link" href="../modules/components/tooltips.html">Tooltips</a><a class="dropdown-link" href="../modules/components/chat-widget.html">Chat widget</a>
-                                    </div>
-                                    <div class="col-12 col-sm-6 col-md-4">
-                                        <div class="dropdown-item-group"><span class="me-2" data-feather="columns" style="stroke-width:2;"></span>
-                                        <h6 class="dropdown-item-title">Tables
-                                        </h6>
-                                        </div><a class="dropdown-link" href="../modules/tables/basic-tables.html">Basic tables</a><a class="dropdown-link" href="../modules/tables/advance-tables.html">Advance tables</a><a class="dropdown-link" href="../modules/tables/bulk-select.html">Bulk Select</a>
-                                        <div class="dropdown-item-group mt-5"><span class="me-2" data-feather="tool" style="stroke-width:2;"></span>
-                                        <h6 class="dropdown-item-title">Utilities
-                                        </h6>
-                                        </div><a class="dropdown-link" href="../modules/utilities/background.html">Background</a><a class="dropdown-link" href="../modules/utilities/borders.html">Borders</a><a class="dropdown-link" href="../modules/utilities/colors.html">Colors</a><a class="dropdown-link" href="../modules/utilities/display.html">Display</a><a class="dropdown-link" href="../modules/utilities/flex.html">Flex</a><a class="dropdown-link" href="../modules/utilities/stacks.html">Stacks</a><a class="dropdown-link" href="../modules/utilities/float.html">Float</a><a class="dropdown-link" href="../modules/utilities/grid.html">Grid</a><a class="dropdown-link" href="../modules/utilities/interactions.html">Interactions</a><a class="dropdown-link" href="../modules/utilities/opacity.html">Opacity</a><a class="dropdown-link" href="../modules/utilities/overflow.html">Overflow</a><a class="dropdown-link" href="../modules/utilities/position.html">Position</a><a class="dropdown-link" href="../modules/utilities/shadows.html">Shadows</a><a class="dropdown-link" href="../modules/utilities/sizing.html">Sizing</a><a class="dropdown-link" href="../modules/utilities/spacing.html">Spacing</a><a class="dropdown-link" href="../modules/utilities/typography.html">Typography</a><a class="dropdown-link" href="../modules/utilities/vertical-align.html">Vertical align</a><a class="dropdown-link" href="../modules/utilities/visibility.html">Visibility</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle lh-1" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <span class="uil fs-0 me-2 uil-book-reader"></span>Documentation
-                    </a>
-                    <ul class="dropdown-menu navbar-dropdown-caret">
-                        <li><a class="dropdown-item" href="../documentation/getting-started.html">
-                            <div class="dropdown-item-wrapper"><span class="me-2 uil" data-feather="life-buoy"></span>Getting started
-                            </div>
-                        </a>
-                        </li>
-                        <li class="dropdown dropdown-inside"><a class="dropdown-item dropdown-toggle" id="customization" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                            <div class="dropdown-item-wrapper"><span class="uil fs-0 uil-angle-right lh-1 dropdown-indicator-icon"></span><span><span class="me-2 uil" data-feather="settings"></span>Customization</span></div>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../documentation/customization/configuration.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Configuration
-                                </div>
-                            </a>
+                                </a>
                             </li>
-                            <li><a class="dropdown-item" href="../documentation/customization/styling.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Styling
-                                </div>
-                            </a>
-                            </li>
-                            <li><a class="dropdown-item" href="../documentation/customization/dark-mode.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Dark mode
-                                </div>
-                            </a>
-                            </li>
-                            <li><a class="dropdown-item" href="../documentation/customization/plugin.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Plugin
-                                </div>
-                            </a>
-                            </li>
-                        </ul>
-                        </li>
-                        <li class="dropdown dropdown-inside"><a class="dropdown-item dropdown-toggle" id="layouts-doc" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                            <div class="dropdown-item-wrapper"><span class="uil fs-0 uil-angle-right lh-1 dropdown-indicator-icon"></span><span><span class="me-2 uil" data-feather="table"></span>Layouts doc</span></div>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../documentation/layouts/vertical-navbar.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Vertical navbar
-                                </div>
-                            </a>
-                            </li>
-                            <li><a class="dropdown-item" href="../documentation/layouts/horizontal-navbar.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Horizontal navbar
-                                </div>
-                            </a>
-                            </li>
-                            <li><a class="dropdown-item" href="../documentation/layouts/combo-navbar.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Combo navbar
-                                </div>
-                            </a>
-                            </li>
-                            <li><a class="dropdown-item" href="../documentation/layouts/dual-nav.html">
-                                <div class="dropdown-item-wrapper"><span class="me-2 uil"></span>Dual nav
-                                </div>
-                            </a>
-                            </li>
-                        </ul>
-                        </li>
-                        <li><a class="dropdown-item" href="../documentation/gulp.html">
-                            <div class="dropdown-item-wrapper"><span class="me-2 fa-brands fa-gulp ms-1 me-1 fa-lg"></span>Gulp
-                            </div>
-                        </a>
-                        </li>
-                        <li><a class="dropdown-item" href="../documentation/design-file.html">
-                            <div class="dropdown-item-wrapper"><span class="me-2 uil" data-feather="figma"></span>Design file
-                            </div>
-                        </a>
-                        </li>
-                        <li><a class="dropdown-item" href="../changelog.html">
-                            <div class="dropdown-item-wrapper"><span class="me-2 uil" data-feather="git-merge"></span>Changelog
-                            </div>
-                        </a>
-                        </li>
-                        <li><a class="dropdown-item" href="../showcase.html">
-                            <div class="dropdown-item-wrapper"><span class="me-2 uil" data-feather="monitor"></span>Showcase
-                            </div>
-                        </a>
-                        </li>
+                        }
                     </ul>
                 </li>
             </ul>

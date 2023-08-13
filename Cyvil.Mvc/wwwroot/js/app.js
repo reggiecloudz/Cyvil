@@ -748,3 +748,29 @@ function saveTimeslot() {
         ajaxFormPost(url, formData, successCallback, errorCallback);
     });
 }
+
+function setupInterview() {
+
+    var anchors = document.querySelectorAll('a[data-interview]');
+    
+    anchors.forEach((a) => {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            var target = e.target;
+
+            const applicantId = target.dataset.interview;
+            const url = `/Interviews/${applicantId}/Setup`;
+
+            function handleSuccess(response) {
+                document.getElementById(`status-${applicantId}`).innerHTML = "Interview";
+                console.log(response);
+              }
+              
+            function handleError(xhr, status, error) {
+                console.log('Request failed:', error);
+            }
+              
+            ajaxGet(url, handleSuccess, handleError);
+        });
+    });
+}

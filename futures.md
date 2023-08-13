@@ -207,3 +207,379 @@ In this example, you'll need to replace `YourNamespace` with the actual namespac
 The function takes two parameters: `startDate` and `endDate`, which define the date range for the blog posts you want to retrieve. It uses the `Where` method to filter the blog posts based on their `PublishDate` property, and then calls `ToList` to execute the query and return the results as a list of `BlogPost` objects.
 
 Make sure you have the necessary Entity Framework packages installed and configured in your project for this code to work.
+
+## Task Scheduler
+Sure! Here's an example of how you can create a task scheduler using C# .NET 6 and SignalR Core:
+
+1. Create a new ASP.NET Core Web Application project targeting .NET 6.
+2. Install the required NuGet packages:
+   - Microsoft.AspNetCore.SignalR.Client
+   - Microsoft.Extensions.Hosting
+   - Microsoft.Extensions.Logging.Console
+3. Create a new class called `TaskScheduler`:
+
+```csharp
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR.Client;
+
+public class TaskScheduler
+{
+    private readonly HubConnection _hubConnection;
+
+    public TaskScheduler()
+    {
+        _hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:5000/notificationHub") // Replace with your SignalR Hub URL
+            .Build();
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        await _hubConnection.StartAsync(cancellationToken);
+
+        // Register a callback for receiving notifications
+        _hubConnection.On<string>("ReceiveNotification", message =>
+        {
+            Console.WriteLine($"Received notification: {message}");
+        });
+    }
+
+    public async Task ScheduleTaskAsync(string userId, string taskName, DateTime scheduledTime, CancellationToken cancellationToken)
+    {
+        // Calculate the delay until the scheduled time
+        var delay = scheduledTime - DateTime.Now;
+
+        // Wait until the scheduled time
+        await Task.Delay(delay, cancellationToken);
+
+        // Send the notification to the user
+        await _hubConnection.InvokeAsync("SendNotification", userId, taskName, cancellationToken);
+    }
+}
+```
+
+4. In your `Program.cs` file, update the `CreateHostBuilder` method to include the `TaskScheduler`:
+
+```csharp
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddHostedService<TaskScheduler>();
+            });
+}
+```
+
+5. Create a SignalR Hub called `NotificationHub`:
+
+```csharp
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+
+public class NotificationHub : Hub
+{
+    public async Task SendNotification(string userId, string taskName)
+    {
+        // Send the notification to the specified user
+        await Clients.User(userId).SendAsync("ReceiveNotification", $"Task '{taskName}' is due.");
+    }
+}
+```
+
+6. Update the `Startup.cs` file to register the `NotificationHub`:
+
+```csharp
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddSignalR();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        app.UseRouting();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHub<NotificationHub>("/notificationHub");
+        });
+    }
+}
+```
+
+7. Run the application and make sure it starts successfully.
+8. In your client application, connect to the SignalR Hub and call the `ScheduleTaskAsync` method to schedule a task:
+
+```csharp
+using System;
+
+var taskScheduler = new TaskScheduler();
+await taskScheduler.StartAsync(CancellationToken.None);
+
+// Schedule a task to be executed in 5 minutes
+var userId = "user123";
+var taskName = "Task 1";
+var scheduledTime = DateTime.Now.AddMinutes(5);
+await taskScheduler.ScheduleTaskAsync(userId, taskName, scheduledTime, CancellationToken.None);
+```
+
+## Category subcategories items
+
+```csharp
+public class ListingService : IListingService
+{
+
+    private readonly ApplicationDbContext _context;
+
+    public ListingService(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public List<Listing> GetProductsFromSubcategories(long categoryId)
+    {
+        var category = _context.Categories
+            .Include(c => c.SubCategories)
+            .FirstOrDefault(c => c.Id == categoryId) ?? throw new ArgumentException("Category not found");
+        
+        var subcategoryIds = category.SubCategories.Select(c => c.Id).ToList();
+
+        var listings = _context.Listings
+            .Where(p => subcategoryIds.Contains(p.CategoryId))
+            .ToList();
+
+        return listings;
+    }
+}
+```
+
+## Permissions
+Sure! Here's an example of a C# ASP.NET Core permission management system where users can create roles and assign permissions to those roles:
+
+```csharp
+// Models
+public class Role
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public List<Permission> Permissions { get; set; }
+}
+
+public class Permission
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
+// DbContext
+public class ApplicationDbContext : DbContext
+{
+    public DbSet<Role> Roles { get; set; }
+    public DbSet<Permission> Permissions { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer("your_connection_string_here");
+    }
+}
+
+// Controller
+public class RoleController : Controller
+{
+    private readonly ApplicationDbContext _context;
+
+    public RoleController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    public IActionResult Index()
+    {
+        var roles = _context.Roles.Include(r => r.Permissions).ToList();
+        return View(roles);
+    }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Create(Role role)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Roles.Add(role);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        return View(role);
+    }
+
+    public IActionResult AssignPermissions(int id)
+    {
+        var role = _context.Roles.Include(r => r.Permissions).FirstOrDefault(r => r.Id == id);
+        var permissions = _context.Permissions.ToList();
+        var viewModel = new AssignPermissionsViewModel
+        {
+            Role = role,
+            Permissions = permissions
+        };
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    public IActionResult AssignPermissions(AssignPermissionsViewModel viewModel)
+    {
+        var role = _context.Roles.Include(r => r.Permissions).FirstOrDefault(r => r.Id == viewModel.Role.Id);
+        role.Permissions.Clear();
+        foreach (var permissionId in viewModel.SelectedPermissionIds)
+        {
+            var permission = _context.Permissions.Find(permissionId);
+            role.Permissions.Add(permission);
+        }
+        _context.SaveChanges();
+        return RedirectToAction("Index");
+    }
+}
+
+// View Models
+public class AssignPermissionsViewModel
+{
+    public Role Role { get; set; }
+    public List<Permission> Permissions { get; set; }
+    public List<int> SelectedPermissionIds { get; set; }
+}
+
+// Views
+@model List<Role>
+
+<h1>Roles</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Permissions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Name</td>
+                <td>
+                    @foreach (var permission in role.Permissions)
+                    {
+                        <span>@permission.Name</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@model Role
+
+<h1>Create Role</h1>
+
+<form asp-action="Create">
+    <div>
+        <label asp-for="Name">Name:</label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <button type="submit">Create</button>
+</form>
+
+@model AssignPermissionsViewModel
+
+<h1>Assign Permissions to @Model.Role.Name</h1>
+
+<form asp-action="AssignPermissions">
+    <input type="hidden" asp-for="Role.Id" />
+    <div>
+        <label>Permissions:</label>
+        <br />
+        @foreach (var permission in Model.Permissions)
+        {
+            <input type="checkbox" name="SelectedPermissionIds" value="@permission.Id" /> @permission.Name<br />
+        }
+    </div>
+    <button type="submit">Assign</button>
+</form>
+```
+
+This is a basic implementation of a permission management system using ASP.NET Core. It includes models for Role and Permission, a DbContext for database access, a controller for handling role and permission management, and corresponding views for creating roles and assigning permissions.
+
+Note that you'll need to replace "your_connection_string_here" in the `OnConfiguring` method of the `ApplicationDbContext` class with your actual database connection string.
+
+## Permission check
+Sure! Here's an example of a C# ASP.NET Core controller method that compares a user's permissions with a list of accepted permissions and either returns a view or redirects to an access denied page:
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace YourNamespace.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home/Index
+        public IActionResult Index()
+        {
+            // Simulated user's permissions
+            List<string> userPermissions = new List<string> { "permission1", "permission2", "permission3" };
+
+            // Simulated accepted permissions
+            List<string> acceptedPermissions = new List<string> { "permission2", "permission3", "permission4" };
+
+            // Check if all user permissions are present in the accepted permissions
+            bool hasAccess = userPermissions.All(p => acceptedPermissions.Contains(p));
+
+            if (hasAccess)
+            {
+                // Return the view if user permissions match
+                return View();
+            }
+            else
+            {
+                // Redirect to access denied page if user permissions do not match
+                return RedirectToAction("AccessDenied");
+            }
+        }
+
+        // GET: Home/AccessDenied
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+    }
+}
+```
+
+In this example, the `Index` method compares the `userPermissions` list with the `acceptedPermissions` list using LINQ's `All` method. If all user permissions are present in the accepted permissions, it returns a view. Otherwise, it redirects to the `AccessDenied` method, which returns an access denied view.
