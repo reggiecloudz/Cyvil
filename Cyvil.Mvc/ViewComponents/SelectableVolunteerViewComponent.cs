@@ -24,19 +24,19 @@ namespace Cyvil.Mvc.ViewComponents
                 .Include(a => a.Members)
                 .ThenInclude(a => a.Member)
                 .FirstOrDefaultAsync(x => x.Id == id);
-            var volunteers = _context.Volunteers.Where(v => v.ProjectId == team!.ProjectId).Include(v => v.User).ToList();
+            var volunteers = _context.ProjectParticipants.Where(v => v.ProjectId == team!.ProjectId).Include(v => v.Participant).ToList();
             var teamMembers = new HashSet<string>(team!.Members.Select(u => u.MemberId));
             var volunteerList = new List<SelectableVolunteer>();
 
             foreach (var item in volunteers)
             {
-                if (!teamMembers.Contains(item.UserId))
+                if (!teamMembers.Contains(item.ParticipantId))
                 {
                     volunteerList.Add(new SelectableVolunteer
                     {
-                        Value = item.UserId,
-                        Text = item.User!.FullName,
-                        UserPhoto = $"media/members/{item.User!.ProfileImage}"
+                        Value = item.ParticipantId,
+                        Text = item.Participant!.FullName,
+                        UserPhoto = $"media/members/{item.Participant!.ProfileImage}"
                     });
                 }
                 

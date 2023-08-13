@@ -61,17 +61,16 @@
             </div>
         </div>
         <div class="col-12 col-xl-6">
-            @await Html.PartialAsync("Positions/_InterviewSchedule", Model.InterviewSchedule)
+            Add Something
         </div>
         <div class="col-12 col-xl-6">
-            @await Component.InvokeAsync("ApplicantsCard", new { projectId = Model.ProjectId })
+            Add Something
         </div>
     </div>
 
     <partial name="_Footer" />
 </div>
 
-@await Component.InvokeAsync("SaveTimeslot", new { interviewScheduleId = Model.InterviewSchedule!.Id })
 
 @section ProjectNav {
     @await Html.PartialAsync("Projects/_ProjectNav", Model.ProjectId)
@@ -86,7 +85,6 @@
 <script src="~/js/app.js"></script>
 <script>
     $(document).ready(function () {
-        saveTimeslot();
     });
 </script>
 }

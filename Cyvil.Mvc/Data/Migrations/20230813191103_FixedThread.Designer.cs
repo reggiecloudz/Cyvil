@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyvil.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230813032812_UpdateStuff1")]
-    partial class UpdateStuff1
+    [Migration("20230813191103_FixedThread")]
+    partial class FixedThread
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,61 +47,28 @@ namespace Cyvil.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("ObjectiveId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProjectId")
+                    b.Property<long>("ParentId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ObjectiveId");
-
-                    b.ToTable("ActionItems");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Applicant", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("About")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ApplicantStatus")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("PositionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProjectId")
+                    b.Property<long>("TeamId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PositionId");
+                    b.HasIndex("ParentId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TeamId");
 
-                    b.ToTable("Applicants");
+                    b.ToTable("ActionItems");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ApplicationUser", b =>
@@ -287,114 +254,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Goal", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId")
-                        .IsUnique();
-
-                    b.ToTable("Goals");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Interview", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ApplicantId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Feedback")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("InterviewerName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("IsCancelled")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<long>("TimeslotId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicantId")
-                        .IsUnique();
-
-                    b.HasIndex("TimeslotId")
-                        .IsUnique();
-
-                    b.ToTable("Interviews");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.InterviewSchedule", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("PositionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PositionId")
-                        .IsUnique();
-
-                    b.ToTable("InterviewSchedules");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Invitation", b =>
                 {
                     b.Property<long>("Id")
@@ -404,24 +263,43 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("FromUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<long>("MeetingId")
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ToUserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TypeId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("MeetingId");
+                    b.HasIndex("FromUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ToUserId");
 
                     b.ToTable("Invitations");
                 });
@@ -481,7 +359,60 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.ToTable("Meetings");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Objective", b =>
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Message", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("MessageThreadId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageThreadId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageRecipient", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<long>("MessageThreadId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("UserId", "MessageThreadId");
+
+                    b.HasIndex("MessageThreadId");
+
+                    b.ToTable("MessageRecipients");
+                });
+
+            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageThread", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -490,45 +421,16 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Details")
+                    b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("GoalId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long?>("TeamId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GoalId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Objectives");
+                    b.ToTable("MessageThreads");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
@@ -592,15 +494,15 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Goal")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ManagerId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Overview")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -630,6 +532,31 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.HasIndex("ManagerId");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Cyvil.Mvc.Domain.ProjectParticipant", b =>
+                {
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ParticipantId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ProjectId", "ParticipantId");
+
+                    b.HasIndex("ParticipantId");
+
+                    b.ToTable("ProjectParticipants");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Proposal", b =>
@@ -752,67 +679,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.HasIndex("MemberId");
 
                     b.ToTable("TeamMembers");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Timeslot", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("EndTime")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<long>("InterviewScheduleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("IsBooked")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("StartTime")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InterviewScheduleId");
-
-                    b.ToTable("Timeslots");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Volunteer", b =>
-                {
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("ProjectId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Volunteers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -945,32 +811,21 @@ namespace Cyvil.Mvc.Data.Migrations
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ActionItem", b =>
                 {
-                    b.HasOne("Cyvil.Mvc.Domain.Objective", "Objective")
+                    b.HasOne("Cyvil.Mvc.Domain.ActionItem", "Parent")
+                        .WithMany("Subtasks")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cyvil.Mvc.Domain.Team", "Team")
                         .WithMany("ActionItems")
-                        .HasForeignKey("ObjectiveId")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Objective");
-                });
+                    b.Navigation("Parent");
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Applicant", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.Position", "Position")
-                        .WithMany("Applicants")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
-                        .WithMany("Applications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Position");
-
-                    b.Navigation("User");
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Assignment", b =>
@@ -1031,64 +886,23 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Goal", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.Project", "Project")
-                        .WithOne("Goal")
-                        .HasForeignKey("Cyvil.Mvc.Domain.Goal", "ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Interview", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.Applicant", "Applicant")
-                        .WithOne("Interview")
-                        .HasForeignKey("Cyvil.Mvc.Domain.Interview", "ApplicantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.Timeslot", "Timeslot")
-                        .WithOne("Interview")
-                        .HasForeignKey("Cyvil.Mvc.Domain.Interview", "TimeslotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Applicant");
-
-                    b.Navigation("Timeslot");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.InterviewSchedule", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.Position", "Position")
-                        .WithOne("InterviewSchedule")
-                        .HasForeignKey("Cyvil.Mvc.Domain.InterviewSchedule", "PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Position");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Invitation", b =>
                 {
-                    b.HasOne("Cyvil.Mvc.Domain.Meeting", "Meeting")
-                        .WithMany("Invitations")
-                        .HasForeignKey("MeetingId")
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
-                        .WithMany("Invitations")
-                        .HasForeignKey("UserId")
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "ToUser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Meeting");
+                    b.Navigation("FromUser");
 
-                    b.Navigation("User");
+                    b.Navigation("ToUser");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Meeting", b =>
@@ -1102,21 +916,42 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Objective", b =>
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Message", b =>
                 {
-                    b.HasOne("Cyvil.Mvc.Domain.Goal", "Goal")
-                        .WithMany()
-                        .HasForeignKey("GoalId")
+                    b.HasOne("Cyvil.Mvc.Domain.MessageThread", "MessageThread")
+                        .WithMany("Messages")
+                        .HasForeignKey("MessageThreadId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cyvil.Mvc.Domain.Team", "Team")
-                        .WithMany("Objectives")
-                        .HasForeignKey("TeamId");
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Goal");
+                    b.Navigation("MessageThread");
 
-                    b.Navigation("Team");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageRecipient", b =>
+                {
+                    b.HasOne("Cyvil.Mvc.Domain.MessageThread", "MessageThread")
+                        .WithMany("Recipients")
+                        .HasForeignKey("MessageThreadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
+                        .WithMany("Inbox")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MessageThread");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
@@ -1155,6 +990,25 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("City");
 
                     b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("Cyvil.Mvc.Domain.ProjectParticipant", b =>
+                {
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "Participant")
+                        .WithMany("Participations")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cyvil.Mvc.Domain.Project", "Project")
+                        .WithMany("Participants")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Participant");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Proposal", b =>
@@ -1196,36 +1050,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("Member");
 
                     b.Navigation("Team");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Timeslot", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.InterviewSchedule", "InterviewSchedule")
-                        .WithMany("Timeslots")
-                        .HasForeignKey("InterviewScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("InterviewSchedule");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Volunteer", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.Project", "Project")
-                        .WithMany("Volunteers")
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
-                        .WithMany("Participation")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1282,24 +1106,19 @@ namespace Cyvil.Mvc.Data.Migrations
             modelBuilder.Entity("Cyvil.Mvc.Domain.ActionItem", b =>
                 {
                     b.Navigation("Assignees");
-                });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Applicant", b =>
-                {
-                    b.Navigation("Interview");
+                    b.Navigation("Subtasks");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ApplicationUser", b =>
                 {
-                    b.Navigation("Applications");
-
                     b.Navigation("Assignments");
 
-                    b.Navigation("Invitations");
+                    b.Navigation("Inbox");
 
                     b.Navigation("Meetings");
 
-                    b.Navigation("Participation");
+                    b.Navigation("Participations");
 
                     b.Navigation("Projects");
 
@@ -1318,41 +1137,27 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("Projects");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.InterviewSchedule", b =>
-                {
-                    b.Navigation("Timeslots");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Meeting", b =>
                 {
                     b.Navigation("Attendees");
-
-                    b.Navigation("Invitations");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Objective", b =>
+            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageThread", b =>
                 {
-                    b.Navigation("ActionItems");
-                });
+                    b.Navigation("Messages");
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
-                {
-                    b.Navigation("Applicants");
-
-                    b.Navigation("InterviewSchedule");
+                    b.Navigation("Recipients");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Project", b =>
                 {
-                    b.Navigation("Goal");
+                    b.Navigation("Participants");
 
                     b.Navigation("Positions");
 
                     b.Navigation("Proposal");
 
                     b.Navigation("Teams");
-
-                    b.Navigation("Volunteers");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.State", b =>
@@ -1362,14 +1167,9 @@ namespace Cyvil.Mvc.Data.Migrations
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Team", b =>
                 {
+                    b.Navigation("ActionItems");
+
                     b.Navigation("Members");
-
-                    b.Navigation("Objectives");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Timeslot", b =>
-                {
-                    b.Navigation("Interview");
                 });
 #pragma warning restore 612, 618
         }

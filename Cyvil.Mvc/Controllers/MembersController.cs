@@ -60,27 +60,5 @@ namespace Cyvil.Mvc.Controllers
 
             return View(user);
         }
-
-        [Route("{id}/[action]")]
-        public async Task<IActionResult> Applications(string id)
-        {
-            if (id == null || _context.Users == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.Users
-                .Include(x => x.Applications)
-                    .ThenInclude(a => a.Position)
-                        .ThenInclude(p => p!.Project)
-                .FirstOrDefaultAsync(x => x.Id == id);
-            
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
     }
 }

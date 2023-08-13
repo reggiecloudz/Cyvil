@@ -17,9 +17,9 @@ namespace Cyvil.Mvc.Domain
 
         public string Name { get; set; } = string.Empty;
 
-        public string Overview { get; set; } = string.Empty;
+        public string Goal { get; set; } = string.Empty;
 
-        public ProjectStatus Status { get; set; } = ProjectStatus.Draft;
+        public ProgressStatus Status { get; set; } = ProgressStatus.Draft;
 
         public string Photo { get; set; } = "noimage.png";
 
@@ -33,8 +33,6 @@ namespace Cyvil.Mvc.Domain
 
         public virtual Proposal? Proposal { get; set; }
 
-        public virtual Goal? Goal { get; set; }
-
         public string ManagerId { get; set; } = string.Empty;
         public virtual ApplicationUser? Manager { get; set; }
 
@@ -45,12 +43,12 @@ namespace Cyvil.Mvc.Domain
         public virtual City? City { get; set; }
 
         public virtual ICollection<Position> Positions { get; set; } = new List<Position>();
-        public virtual ICollection<Volunteer> Volunteers { get; set; } = new List<Volunteer>();
+        public virtual ICollection<ProjectParticipant> Participants { get; set; } = new List<ProjectParticipant>();
         public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
 
         public int DaysPassed()
         {
-            return (DateTime.Now.Date - this.PublishDate.Date).Days;
+            return (DateTime.Now.Date - PublishDate.Date).Days;
         }
     }
 }

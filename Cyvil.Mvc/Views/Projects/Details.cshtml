@@ -33,7 +33,7 @@ ViewData["Title"] = Model.Name;
                         @await Html.PartialAsync("Proposal/_ProposalTabs", Model)
                     </div>
                     <div class="col-12 col-lg-6">
-                        @await Component.InvokeAsync("ApplicantsCard", new { projectId = Model.Id })
+                        Add Something
                     </div>
                     <div class="col-12 col-lg-6">
                         <div class="card card-body h-100">
@@ -63,13 +63,13 @@ ViewData["Title"] = Model.Name;
 @section CustomScripts {
 <script src="~/assets/js/project-details.js"></script>
 <script>
-    const dreamers = 2300000;
+    /*const dreamers = 2300000;
     const americans = 340155513;
 
     function calculatePercentage(value, total) {
         return (value / total) * 100;
     }
 
-    console.log(calculatePercentage(dreamers, americans));
+    console.log(calculatePercentage(dreamers, americans)); */
 </script>
 }

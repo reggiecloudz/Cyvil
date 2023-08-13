@@ -37,7 +37,7 @@ namespace Cyvil.Mvc.Controllers
             }
 
             var actionItem = await _context.ActionItems
-                .Include(p => p.Objective)
+                .Include(p => p.Team)
                 .Include(o => o.Assignees)
                     .ThenInclude(a => a.Assignee)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -99,7 +99,7 @@ namespace Cyvil.Mvc.Controllers
             }
 
             var actionItem = await _context.ActionItems
-                .Include(p => p.Objective)
+                .Include(p => p.Team)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (actionItem == null)
@@ -121,7 +121,7 @@ namespace Cyvil.Mvc.Controllers
         private List<AssignedTask> PopulateAssignedTaskData(ActionItem item)
         {
             var teamMembers = _context.TeamMembers
-                .Where(t => t.TeamId == item!.Objective!.TeamId)
+                .Where(t => t.TeamId == item.TeamId)
                 .Include(t => t.Member)
                 .ToList();
             var assignments = _context.Assignments.Where(a => a.ActionItemId == item.Id).ToList();

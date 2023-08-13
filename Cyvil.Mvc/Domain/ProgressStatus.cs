@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Cyvil.Mvc.Domain
 {
-    public enum ProjectStatus
+    public enum ProgressStatus
     {
         [Description("Draft")]
         Draft,

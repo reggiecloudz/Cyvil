@@ -137,7 +137,7 @@ ViewData["Title"] = "Tasks";
 <partial name="Tasks/_ChatModal" />
 
 @section ProjectNav {
-@await Html.PartialAsync("Projects/_ProjectNav", Model.ProjectId)
+@await Html.PartialAsync("Projects/_ProjectNav", Model.Team!.ProjectId)
 }
 
 @section VendorScripts {

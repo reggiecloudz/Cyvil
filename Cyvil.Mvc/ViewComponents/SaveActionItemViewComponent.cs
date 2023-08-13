@@ -9,13 +9,9 @@ namespace Cyvil.Mvc.ViewComponents
 {
     public class SaveActionItemViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(long projectId, long objectiveId)
+        public IViewComponentResult Invoke()
         {
-            return View(new ActionItem
-            {
-                ProjectId = projectId,
-                ObjectiveId = objectiveId
-            });
+            return View(new ActionItem());
         }
     }
 }

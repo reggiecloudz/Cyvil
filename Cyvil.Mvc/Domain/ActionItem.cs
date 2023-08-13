@@ -25,11 +25,20 @@ namespace Cyvil.Mvc.Domain
 
         public bool IsCompleted { get; set; } = false;
 
-        public long ProjectId { get; set; }
+        public ProgressStatus Status { get; set; } = ProgressStatus.Draft;
 
-        public long ObjectiveId { get; set; }
-        public virtual Objective? Objective { get; set; }
+        public long ParentId { get; set; }
+        public virtual ActionItem? Parent { get; set; }
 
+        public long TeamId { get; set; }
+        public virtual Team? Team { get; set; }
+
+        public virtual ICollection<ActionItem> Subtasks { get; set; } = new List<ActionItem>();
         public virtual ICollection<Assignment> Assignees { get; set; } = new List<Assignment>();
+
+        public int DaysPassed()
+        {
+            return (DateTime.Now.Date - StartDate.Date).Days;
+        }
     }
 }

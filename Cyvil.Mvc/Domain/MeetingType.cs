@@ -10,7 +10,7 @@ namespace Cyvil.Mvc.Domain
         ActionItem,
         [Description("Team")]
         Team,
-        [Description("Interview")]
-        Interview
+        [Description("Public")]
+        Public
     }
 }

@@ -21,12 +21,11 @@ namespace Cyvil.Mvc.Domain
         public IFormFile? ProfileImageUpload { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
+        public virtual ICollection<ProjectParticipant> Participations { get; set; } = new List<ProjectParticipant>();
         public virtual ICollection<TeamMember> Teams { get; set; } = new List<TeamMember>();
         public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
-        public virtual ICollection<Applicant> Applications { get; set; } = new List<Applicant>();
-        public virtual ICollection<Volunteer> Participation { get; set; } = new List<Volunteer>();
-        public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
         public virtual ICollection<Attendee> Meetings { get; set; } = new List<Attendee>();
+        public virtual ICollection<MessageRecipient> Inbox { get; set; } = new List<MessageRecipient>();
         // public virtual ICollection<UserNotification> Notifications { get; set; } = new List<UserNotification>();
         // public virtual ICollection<ChatUser> Chats { get; set; } = new List<ChatUser>();
     }

@@ -39,7 +39,6 @@ namespace Cyvil.Mvc.Domain
         public long ProjectId { get; set; }
         public virtual Project? Project { get; set; }
 
-        public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
         public virtual ICollection<Attendee> Attendees { get; set; } = new List<Attendee>();
     }
 }

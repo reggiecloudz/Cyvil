@@ -39,60 +39,6 @@ namespace Cyvil.Mvc.Controllers
             return View(projects);
         }
 
-        [Route("{id}/[action]")]
-        public async Task<IActionResult> Goal(long? id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
-
-            var project = await _context.Projects
-                .Include(p => p.Manager)
-                .Include(p => p.Goal)
-                .Include(p => p.Proposal)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            ViewData["ProjectId"] = project.Id;
-
-            return View(project);
-        }
-
-        [Route("{id}/[action]")]
-        public async Task<IActionResult> Objectives(long? id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
-
-            var project = await _context.Projects
-                .Include(p => p.Manager)
-                .Include(p => p.Goal)
-                .Include(p => p.Proposal)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            var objectives = _context.Objectives.Where(o => o.ProjectId == project.Id).ToList();
-
-            var model = new ProjectObjectivesViewModel
-            {
-                Project = project,
-                Objectives = objectives
-            };
-
-            return View(model);
-        }
-
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -120,6 +66,7 @@ namespace Cyvil.Mvc.Controllers
             {
                 Slug = FriendlyUrlHelper.GetFriendlyTitle(model.Name),
                 Name = model.Name,
+                Goal = model.Goal,
                 Photo = photoName,
                 ManagerId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value,
                 CauseId = model.CauseId,
@@ -130,7 +77,6 @@ namespace Cyvil.Mvc.Controllers
             await _context.SaveChangesAsync();
 
             _context.Proposals.Add(new Proposal { ProjectId = project.Id });
-            _context.Goals.Add(new Goal { ProjectId = project.Id, Content = model.Goal });
             _context.SaveChanges();
 
             return new JsonResult(new ProjectInputResponseModel
@@ -151,7 +97,6 @@ namespace Cyvil.Mvc.Controllers
 
             var project = await _context.Projects
                 .Include(p => p.Manager)
-                .Include(p => p.Goal)
                 .Include(p => p.Proposal)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -175,7 +120,6 @@ namespace Cyvil.Mvc.Controllers
             var project = await _context.Projects
                 .Include(p => p.Manager)
                 .Include(p => p.Cause)
-                .Include(p => p.Goal)
                 .Include(p => p.City)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -189,7 +133,7 @@ namespace Cyvil.Mvc.Controllers
                 ProjectId = project.Id,
                 Name = project.Name,
                 Photo = project.Photo,
-                Goal = project.Goal!.Content,
+                Goal = project.Goal,
                 Manager = project.Manager!.FullName,
                 Cause = project.Cause!.Name,
                 City = project.City!.Name
@@ -218,35 +162,6 @@ namespace Cyvil.Mvc.Controllers
             ViewData["ProjectId"] = project.Id;
 
             return View(project);
-        }
-
-        [Route("{id}/[action]")]
-        public async Task<IActionResult> Applicants(long? id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
-
-            var project = await _context.Projects
-                .Include(p => p.Manager)
-                .Include(p => p.Positions)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-            var applicants = await _context.Applicants
-                .Include(a => a.User)
-                .Include(a => a.Position)
-                .Where(a => a.ProjectId == project.Id)
-                .ToListAsync();
-
-            ViewData["ProjectId"] = project.Id;
-
-            return View(applicants);
         }
 
         [Route("{id}/[action]")]

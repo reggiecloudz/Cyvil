@@ -58,11 +58,6 @@ namespace Cyvil.Mvc.Controllers
             position.Slug = FriendlyUrlHelper.GetFriendlyTitle(position.Title);
             await _context.AddAsync(position);
             await _context.SaveChangesAsync();
-
-            _context.InterviewSchedules.Add(new InterviewSchedule
-            {
-                PositionId = position.Id
-            });
             _context.SaveChanges();
 
             return new JsonResult(new PositionInputResponseModel
@@ -82,11 +77,7 @@ namespace Cyvil.Mvc.Controllers
             }
 
             var position = await _context.Positions
-                .Include(p => p.InterviewSchedule)
-                    .ThenInclude(i => i!.Timeslots)
                 .Include(p => p.Project)
-                .Include(p => p.Applicants)
-                    .ThenInclude(a => a.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (position == null)
@@ -123,29 +114,6 @@ namespace Cyvil.Mvc.Controllers
                 Details = position.Details
             };
             return new JsonResult(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("[action]")]
-        public async Task<JsonResult> Apply([Bind("Id,About,PositionId,ProjectId")] Applicant applicant)
-        {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-
-                var json = JsonConvert.SerializeObject(errors);
-
-                return Json(json);
-            }
-
-            applicant.UserId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-            await _context.AddAsync(applicant);
-            await _context.SaveChangesAsync();
-
-            return new JsonResult("You've successfully applied!");
         }
     }
 }

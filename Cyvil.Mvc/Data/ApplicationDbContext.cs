@@ -17,22 +17,19 @@ namespace Cyvil.Mvc.Data
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Applicant> Applicants { get; set; }
         public DbSet<Position> Positions { get; set; }
-        public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<ProjectParticipant> ProjectParticipants { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Proposal> Proposals { get; set; }
-        public DbSet<Goal> Goals { get; set; }
-        public DbSet<Objective> Objectives { get; set; }
         public DbSet<ActionItem> ActionItems { get; set; }
         public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Attendee> Attendees { get; set; }
-        public DbSet<Interview> Interviews { get; set; }
-        public DbSet<Timeslot> Timeslots { get; set; }
-        public DbSet<InterviewSchedule> InterviewSchedules { get; set; }
+        public DbSet<MessageThread> MessageThreads { get; set; }
+        public DbSet<MessageRecipient> MessageRecipients { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -75,18 +72,18 @@ namespace Cyvil.Mvc.Data
                     .IsRequired();
             });
 
-            builder.Entity<Volunteer>(obj =>
+            builder.Entity<ProjectParticipant>(obj =>
             {
-                obj.HasKey(x => new { x.ProjectId, x.UserId });
+                obj.HasKey(x => new { x.ProjectId, x.ParticipantId });
 
                 obj.HasOne(x => x.Project)
-                    .WithMany(a => a.Volunteers)
+                    .WithMany(a => a.Participants)
                     .HasForeignKey(x => x.ProjectId)
                     .IsRequired();
 
-                obj.HasOne(x => x.User)
-                    .WithMany(a => a.Participation)
-                    .HasForeignKey(x => x.UserId)
+                obj.HasOne(x => x.Participant)
+                    .WithMany(a => a.Participations)
+                    .HasForeignKey(x => x.ParticipantId)
                     .IsRequired();
             });
 
@@ -101,6 +98,21 @@ namespace Cyvil.Mvc.Data
 
                 obj.HasOne(x => x.User)
                     .WithMany(a => a.Meetings)
+                    .HasForeignKey(x => x.UserId)
+                    .IsRequired();
+            });
+
+            builder.Entity<MessageRecipient>(obj =>
+            {
+                obj.HasKey(x => new { x.UserId, x.MessageThreadId });
+
+                obj.HasOne(x => x.MessageThread)
+                    .WithMany(x => x.Recipients)
+                    .HasForeignKey(x => x.MessageThreadId)
+                    .IsRequired();
+
+                obj.HasOne(x => x.User)
+                    .WithMany(x => x.Inbox)
                     .HasForeignKey(x => x.UserId)
                     .IsRequired();
             });

@@ -17,6 +17,6 @@ namespace Cyvil.Mvc.Domain
         public virtual Project? Project { get; set; }
 
         public virtual ICollection<TeamMember> Members { get; set; } = new List<TeamMember>();
-        public virtual ICollection<Objective> Objectives { get; set; } = new List<Objective>();
+        public virtual ICollection<ActionItem> ActionItems { get; set; } = new List<ActionItem>();
     }
 }

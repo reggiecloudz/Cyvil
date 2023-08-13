@@ -81,6 +81,21 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "MessageThreads",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageThreads", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "States",
                 columns: table => new
                 {
@@ -209,6 +224,98 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Invitations",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Title = table.Column<string>(type: "longtext", nullable: false),
+                    Message = table.Column<string>(type: "longtext", nullable: false),
+                    Response = table.Column<string>(type: "longtext", nullable: false),
+                    TypeId = table.Column<long>(type: "bigint", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    FromUserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    ToUserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    IsAccepted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invitations_AspNetUsers_FromUserId",
+                        column: x => x.FromUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invitations_AspNetUsers_ToUserId",
+                        column: x => x.ToUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "MessageRecipients",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    MessageThreadId = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageRecipients", x => new { x.UserId, x.MessageThreadId });
+                    table.ForeignKey(
+                        name: "FK_MessageRecipients_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MessageRecipients_MessageThreads_MessageThreadId",
+                        column: x => x.MessageThreadId,
+                        principalTable: "MessageThreads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Content = table.Column<string>(type: "longtext", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    MessageThreadId = table.Column<long>(type: "bigint", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_MessageThreads_MessageThreadId",
+                        column: x => x.MessageThreadId,
+                        principalTable: "MessageThreads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Cities",
                 columns: table => new
                 {
@@ -242,7 +349,7 @@ namespace Cyvil.Mvc.Data.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Slug = table.Column<string>(type: "longtext", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
-                    Overview = table.Column<string>(type: "longtext", nullable: false),
+                    Goal = table.Column<string>(type: "longtext", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     Photo = table.Column<string>(type: "longtext", nullable: false),
                     Deadline = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -272,33 +379,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         name: "FK_Projects_Cities_CityId",
                         column: x => x.CityId,
                         principalTable: "Cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Goals",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<string>(type: "longtext", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Goals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Goals_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -365,6 +445,34 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "ProjectParticipants",
+                columns: table => new
+                {
+                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
+                    ParticipantId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    Position = table.Column<string>(type: "longtext", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectParticipants", x => new { x.ProjectId, x.ParticipantId });
+                    table.ForeignKey(
+                        name: "FK_ProjectParticipants_AspNetUsers_ParticipantId",
+                        column: x => x.ParticipantId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProjectParticipants_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Proposals",
                 columns: table => new
                 {
@@ -416,34 +524,6 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Volunteers",
-                columns: table => new
-                {
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Position = table.Column<string>(type: "longtext", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Volunteers", x => new { x.ProjectId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_Volunteers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Volunteers_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Attendees",
                 columns: table => new
                 {
@@ -471,69 +551,7 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Invitations",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    MeetingId = table.Column<long>(type: "bigint", nullable: false),
-                    IsAccepted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Invitations_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Invitations_Meetings_MeetingId",
-                        column: x => x.MeetingId,
-                        principalTable: "Meetings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Applicants",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    ApplicantStatus = table.Column<int>(type: "int", nullable: false),
-                    About = table.Column<string>(type: "longtext", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    PositionId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Applicants", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Applicants_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Applicants_Positions_PositionId",
-                        column: x => x.PositionId,
-                        principalTable: "Positions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Objectives",
+                name: "ActionItems",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -544,26 +562,27 @@ namespace Cyvil.Mvc.Data.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsCompleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    GoalId = table.Column<long>(type: "bigint", nullable: false),
-                    TeamId = table.Column<long>(type: "bigint", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ParentId = table.Column<long>(type: "bigint", nullable: false),
+                    TeamId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Objectives", x => x.Id);
+                    table.PrimaryKey("PK_ActionItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Objectives_Goals_GoalId",
-                        column: x => x.GoalId,
-                        principalTable: "Goals",
+                        name: "FK_ActionItems_ActionItems_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ActionItems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Objectives_Teams_TeamId",
+                        name: "FK_ActionItems_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -596,91 +615,6 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Interviews",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    InterviewDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    StartTime = table.Column<string>(type: "longtext", nullable: false),
-                    EndTime = table.Column<string>(type: "longtext", nullable: false),
-                    InterviewerName = table.Column<string>(type: "longtext", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    InitialMessage = table.Column<string>(type: "longtext", nullable: false),
-                    Feedback = table.Column<string>(type: "longtext", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    ApplicantId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Interviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Interviews_Applicants_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "ActionItems",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    Details = table.Column<string>(type: "longtext", nullable: false),
-                    Deadline = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    ObjectiveId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ActionItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ActionItems_Objectives_ObjectiveId",
-                        column: x => x.ObjectiveId,
-                        principalTable: "Objectives",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Timeslots",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    StartTime = table.Column<string>(type: "longtext", nullable: false),
-                    EndTime = table.Column<string>(type: "longtext", nullable: false),
-                    IsBooked = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    InterviewId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Timeslots", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Timeslots_Interviews_InterviewId",
-                        column: x => x.InterviewId,
-                        principalTable: "Interviews",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Assignments",
                 columns: table => new
                 {
@@ -707,61 +641,15 @@ namespace Cyvil.Mvc.Data.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Appointments",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    TimeslotId = table.Column<long>(type: "bigint", nullable: false),
-                    CandidateId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    IsCancelled = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Appointments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Appointments_AspNetUsers_CandidateId",
-                        column: x => x.CandidateId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Appointments_Timeslots_TimeslotId",
-                        column: x => x.TimeslotId,
-                        principalTable: "Timeslots",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
             migrationBuilder.CreateIndex(
-                name: "IX_ActionItems_ObjectiveId",
+                name: "IX_ActionItems_ParentId",
                 table: "ActionItems",
-                column: "ObjectiveId");
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Applicants_PositionId",
-                table: "Applicants",
-                column: "PositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Applicants_UserId",
-                table: "Applicants",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointments_CandidateId",
-                table: "Appointments",
-                column: "CandidateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointments_TimeslotId",
-                table: "Appointments",
-                column: "TimeslotId",
-                unique: true);
+                name: "IX_ActionItems_TeamId",
+                table: "ActionItems",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -821,26 +709,14 @@ namespace Cyvil.Mvc.Data.Migrations
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Goals_ProjectId",
-                table: "Goals",
-                column: "ProjectId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Interviews_ApplicantId",
-                table: "Interviews",
-                column: "ApplicantId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invitations_MeetingId",
+                name: "IX_Invitations_FromUserId",
                 table: "Invitations",
-                column: "MeetingId");
+                column: "FromUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invitations_UserId",
+                name: "IX_Invitations_ToUserId",
                 table: "Invitations",
-                column: "UserId");
+                column: "ToUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Meetings_ProjectId",
@@ -848,19 +724,29 @@ namespace Cyvil.Mvc.Data.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Objectives_GoalId",
-                table: "Objectives",
-                column: "GoalId");
+                name: "IX_MessageRecipients_MessageThreadId",
+                table: "MessageRecipients",
+                column: "MessageThreadId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Objectives_TeamId",
-                table: "Objectives",
-                column: "TeamId");
+                name: "IX_Messages_MessageThreadId",
+                table: "Messages",
+                column: "MessageThreadId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_UserId",
+                table: "Messages",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Positions_ProjectId",
                 table: "Positions",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectParticipants_ParticipantId",
+                table: "ProjectParticipants",
+                column: "ParticipantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_CauseId",
@@ -892,23 +778,10 @@ namespace Cyvil.Mvc.Data.Migrations
                 name: "IX_Teams_ProjectId",
                 table: "Teams",
                 column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Timeslots_InterviewId",
-                table: "Timeslots",
-                column: "InterviewId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Volunteers_UserId",
-                table: "Volunteers",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Appointments");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -934,16 +807,22 @@ namespace Cyvil.Mvc.Data.Migrations
                 name: "Invitations");
 
             migrationBuilder.DropTable(
+                name: "MessageRecipients");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Positions");
+
+            migrationBuilder.DropTable(
+                name: "ProjectParticipants");
+
+            migrationBuilder.DropTable(
                 name: "Proposals");
 
             migrationBuilder.DropTable(
                 name: "TeamMembers");
-
-            migrationBuilder.DropTable(
-                name: "Volunteers");
-
-            migrationBuilder.DropTable(
-                name: "Timeslots");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -955,22 +834,10 @@ namespace Cyvil.Mvc.Data.Migrations
                 name: "Meetings");
 
             migrationBuilder.DropTable(
-                name: "Interviews");
-
-            migrationBuilder.DropTable(
-                name: "Objectives");
-
-            migrationBuilder.DropTable(
-                name: "Applicants");
-
-            migrationBuilder.DropTable(
-                name: "Goals");
+                name: "MessageThreads");
 
             migrationBuilder.DropTable(
                 name: "Teams");
-
-            migrationBuilder.DropTable(
-                name: "Positions");
 
             migrationBuilder.DropTable(
                 name: "Projects");
