@@ -11,6 +11,10 @@ namespace Cyvil.Mvc.Domain
 
         public string Subject { get; set; } = string.Empty;
 
+        public long? MessageThreadTypeId { get; set; } = null;
+        public MessageThreadType MessageThreadType { get; set; } = MessageThreadType.General;
+
+
         public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
         public virtual ICollection<MessageRecipient> Recipients { get; set; } = new List<MessageRecipient>();

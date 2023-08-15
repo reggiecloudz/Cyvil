@@ -111,7 +111,8 @@ namespace Cyvil.Mvc.Controllers
                 PositionId = position.Id,
                 ProjectId = position.ProjectId,
                 Title = position.Title,
-                Details = position.Details
+                Details = position.Details,
+                ManagerId = position.Project!.ManagerId
             };
             return new JsonResult(model);
         }

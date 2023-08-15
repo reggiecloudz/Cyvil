@@ -274,9 +274,8 @@ function getPositionDetails() {
             function handleSuccess(response) {
                 positionTitle.innerHTML = response.title;
                 positionDetails.innerHTML = response.details;
-                document.getElementById("PositionId").value = response.positionId;
-                document.getElementById("ProjectId").value = response.projectId;
-                console.log(response.projectId);
+                document.getElementById("TypeId").value = response.positionId;
+                document.getElementById("ManagerId").value = response.managerId;
                 modal.show();
                 console.log('Request successful:', response);
             }
@@ -287,6 +286,33 @@ function getPositionDetails() {
               
             ajaxGet(url, handleSuccess, handleError);
         });
+    });
+}
+
+function saveApplicant() {
+    var form = document.getElementById("applicant-form");
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        var myModalEl = document.getElementById('saveApplicantModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        const formData = new FormData(form);
+        const url = "/Messages/Create";
+
+        function successCallback(response) {
+            modal.hide();
+            form.reset();
+            console.log(response);
+        }
+
+        function errorCallback(xhr, status, error) {
+            modal.hide();
+            form.reset();
+            console.log(error);
+        }
+
+        ajaxFormPost(url, formData, successCallback, errorCallback);
     });
 }
 
@@ -529,3 +555,4 @@ function assign() {
         sendAjaxRequest(url, data, successCallback, errorCallback);
     });
 }
+

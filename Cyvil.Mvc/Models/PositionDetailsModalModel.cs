@@ -14,5 +14,7 @@ namespace Cyvil.Mvc.Models
         public string Title { get; set; } = string.Empty;
 
         public string Details { get; set; } = string.Empty;
+
+        public string ManagerId { get; set; } = string.Empty;
     }
 }

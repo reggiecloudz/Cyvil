@@ -1,28 +1,28 @@
-@model Team
+@model MessageInputModel
 
-<div class="modal fade" id="saveTeamModal" tabindex="-1" aria-labelledby="saveTeamLabel"
+<div class="modal fade" id="saveMessageModal" tabindex="-1" aria-labelledby="saveMessageLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="saveTeamLabel">Describe your qualifications</h5>
+                <h5 class="modal-title" id="saveMessageLabel">Save Message</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="team-form" method="post">
+                <form id="message-form" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group mb-3">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <label asp-for="Content" class="control-label"></label>
+                        <textarea asp-for="Content" class="form-control"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="hidden" asp-for="ProjectId" class ="form-control" value="@Model.ProjectId" />
+                    <div class="form-group mb-3">
+                        <input asp-for="TypeId" type="hidden" />
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" form="team-form" class="btn btn-primary">Save</button>
+                <button type="submit" form="message-form" class="btn btn-primary">Save</button>
                 <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal"> Cancel</button>
             </div>
         </div>

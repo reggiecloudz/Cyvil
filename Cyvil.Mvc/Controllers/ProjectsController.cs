@@ -11,6 +11,7 @@ using Cyvil.Mvc.Infrastructure.Helpers;
 using Cyvil.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -182,9 +183,35 @@ namespace Cyvil.Mvc.Controllers
                 return NotFound();
             }
 
-            ViewData["ProjectId"] = project.Id;
-
             return View(project);
+        }
+        
+        [Route("{id}/[action]")]
+        public async Task<IActionResult> Tasks(long? id)
+        {
+            if (id == null || _context.Projects == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Projects
+                .Include(p => p.Manager)
+                .Include(p => p.Teams)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            var actionItems = _context.ActionItems.Where(x => x.ProjectId == project.Id).ToList();
+            ViewData["TeamId"] = new SelectList(project.Teams, "Id", "Name");
+            var model = new ProjectTasksModel
+            {
+                Project = project,
+                ActionItems = actionItems
+            };
+            return View(model);
         }
         
         [Route("[action]")]

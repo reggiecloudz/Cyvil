@@ -30,6 +30,8 @@ namespace Cyvil.Mvc.Domain
         public long ParentId { get; set; }
         public virtual ActionItem? Parent { get; set; }
 
+        public long ProjectId { get; set; }
+
         public long TeamId { get; set; }
         public virtual Team? Team { get; set; }
 

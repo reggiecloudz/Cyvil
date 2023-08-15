@@ -1,4 +1,5 @@
 using Cyvil.Mvc.Domain;
+using Cyvil.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Cyvil.Mvc.ViewComponents
 {
-    public class SaveActionItemViewComponent : ViewComponent
+    public class SaveMessageViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(long projectId)
+        public IViewComponentResult Invoke()
         {
-            return View(new ActionItem { ProjectId = projectId });
+            return View(new MessageInputModel());
         }
     }
 }
