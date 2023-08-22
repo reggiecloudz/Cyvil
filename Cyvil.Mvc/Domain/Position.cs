@@ -27,5 +27,7 @@ namespace Cyvil.Mvc.Domain
 
         public long ProjectId { get; set; }
         public virtual Project? Project { get; set; }
+
+        public ICollection<Applicant> Applicants { get; set; } = new List<Applicant>();
     }
 }

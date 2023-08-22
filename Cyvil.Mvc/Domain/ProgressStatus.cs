@@ -6,8 +6,10 @@ namespace Cyvil.Mvc.Domain
     {
         [Description("Draft")]
         Draft,
-        [Description("Inactive")]
-        Inactive,
+        [Description("Pending")]
+        Pending,
+        [Description("Paused")]
+        Paused,
         [Description("Ongoing")]
         Ongoing,
         [Description("Cancelled")]

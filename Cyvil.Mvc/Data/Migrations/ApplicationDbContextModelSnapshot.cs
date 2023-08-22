@@ -72,6 +72,44 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.ToTable("ActionItems");
                 });
 
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Applicant", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("About")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ApplicantStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<long>("PositionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Applicants");
+                });
+
             modelBuilder.Entity("Cyvil.Mvc.Domain.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -358,86 +396,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("Meetings");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Message", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<long>("MessageThreadId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageThreadId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageRecipient", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<long>("MessageThreadId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("UserId", "MessageThreadId");
-
-                    b.HasIndex("MessageThreadId");
-
-                    b.ToTable("MessageRecipients");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageThread", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("MessageThreadType")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("MessageThreadTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MessageThreads");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
@@ -835,6 +793,25 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("Team");
                 });
 
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Applicant", b =>
+                {
+                    b.HasOne("Cyvil.Mvc.Domain.Position", "Position")
+                        .WithMany("Applicants")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
+                        .WithMany("Applications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Position");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Cyvil.Mvc.Domain.Assignment", b =>
                 {
                     b.HasOne("Cyvil.Mvc.Domain.ActionItem", "ActionItem")
@@ -921,44 +898,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Message", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.MessageThread", "MessageThread")
-                        .WithMany("Messages")
-                        .HasForeignKey("MessageThreadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MessageThread");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageRecipient", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.MessageThread", "MessageThread")
-                        .WithMany("Recipients")
-                        .HasForeignKey("MessageThreadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "User")
-                        .WithMany("Inbox")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MessageThread");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
@@ -1119,9 +1058,9 @@ namespace Cyvil.Mvc.Data.Migrations
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ApplicationUser", b =>
                 {
-                    b.Navigation("Assignments");
+                    b.Navigation("Applications");
 
-                    b.Navigation("Inbox");
+                    b.Navigation("Assignments");
 
                     b.Navigation("Meetings");
 
@@ -1149,11 +1088,9 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("Attendees");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.MessageThread", b =>
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
                 {
-                    b.Navigation("Messages");
-
-                    b.Navigation("Recipients");
+                    b.Navigation("Applicants");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Project", b =>

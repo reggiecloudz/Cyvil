@@ -1,0 +1,107 @@
+@model IEnumerable<Applicant>
+
+<div class="card mb-3">
+    <div class="card-header border-0 pb-0">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <div>
+                    <div class="nav nav-divider">
+                        <h4 class="nav-item card-title mb-0"> 
+                            Applicants
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <select class="form-select" aria-label="Default select example">
+                    <option selected="">Bulk Actions</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div id="purchasersSellersTable"
+            data-list='{"valueNames":["applicant","position","status"],"page":10,"pagination":true}'>
+            <div class="table-responsive scrollbar mx-n1 px-1">
+                <table class="table table-sm fs--1 leads-table">
+                    <thead>
+                        <tr>
+                            <th class="white-space-nowrap fs--1 align-middle ps-0" style="max-width:20px; width:18px;">
+                                <div class="form-check mb-0 fs-0">
+                                    <input class="form-check-input" type="checkbox"
+                                        data-bulk-select='{"body":"applicant-list-table"}' />
+                                </div>
+                            </th>
+                            <th class="sort align-middle ps-0 pe-5 text-uppercase text-nowrap" scope="col"
+                                data-sort="applicant" style="min-width:120px;">Applicant</th>
+                            <th class="sort align-middle ps-0 pe-5 text-uppercase text-nowrap" scope="col"
+                                data-sort="position" style="min-width:120px;">Position</th>
+                            <th class="sort align-middle ps-0 pe-5 text-uppercase text-nowrap" scope="col"
+                                data-sort="status" style="min-width:120px;">Status</th>
+                            <th class="sort text-end align-middle pe-0 ps-4" scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="list" id="applicant-list-table">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                                <td class="fs--1 align-middle py-0">
+                                    <div class="form-check mb-0 fs-0">
+                                        <input class="form-check-input" type="checkbox" />
+                                    </div>
+                                </td>
+                                <td class="align-middle applicant white-space-nowrap">
+                                    <a class="d-flex align-items-center text-900" href="#!">
+                                        <div class="avatar avatar-l">
+                                            <img class="rounded-circle" src="~/media/members/@item.User!.ProfileImage" alt="" />
+                                        </div>
+                                        <h6 class="mb-1 ms-3 text-900">@item.User.FullName</h6>
+                                    </a>
+                                </td>
+                                <td class="align-middle position white-space-nowrap">
+                                    @item.Position!.Title
+                                </td>
+                                <td id="status-@item.Id" class="align-middle position white-space-nowrap">
+                                    @item.ApplicantStatus.GetEnumDescription()
+                                </td>
+                                 <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
+                                    <div class="font-sans-serif btn-reveal-trigger position-static">
+                                        <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                                            <span class="fas fa-ellipsis-h fs--2"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end py-2">
+                                            <a class="dropdown-item" href="#!" data-applicant="@item.Id">View</a>
+                                            <a class="dropdown-item" href="#!" data-interview="@item.Id">Setup Interview</a>
+                                            <a class="dropdown-item" href="#!">Export</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item text-danger" href="#!">Remove</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>   
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row align-items-center justify-content-between pe-0 fs--1">
+                <div class="col-auto d-flex">
+                    <p class="mb-0 d-none d-sm-block me-3 fw-semi-bold text-900" data-list-info="data-list-info"></p><a
+                        class="fw-semi-bold" href="#!" data-list-view="*">View all<span class="fas fa-angle-right ms-1"
+                            data-fa-transform="down-1"></span></a><a class="fw-semi-bold d-none" href="#!"
+                        data-list-view="less">View Less<span class="fas fa-angle-right ms-1"
+                            data-fa-transform="down-1"></span></a>
+                </div>
+                <div class="col-auto d-flex">
+                    <button class="page-link" data-list-pagination="prev"><span
+                            class="fas fa-chevron-left"></span></button>
+                    <ul class="mb-0 pagination"></ul>
+                    <button class="page-link pe-0" data-list-pagination="next"><span
+                            class="fas fa-chevron-right"></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

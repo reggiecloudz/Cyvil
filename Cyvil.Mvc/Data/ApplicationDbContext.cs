@@ -18,6 +18,7 @@ namespace Cyvil.Mvc.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Position> Positions { get; set; }
+        public DbSet<Applicant> Applicants { get; set; }
         public DbSet<ProjectParticipant> ProjectParticipants { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
@@ -27,9 +28,6 @@ namespace Cyvil.Mvc.Data
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Attendee> Attendees { get; set; }
-        public DbSet<MessageThread> MessageThreads { get; set; }
-        public DbSet<MessageRecipient> MessageRecipients { get; set; }
-        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -98,21 +96,6 @@ namespace Cyvil.Mvc.Data
 
                 obj.HasOne(x => x.User)
                     .WithMany(a => a.Meetings)
-                    .HasForeignKey(x => x.UserId)
-                    .IsRequired();
-            });
-
-            builder.Entity<MessageRecipient>(obj =>
-            {
-                obj.HasKey(x => new { x.UserId, x.MessageThreadId });
-
-                obj.HasOne(x => x.MessageThread)
-                    .WithMany(x => x.Recipients)
-                    .HasForeignKey(x => x.MessageThreadId)
-                    .IsRequired();
-
-                obj.HasOne(x => x.User)
-                    .WithMany(x => x.Inbox)
                     .HasForeignKey(x => x.UserId)
                     .IsRequired();
             });

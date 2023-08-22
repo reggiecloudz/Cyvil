@@ -12,7 +12,7 @@ namespace Cyvil.Mvc.ViewComponents
     {
         public IViewComponentResult Invoke()
         {
-            return View(new MessageInputModel());
+            return View(new Applicant());
         }
     }
 }

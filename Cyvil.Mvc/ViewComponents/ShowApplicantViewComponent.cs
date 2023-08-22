@@ -1,6 +1,6 @@
-using Cyvil.Mvc.Domain;
-using Cyvil.Mvc.Models;
+using Cyvil.Mvc.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace Cyvil.Mvc.ViewComponents
 {
-    public class SaveMessageViewComponent : ViewComponent
+    public class ShowApplicantViewComponent : ViewComponent
     {
         public IViewComponentResult Invoke()
         {
-            return View(new MessageInputModel());
+            return View();
+          
         }
+        
     }
 }
