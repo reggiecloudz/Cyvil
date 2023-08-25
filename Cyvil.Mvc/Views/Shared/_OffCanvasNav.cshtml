@@ -38,16 +38,19 @@
             </a>
             <ul class="submenu collapse list-unstyled">
                 <li>
-                    <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
+                    <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Positions" asp-action="Index">
                        <i class="fa-solid fa-newspaper me-2"></i> Help Wanted 
                     </a>
                 </li>
-                <li>
-                    <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
-                        <i class="fa-solid fa-clipboard-list me-2"></i> 
-                        Applications
-                    </a>
-                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li>
+                        <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
+                            <i class="fa-solid fa-clipboard-list me-2"></i> 
+                            Applications
+                        </a>
+                    </li>
+                }
             </ul>
         </li>
     </ul>

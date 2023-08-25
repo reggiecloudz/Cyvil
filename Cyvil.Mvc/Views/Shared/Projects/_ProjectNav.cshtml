@@ -26,17 +26,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body chat p-0">
+                <div class="card-body chat p-0 scrollbar" style="max-height: 18rem;">
                     <div class="d-flex flex-column scrollbar p-3">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <a asp-controller="Projects" asp-action="Details" asp-route-id="@Model">
                                     Project
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a asp-controller="Projects" asp-action="Goal" asp-route-id="@Model">
-                                    Goal
                                 </a>
                             </li>
                             <li class="list-group-item">
@@ -61,7 +56,7 @@
                             </li>
                             <li class="list-group-item">
                                 <a asp-controller="Projects" asp-action="Objectives" asp-route-id="@Model">
-                                    Objectives
+                                    Tasks
                                 </a>
                             </li>
                             <li class="list-group-item">

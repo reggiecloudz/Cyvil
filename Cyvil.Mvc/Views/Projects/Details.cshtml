@@ -8,11 +8,16 @@ ViewData["Title"] = Model.Name;
 <link href="~/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
 }
 
-<div class="content px-0" style="padding-top: 7rem">
+<div class="content">
+    <partial name="_Breadcrumbs" />
+    <div class="row mb-4 gx-6 gy-3 align-items-center">
+        <div class="col-auto">
+            <h2 class="mb-0">@Model.Name</h2>
+        </div>
+    </div>
     <div class="row g-0">
         <div class="col-12 col-xxl-8 px-0 bg-soft">
-            <div class="px-4 px-lg-6 pt-6 pb-9">
-                @* @await Html.PartialAsync("Projects/_ProjectDetailsHeader", Model) *@
+            <div class="pb-9">
                 <div class="row gx-0 gx-sm-5 gy-3 mb-3">
                     <div class="col-12 col-xl-3 col-xxl-4 pe-xl-0">
                         <div class="card card-body h-100">
@@ -22,11 +27,6 @@ ViewData["Title"] = Model.Name;
                     <div class="col-12 col-xl-9 col-xxl-8">
                         <div class="card text-white overflow-hidden" style="max-height:20rem">
                             <img class="card-img-top" src="~/media/projects/@Model.Photo" alt="..." />
-                            <div class="card-img-overlay d-flex align-items-end">
-                                <div>
-                                    <h4 class="card-title text-white">@Model.Name</h4>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="col-12">

@@ -10,6 +10,7 @@
 }
 
 <div class="content">
+    <partial name="_Breadcrumbs" />
     @await Html.PartialAsync("Positions/_PositionTable", Model)
     
     <partial name="_Footer" />
@@ -26,10 +27,12 @@
 }
 
 @section CustomScripts {
-<partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     <script src="~/js/app.js"></script>
+    <script src="~/js/positions.js"></script>
     <script>
         $(document).ready(() => {
+            $.validator.unobtrusive.parse($("#position-form"));
             savePosition();
         });
     </script>

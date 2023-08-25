@@ -13,9 +13,6 @@ function insertProjectTableData(data) {
             <td class="align-middle white-space-nowrap deadline ps-3 py-4">
                 <p class="mb-0 fs--1 text-900">May 21, 2028</p>
             </td>
-            <td class="align-middle white-space-nowrap task ps-3 py-4">
-                <p class="fw-bo text-900 fs--1 mb-0">287</p>
-            </td>
             <td class="align-middle white-space-nowrap ps-3 projectprogress">
                 <p class="text-800 fs--2 mb-0">145 / 145</p>
                 <div class="progress" style="height:3px;">
@@ -24,7 +21,25 @@ function insertProjectTableData(data) {
                 </div>
             </td>
             <td class="align-middle white-space-nowrap text-end statuses">
-                <span class="badge badge-phoenix fs--2 badge-phoenix-success">completed</span>
+                <span class="badge badge-phoenix fs--2 badge-phoenix-primary">Draft</span>
+            </td>
+            <td class="align-middle text-end white-space-nowrap pe-0 links">
+                <div class="font-sans-serif btn-reveal-trigger dropup position-static">
+                    <button
+                        class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2"
+                        type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true"
+                        aria-expanded="false" data-bs-reference="parent">
+                        <span class="fas fa-ellipsis-h fs--2"></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end py-2">
+                        <a class="dropdown-item" href="/Projects/${data.id}/Positions">Positions</a>
+                        <a class="dropdown-item" href="/Projects/${data.id}/Applicants">Applicants</a>
+                        <a class="dropdown-item" href="#!">Volunteers</a>
+                        <a class="dropdown-item" href="#!">Teams</a>
+                        <a class="dropdown-item" href="#!">Objectives</a>
+                        <a class="dropdown-item" href="#!">Events</a>
+                    </div>
+                </div>
             </td>
             <td class="align-middle text-end white-space-nowrap pe-0 action">
                 <div class="font-sans-serif btn-reveal-trigger position-static">
