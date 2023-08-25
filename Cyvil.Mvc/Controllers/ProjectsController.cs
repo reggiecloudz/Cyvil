@@ -56,10 +56,10 @@ namespace Cyvil.Mvc.Controllers
                 return Json(json);
             }
 
-            string uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/projects");
-            string photoName = Guid.NewGuid().ToString() + "-" + model.PhotoUpload!.FileName;
-            string photoFilePath = Path.Combine(uploadsDir, photoName);
-            FileStream fs = new FileStream(photoFilePath, FileMode.Create);
+            var uploadsDir = Path.Combine(_webHostEnvironment.WebRootPath, "media/projects");
+            var photoName = Guid.NewGuid().ToString() + "-" + model.PhotoUpload!.FileName;
+            var photoFilePath = Path.Combine(uploadsDir, photoName);
+            var fs = new FileStream(photoFilePath, FileMode.Create);
             await model.PhotoUpload.CopyToAsync(fs);
             fs.Close();
 
@@ -97,6 +97,8 @@ namespace Cyvil.Mvc.Controllers
             }
 
             var project = await _context.Projects
+                .Include(p => p.City)
+                .Include(p => p.Cause)
                 .Include(p => p.Manager)
                 .Include(p => p.Proposal)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -105,7 +107,7 @@ namespace Cyvil.Mvc.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = project.Id;
+            
             return View(project);
         }
 

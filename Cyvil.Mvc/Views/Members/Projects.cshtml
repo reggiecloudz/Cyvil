@@ -6,7 +6,7 @@
 
 <div class="content">
     <partial name="_Breadcrumbs" />
-    @await Html.PartialAsync("Projects/_ProjectSummary", Model.Projects)
+    @await Component.InvokeAsync("ProjectTable", new { managerId = Model.Id })
     <partial name="_Footer" />
 </div>
 

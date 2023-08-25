@@ -8,27 +8,51 @@ ViewData["Title"] = Model.Name;
 <link href="~/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
 }
 
-<div class="content px-0" style="padding-top: 7rem">
-    <div class="row g-0">
-        <div class="col-12 col-xxl-8 px-0 bg-soft">
-            <div class="px-4 px-lg-6 pt-6 pb-9">
-                @await Html.PartialAsync("Teams/_TeamDetailsHeader", Model)
-                
-                <div class="row gx-0 gx-sm-5 gy-8 mb-8">
-                    <div class="col-12 col-lg-6 pe-xl-0">
-                        <div class="card card-body h-100">
-                            @await Html.PartialAsync("Projects/_ProjectDetailsTaskChart")
+<div class="content">
+    <div class="card mb-4">
+        <div class="card-header border-bottom-0 pb-0">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <div class="nav nav-divider">
+                            <h4 class="nav-item card-title mb-0"> 
+                                Team Details
+                            </h4>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6">
-                        @await Html.PartialAsync("Projects/_ProjectDetailsToDoList")
+                </div>
+                <div class="btn-reveal-trigger">
+                    <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none d-flex btn-reveal" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                        <span class="fas fa-ellipsis-h"></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end py-2">
+                        <a class="dropdown-item" href="#!">Edit</a>
+                        <a class="dropdown-item text-danger" href="#!">Delete</a>
+                        <a class="dropdown-item" href="#!">Download</a>
+                        <a class="dropdown-item" href="#!">Report abuse</a>
                     </div>
-                    @await Html.PartialAsync("Teams/_TeamMembers")
                 </div>
             </div>
         </div>
-        <div class="col-12 col-xxl-4 px-0 border-start-xxl border-300 border-top-sm">
-            @await Html.PartialAsync("Projects/_ProjectActivity")
+        <div id="ticket-details" class="card-body">
+            <div class="row g-4 g-xl-6">
+                <div class="col-xl-5 col-xxl-4 border-end">
+                    <div class="sticky-leads-sidebar">
+                        <div class="row align-items-center g-3 mb-3 border-2 border-dashed pb-4 border-bottom">
+                        @await Html.PartialAsync("Projects/_ProjectDetailsTaskChart")
+                        </div>
+                        <div class="border-2 border-dashed border-bottom">
+                        @await Html.PartialAsync("Projects/_ProjectActivity")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-xxl-8">
+                    @await Html.PartialAsync("Teams/_TeamTabs")
+                </div>
+            </div>
+        </div>
+        <div class="card-footer border-0">
+            <p>Footer</p>
         </div>
     </div>
 

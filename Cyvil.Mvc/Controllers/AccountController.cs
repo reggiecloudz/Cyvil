@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Cyvil.Mvc.Data;
 using Cyvil.Mvc.Domain;
 using Cyvil.Mvc.Models;
+using Cyvil.Mvc.Infrastructure.Helpers;
 
 namespace Cyvil.Mvc.Controllers
 {
@@ -55,6 +56,7 @@ namespace Cyvil.Mvc.Controllers
                 { 
                     Id = Guid.NewGuid().ToString(),
                     FullName = user.FullName,
+                    Slug = $"{FriendlyUrlHelper.GetFriendlyTitle(user.FullName)}-{DateTime.Now.Millisecond}",
                     UserName = user.UserName, 
                     Email = user.Email,
                     ProfileImage = imageName

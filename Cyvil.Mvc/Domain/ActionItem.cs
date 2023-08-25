@@ -27,7 +27,7 @@ namespace Cyvil.Mvc.Domain
 
         public ProgressStatus Status { get; set; } = ProgressStatus.Draft;
 
-        public long ParentId { get; set; }
+        public long? ParentId { get; set; } = null;
         public virtual ActionItem? Parent { get; set; }
 
         public long ProjectId { get; set; }

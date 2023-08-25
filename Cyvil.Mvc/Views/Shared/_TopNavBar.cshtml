@@ -1,88 +1,103 @@
 @inject SignInManager<ApplicationUser> SignInManager
 
-<nav class="navbar navbar-top fixed-top navbar-expand-lg" id="dualNav" style="display:none;">
+<nav class="navbar navbar-top fixed-bottom navbar-expand-lg" id="navbarTop" style="display:none;">
     <div class="w-100">
-        <div class="d-flex flex-between-center dual-nav-first-layer">
-            <partial name="_NavBrand" />
-            <partial name="_NavSearchBox" />
-            <partial name="_LoginPartial" />
-        </div>
-        <div class="collapse navbar-collapse navbar-top-collapse justify-content-center" id="navbarTopCollapse">
-            <ul class="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle lh-1" href="#!"  role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                        <span class="uil fs-0 me-2 uil-home"></span>Home
+        <div class="d-flex flex-between-center">
+            <ul class="navbar-nav navbar-nav-icons flex-row">
+                <li class="nav-item">
+                    <partial name="_NavBrand" />
+                </li>
+                <li class="nav-item dropup">
+                    <a class="nav-link me-1" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                        <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
+                            <circle cx="2" cy="8" r="2" fill="currentColor"></circle>
+                            <circle cx="2" cy="14" r="2" fill="currentColor"></circle>
+                            <circle cx="8" cy="8" r="2" fill="currentColor"></circle>
+                            <circle cx="8" cy="14" r="2" fill="currentColor"></circle>
+                            <circle cx="14" cy="8" r="2" fill="currentColor"></circle>
+                            <circle cx="14" cy="14" r="2" fill="currentColor"></circle>
+                            <circle cx="8" cy="2" r="2" fill="currentColor"></circle>
+                            <circle cx="14" cy="2" r="2" fill="currentColor"></circle>
+                        </svg>
                     </a>
-                    <ul class="dropdown-menu navbar-dropdown-caret">
-                        <li>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="Index">
-                                <div class="dropdown-item-wrapper">
-                                    <span class="me-2 uil" data-feather="home"></span>Home
+                    <div class="dropdown-menu dropdown-menu-start navbar-dropdown-caret py-0 dropdown-nide-dots shadow border border-300"
+                        aria-labelledby="navbarDropdownNindeDots">
+                        <div class="card bg-white position-relative border-0">
+                            <div class="card-body pt-3 px-3 pb-0 overflow-auto scrollbar" style="height: 100%;">
+                                <div class="row text-center align-items-center gx-0 gy-0">
+                                    <div class="col-4">
+                                        <a class="d-block hover-bg-200 p-2 rounded-3 text-center text-decoration-none mb-3"
+                                            href="#!">
+                                            <i class="fa-solid fa-house-chimney-window text-primary" style="font-size: 2rem;"></i>
+                                            <p class="mb-0 text-black text-truncate fs--2 mt-1 pt-1">Home</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="d-block hover-bg-200 p-2 rounded-3 text-center text-decoration-none mb-3"
+                                            href="#!">
+                                            <i class="fa-solid fa-ticket text-primary" style="font-size: 2rem;"></i>
+                                            <p class="mb-0 text-black text-truncate fs--2 mt-1 pt-1">Tickets</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="d-block hover-bg-200 p-2 rounded-3 text-center text-decoration-none mb-3"
+                                            href="#!">
+                                            <i class="fa-solid fa-store text-primary" style="font-size: 2rem;"></i>
+                                            <p class="mb-0 text-black text-truncate fs--2 mt-1 pt-1">Shop</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="d-block hover-bg-200 p-2 rounded-3 text-center text-decoration-none mb-3"
+                                            href="#!">
+                                            <i class="fa-solid fa-chalkboard-user text-primary" style="font-size: 2rem;"></i>
+                                            <p class="mb-0 text-black text-truncate fs--2 mt-1 pt-1">Tutorials</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="d-block hover-bg-200 p-2 rounded-3 text-center text-decoration-none mb-3"
+                                            href="#!">
+                                            <i class="fa-solid fa-database text-primary" style="font-size: 2rem;"></i>
+                                            <p class="mb-0 text-black text-truncate fs--2 mt-1 pt-1">Knowledge Base</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="d-block hover-bg-200 p-2 rounded-3 text-center text-decoration-none mb-3"
+                                            href="#!">
+                                            <i class="fa-solid fa-circle-question text-primary" style="font-size: 2rem;"></i>
+                                            <p class="mb-0 text-black text-truncate fs--2 mt-1 pt-1">Q & A</p>
+                                        </a>
+                                    </div>
                                 </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" asp-controller="Members" asp-action="Dashboard">
-                                <div class="dropdown-item-wrapper">
-                                    <span class="me-2 uil" data-feather="pie-chart"></span>Dashboard
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav navbar-nav-icons flex-row">
+                <li class="nav-item">
+                    <div class="theme-control-toggle fa-icon-wait px-2">
+                        <input class="form-check-input ms-0 theme-control-toggle-input" type="checkbox"
+                            data-theme-control="phoenixTheme" value="dark" id="themeControlToggle" />
+                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-light"
+                            for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left"
+                            title="Switch theme">
+                            <span class="icon" data-feather="moon"></span>
+                        </label>
+                        <label class="mb-0 theme-control-toggle-label theme-control-toggle-dark"
+                            for="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left"
+                            title="Switch theme">
+                            <span class="icon" data-feather="sun"></span>
+                        </label>
+                    </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link lh-1" href="#!" aria-expanded="false">
-                        <span class="uil fs-0 me-2 uil-heartbeat"></span>Causes
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchBoxModal">
+                        <span class="icon" data-feather="search"
+                            style="height:19px;width:19px;margin-bottom: 2px;font-size: 1.2rem;"></span>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle lh-1" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <span class="uil fs-0 me-2 uil-check-square"></span>Projects
-                    </a>
-                    <ul class="dropdown-menu navbar-dropdown-caret">
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <li>
-                                <a class="dropdown-item" asp-controller="Members" asp-action="Projects" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)!.Value">
-                                    <div class="dropdown-item-wrapper">
-                                        <span class="me-2 uil" data-feather="clipboard"></span>My Projects
-                                    </div>
-                                </a>
-                            </li>
-                        }
-                        <li>
-                            <a class="dropdown-item" asp-controller="Projects" asp-action="Index">
-                                <div class="dropdown-item-wrapper">
-                                    <span class="me-2 uil" data-feather="check-square"></span>All Projects
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle lh-1" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                        <span class="uil fs-0 me-2 uil-life-ring"></span>Volunteer
-                    </a>
-                    <ul class="dropdown-menu navbar-dropdown-caret">
-                        <li>
-                            <a class="dropdown-item" asp-controller="Positions" asp-action="Index">
-                                <div class="dropdown-item-wrapper">
-                                    <span class="me-2 uil" data-feather="life-buoy"></span>Help wanted
-                                </div>
-                            </a>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <li>
-                                <a class="dropdown-item" asp-controller="Members" asp-action="Applications" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)!.Value">
-                                    <div class="dropdown-item-wrapper">
-                                        <span class="me-2 uil" data-feather="file-text"></span>My Applications
-                                    </div>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </li>
+                <partial name="_LoginPartial" />
             </ul>
         </div>
     </div>
@@ -90,5 +105,5 @@
 <script>
     var navbarVertical = document.querySelector('.navbar-vertical');
     navbarVertical.remove();
-    dualNav.removeAttribute('style');
+    navbarTop.removeAttribute('style');
 </script>

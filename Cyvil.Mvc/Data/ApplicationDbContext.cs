@@ -33,6 +33,12 @@ namespace Cyvil.Mvc.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<ApplicationUser>()
+                .HasAlternateKey(x => x.Slug);
+
+            builder.Entity<Project>()
+                .HasAlternateKey(x => x.Slug);
+
             builder.Entity<Project>()
                 .HasOne(p => p.Manager)
                 .WithMany(m => m.Projects)

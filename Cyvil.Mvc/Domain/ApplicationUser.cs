@@ -12,6 +12,8 @@ namespace Cyvil.Mvc.Domain
     {
         public string FullName { get; set; } = string.Empty;
 
+        public string Slug { get; set; } = string.Empty;
+
         public bool IsMember { get; set; } = true;
 
         public string ProfileImage { get; set; } = "noimage.png";

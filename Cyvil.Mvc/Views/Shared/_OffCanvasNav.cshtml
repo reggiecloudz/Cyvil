@@ -1,0 +1,54 @@
+@inject SignInManager<ApplicationUser> SignInManager
+
+<nav class="offnav py-2 mb-4">
+    <ul class="nav flex-column" id="nav_accordion">
+        <li class="nav-item">
+            <a class="nav-link text-secondary" href="#"> 
+               <i class="fa-solid fa-house-chimney-window me-2"></i> Home
+            </a>
+        </li>
+        <li class="nav-item has-submenu">
+            <a class="nav-link text-secondary" href="#"> 
+                <i class="fa-solid fa-bars-progress me-2"></i> Projects
+            </a>
+            <ul class="submenu collapse list-unstyled">
+                <li>
+                    <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Projects" asp-action="Index">
+                        <i class="fa-solid fa-compass me-2"></i> All Projects 
+                    </a>
+                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li>
+                        <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Members" asp-action="Projects" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier).Value">
+                            <i class="fa-solid fa-list-check me-2"></i> My Projects 
+                        </a>
+                    </li>
+                    <li>
+                        <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
+                            <i class="fa-solid fa-hand-holding-heart me-2"></i> Participation 
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+        <li class="nav-item has-submenu">
+            <a class="nav-link text-secondary" href="#"> 
+                <i class="fa-solid fa-life-ring me-2"></i> Volunteer 
+            </a>
+            <ul class="submenu collapse list-unstyled">
+                <li>
+                    <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
+                       <i class="fa-solid fa-newspaper me-2"></i> Help Wanted 
+                    </a>
+                </li>
+                <li>
+                    <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
+                        <i class="fa-solid fa-clipboard-list me-2"></i> 
+                        Applications
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
