@@ -1,0 +1,51 @@
+@model IEnumerable<object>
+
+<div class="table-responsive scrollbar mx-n1 px-1">
+    <table class="table table-sm fs--1 leads-table">
+        <thead>
+            <tr>
+                <th class="white-space-nowrap fs--1 align-middle ps-0" style="max-width:20px; width:18px;">
+                    <div class="form-check mb-0 fs-0">
+                        <input class="form-check-input" type="checkbox" />
+                    </div>
+                </th>
+                <th class="align-middle ps-0 pe-5 text-uppercase text-nowrap" scope="col" style="min-width:120px;">
+                    Name
+                </th>
+                <th class="text-end align-middle pe-0 ps-4" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody id="position-list-table">
+            @foreach (var item in Model)
+            {
+                <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                    <td class="fs--1 align-middle py-0">
+                        <div class="form-check mb-0 fs-0">
+                            <input class="form-check-input" type="checkbox" />
+                        </div>
+                    </td>
+                    <td class="align-middle white-space-nowrap fw-semi-bold text-1100 ps-1 py-0">
+                        <div class="d-flex align-items-center position-relative">
+                            <a class="text-1000 fw-bold stretched-link" href="#!">
+                                @item.Name
+                            </a>
+                        </div>
+                    </td>
+                    <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
+                        <div class="font-sans-serif btn-reveal-trigger position-static">
+                            <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                                <span class="fas fa-ellipsis-h fs--2"></span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end py-2">
+                                <a class="dropdown-item" href="#!">View</a>
+                                <a class="dropdown-item" href="#!">Export</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#!">Remove</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>   
+            }
+        </tbody>
+    </table>
+</div>

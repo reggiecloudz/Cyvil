@@ -39,10 +39,17 @@ ViewData["Title"] = Model.Name;
                 <div class="col-xl-5 col-xxl-4 border-end">
                     <div class="sticky-leads-sidebar">
                         <div class="row align-items-center g-3 mb-3 border-2 border-dashed pb-4 border-bottom">
-                        @await Html.PartialAsync("Projects/_ProjectDetailsTaskChart")
+                            <h3 class="fw-bolder mb-2 line-clamp-1">@Model.Name</h3>
+                            <div class="d-flex align-items-center mb-4">
+                                <h5 class="fw-semi-bold">
+                                    <span class="d-inline-block lh-sm me-1" data-feather="grid" style="height:16px;width:16px;"></span><span
+                                        class="d-inline-block lh-sm">@Model.Project!.Name
+                                    </span>
+                                </h5>
+                            </div>
                         </div>
                         <div class="border-2 border-dashed border-bottom">
-                        @await Html.PartialAsync("Projects/_ProjectActivity")
+                            @await Html.PartialAsync("Projects/_ProjectActivity")
                         </div>
                     </div>
                 </div>
@@ -70,45 +77,13 @@ ViewData["Title"] = Model.Name;
 }
 
 @section CustomScripts {
-<script src="~/assets/js/project-details.js"></script>
+<partial name="_ValidationScriptsPartial" />
 <script src="~/js/app.js"></script>
+<script src="~/js/teams.js"></script>
 <script>
-    var form = document.getElementById('add-member-form');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-
-        var myModalEl = document.getElementById('volunteerModal');
-        var modal = bootstrap.Modal.getInstance(myModalEl);
-        const formData = new FormData(e.target);
-        const url = "/Teams/" + '@Model.Id' + "/Add-Members";
-
-        function successCallback(response) {
-            modal.hide();
-            form.reset();
-            console.log(response);
-        }
-
-        function errorCallback(xhr, status, error) {
-            modal.hide();
-            form.reset();
-            console.log(error);
-        }
-
-        ajaxFormPost(url, formData, successCallback, errorCallback);
-    })
-
-    /*var checkboxes = $("input[id^='inlineCheckbox_']");
-
-    checkboxes.each(function() {
-        const itemValue = $(this).attr('id');
-        var appId = itemValue.split('_')[1];
-
-        document.getElementById(`inlineCheckbox_${appId}`).addEventListener('click', event => {
-            if(event.target.checked) {
-                alert("Checkbox checked: " + appId);
-            }
-        });
-    });*/
+    $(document).ready(() => {
+        $.validator.unobtrusive.parse($("#add-member-form"));
+        addMember();
+    });
 </script>
 }

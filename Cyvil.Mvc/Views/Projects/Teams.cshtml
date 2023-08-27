@@ -24,8 +24,13 @@
 }
 
 @section CustomScripts {
+<partial name="_ValidationScriptsPartial" />
 <script src="~/js/app.js"></script>
+<script src="~/js/teams.js"></script>
 <script>
-    saveTeam();
+    $(document).ready(() => {
+        $.validator.unobtrusive.parse($("#team-form"));
+        saveTeam();
+    });
 </script>
 }

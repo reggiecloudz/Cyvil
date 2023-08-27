@@ -13,6 +13,8 @@ namespace Cyvil.Mvc.Models
         
         public string MemberId { get; set; } = string.Empty;
 
+        public long TeamId { get; set; }
+
         public List<SelectableVolunteer> Volunteers { get; set; } = new List<SelectableVolunteer>();
 
     }

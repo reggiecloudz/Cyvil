@@ -583,3 +583,19 @@ namespace YourNamespace.Controllers
 ```
 
 In this example, the `Index` method compares the `userPermissions` list with the `acceptedPermissions` list using LINQ's `All` method. If all user permissions are present in the accepted permissions, it returns a view. Otherwise, it redirects to the `AccessDenied` method, which returns an access denied view.
+
+## Check relationship
+```csharp
+public IActionResult CheckRelationship(int studentId, int courseId)
+{
+    var student = dbContext.Students.FirstOrDefault(s => s.StudentId == studentId);
+    var course = dbContext.Courses.FirstOrDefault(c => c.CourseId == courseId);
+
+    if (student != null && course != null && student.Courses.Contains(course))
+    {
+        return Ok("The relationship exists.");
+    }
+
+    return NotFound("The relationship does not exist.");
+}
+```

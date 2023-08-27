@@ -44,6 +44,7 @@ namespace Cyvil.Mvc.ViewComponents
 
             var model = new AddTeamMemberModel
             {
+                TeamId = team.Id,
                 Volunteers = volunteerList
             };
             

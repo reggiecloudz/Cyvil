@@ -14,6 +14,8 @@
                         <label asp-for="Role" class="form-label">Role</label>
                         <input type="text" class="form-control" asp-for="Role"  placeholder="User's role on team" />
                     </div>
+
+                    <input asp-for="TeamId" type="hidden" value="@Model.TeamId" />
                     
                     @foreach (var item in Model.Volunteers)
                     {

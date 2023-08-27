@@ -68,23 +68,11 @@ namespace Cyvil.Mvc.Controllers
             return View(team);
         }
 
-        [Route("{id}/Add-Members")]
+        [Route("Add-Members")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> AddMembers([Bind("Role,MemberId")] AddTeamMemberModel model, long? id)
+        public async Task<JsonResult> AddMembers([Bind("Role,MemberId,TeamId")] AddTeamMemberModel model)
         {
-            if (id == null || _context.Teams == null)
-            {
-                return new JsonResult("Not found");
-            }
-
-            var team = await _context.Teams
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (team == null)
-            {
-                return new JsonResult("Not found");
-            }
 
             if (!ModelState.IsValid)
             {
@@ -97,11 +85,24 @@ namespace Cyvil.Mvc.Controllers
                 return Json(json);
             }
 
-            team.Members.Add(new TeamMember { MemberId = model.MemberId, Role = model.Role });
+            await _context.AddAsync(new TeamMember 
+            { 
+                TeamId = model.TeamId,
+                MemberId = model.MemberId, 
+                Role = model.Role 
+            });
 
-            _context.SaveChanges();            
+            await _context.SaveChangesAsync();
 
-            return new JsonResult("Good for now");
+            var member = _context.Users.FirstOrDefault(x => x.Id == model.MemberId);            
+
+            return new JsonResult(new
+            {
+                Message = "Operation Successful",
+                FullName = member!.FullName,
+                Avatar = member.ProfileImage,
+                Role = model.Role
+            });
         }
 
         [Route("[action]")]

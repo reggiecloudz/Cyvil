@@ -1,0 +1,54 @@
+@model IEnumerable<TeamMember>
+
+<div class="d-flex align-items-center justify-content-end my-3">
+    <div class="ms-3">
+        <div class="d-flex">
+            <button class="btn btn-phoenix-primary btn-sm ms-2" type="button" data-bs-toggle="modal" data-bs-target="#volunteerModal">
+                Assign
+            </button>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="table-responsive mx-n1 px-1">
+        <table class="table border-top border-200 fs--1 mb-0">
+             <thead>
+                <tr>
+                    <th class="align-middle ps-3" scope="col">Member</th>
+                    <th class="align-middle" scope="col">Role</th>
+                    <th class="text-end align-middle pe-0" scope="col">Actions</th>
+                </tr>
+             </thead>
+             <tbody id="members-table">
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle ps-3">
+                            <a class="d-flex align-items-center text-900" href="#!">
+                                <div class="avatar avatar-l">
+                                    <img class="rounded-circle" src="~/media/members/@(item.Member!.ProfileImage)" alt="" />
+                                </div>
+                                <h6 class="mb-0 ms-3 text-900">@item.Member!.FullName</h6>
+                            </a>
+                        </td>
+                        <td class="align-middle">@item.Role</td>
+                        <td class="align-middle white-space-nowrap text-end pe-0">
+                            <div class="font-sans-serif btn-reveal-trigger position-static">
+                                <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                                    <span class="fas fa-ellipsis-h fs--2"></span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end py-2">
+                                    <a class="dropdown-item" href="#!">View</a>
+                                    <a class="dropdown-item" href="#!">Message</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="#!">Close out</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+             </tbody>
+        </table>
+    </div> 
+</div>
