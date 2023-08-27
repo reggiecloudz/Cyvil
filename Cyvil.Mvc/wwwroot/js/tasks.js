@@ -2,7 +2,7 @@ function insertTaskTableData(data) {
     var task = $("#task-list-table-body").prepend(`
         <tr class="position-static">
             <td class="align-middle time white-space-nowrap ps-0 name py-4">
-                <a class="fw-bold fs-0" herf="#!">
+                <a class="fw-bold fs-0" href="/Tasks/${data.id}/Details">
                     ${data.name}
                 </a>
             </td>

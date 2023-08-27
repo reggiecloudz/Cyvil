@@ -12,7 +12,11 @@ namespace Cyvil.Mvc.Domain
     {
         public string FullName { get; set; } = string.Empty;
 
+        public string Organization { get; set; } = string.Empty;
+
         public string Slug { get; set; } = string.Empty;
+
+        public bool UseOrganizationName { get; set; } = false;
 
         public bool IsMember { get; set; } = true;
 
@@ -25,7 +29,6 @@ namespace Cyvil.Mvc.Domain
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<ProjectParticipant> Participations { get; set; } = new List<ProjectParticipant>();
         public virtual ICollection<TeamMember> Teams { get; set; } = new List<TeamMember>();
-        public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
         public virtual ICollection<Attendee> Meetings { get; set; } = new List<Attendee>();
         public virtual ICollection<Applicant> Applications { get; set; } = new List<Applicant>();
         // public virtual ICollection<UserNotification> Notifications { get; set; } = new List<UserNotification>();

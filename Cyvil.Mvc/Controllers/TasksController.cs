@@ -38,8 +38,6 @@ namespace Cyvil.Mvc.Controllers
 
             var actionItem = await _context.ActionItems
                 .Include(p => p.Team)
-                .Include(o => o.Assignees)
-                    .ThenInclude(a => a.Assignee)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (actionItem == null)
@@ -54,7 +52,7 @@ namespace Cyvil.Mvc.Controllers
         [Route("Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> Create([Bind("Id,Name,Details,Deadline,ProjectId,ObjectiveId")] ActionItem item)
+        public async Task<JsonResult> Create([Bind("Id,Name,Details,Deadline,ProjectId,TeamId")] ActionItem item)
         {
             if (!ModelState.IsValid)
             {
@@ -73,75 +71,11 @@ namespace Cyvil.Mvc.Controllers
             return new JsonResult(item);
         }
 
-        [Route("Assign")]
-        [HttpPost]
-        public async Task<JsonResult> Assign([FromBody] SelectedUsers model)
-        {
-
-            foreach (var assignee in model.Selected)
-            {
-                var assignment = new Assignment { AssigneeId = assignee, ActionItemId = model.ItemId };
-                _context.Add(assignment);
-            }
-            
-            await _context.SaveChangesAsync();
-
-            return new JsonResult("Assignments were successful.");
-        }
-
-        [Route("{id}/GetAssignees")]
-        [HttpGet]
-        public async Task<JsonResult> GetAssignees(long? id)
-        {
-            if (id == null || _context.ActionItems == null)
-            {
-                return new JsonResult("Not Found");
-            }
-
-            var actionItem = await _context.ActionItems
-                .Include(p => p.Team)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (actionItem == null)
-            {
-                return new JsonResult("Not Found");
-            }
-
-            var assignees = PopulateAssignedTaskData(actionItem);
-            return new JsonResult(assignees);
-        }
-
         [Route("[action]")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View("Error!");
-        }
-
-        private List<AssignedTask> PopulateAssignedTaskData(ActionItem item)
-        {
-            var teamMembers = _context.TeamMembers
-                .Where(t => t.TeamId == item.TeamId)
-                .Include(t => t.Member)
-                .ToList();
-            var assignments = _context.Assignments.Where(a => a.ActionItemId == item.Id).ToList();
-            var assignees = new HashSet<string>(assignments.Select(t => t.AssigneeId));
-            var assigned = new List<AssignedTask>();
-            Console.WriteLine($"====={assignments.Count()}======");
-            foreach (var per in assignees)
-            {
-                Console.WriteLine($"====={per}======");
-            }
-            foreach(var member in teamMembers)
-            {
-                assigned.Add(new AssignedTask
-                {
-                    UserId = member.Member!.Id,
-                    Name = member.Member!.FullName,
-                    Assigned = assignees.Contains(member.MemberId)
-                });
-            }
-            return assigned;
         }
     }
 }

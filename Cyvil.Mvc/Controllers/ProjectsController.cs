@@ -197,7 +197,6 @@ namespace Cyvil.Mvc.Controllers
             }
 
             var project = await _context.Projects
-                .Include(p => p.Manager)
                 .Include(p => p.Teams)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -206,14 +205,8 @@ namespace Cyvil.Mvc.Controllers
                 return NotFound();
             }
 
-            var actionItems = _context.ActionItems.Where(x => x.ProjectId == project.Id).ToList();
             ViewData["TeamId"] = new SelectList(project.Teams, "Id", "Name");
-            var model = new ProjectTasksModel
-            {
-                Project = project,
-                ActionItems = actionItems
-            };
-            return View(model);
+            return View(project);
         }
         
         [Route("[action]")]

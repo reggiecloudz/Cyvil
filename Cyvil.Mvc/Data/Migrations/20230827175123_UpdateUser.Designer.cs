@@ -3,6 +3,7 @@ using System;
 using Cyvil.Mvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyvil.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230827175123_UpdateUser")]
+    partial class UpdateUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,6 +198,27 @@ namespace Cyvil.Mvc.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Assignment", b =>
+                {
+                    b.Property<long>("ActionItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("AssigneeId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("ActionItemId", "AssigneeId");
+
+                    b.HasIndex("AssigneeId");
+
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Attendee", b =>
@@ -802,6 +825,25 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Cyvil.Mvc.Domain.Assignment", b =>
+                {
+                    b.HasOne("Cyvil.Mvc.Domain.ActionItem", "ActionItem")
+                        .WithMany("Assignees")
+                        .HasForeignKey("ActionItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "Assignee")
+                        .WithMany("Assignments")
+                        .HasForeignKey("AssigneeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ActionItem");
+
+                    b.Navigation("Assignee");
+                });
+
             modelBuilder.Entity("Cyvil.Mvc.Domain.Attendee", b =>
                 {
                     b.HasOne("Cyvil.Mvc.Domain.Meeting", "Meeting")
@@ -1022,12 +1064,16 @@ namespace Cyvil.Mvc.Data.Migrations
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ActionItem", b =>
                 {
+                    b.Navigation("Assignees");
+
                     b.Navigation("Subtasks");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ApplicationUser", b =>
                 {
                     b.Navigation("Applications");
+
+                    b.Navigation("Assignments");
 
                     b.Navigation("Meetings");
 

@@ -24,7 +24,6 @@ namespace Cyvil.Mvc.Data
         public DbSet<TeamMember> TeamMembers { get; set; }
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<ActionItem> ActionItems { get; set; }
-        public DbSet<Assignment> Assignments { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Attendee> Attendees { get; set; }
@@ -46,21 +45,6 @@ namespace Cyvil.Mvc.Data
                 .IsRequired();
 
             
-            builder.Entity<Assignment>(obj =>
-            {
-                obj.HasKey(x => new { x.ActionItemId, x.AssigneeId });
-
-                obj.HasOne(x => x.ActionItem)
-                    .WithMany(a => a.Assignees)
-                    .HasForeignKey(x => x.ActionItemId)
-                    .IsRequired();
-
-                obj.HasOne(x => x.Assignee)
-                    .WithMany(a => a.Assignments)
-                    .HasForeignKey(x => x.AssigneeId)
-                    .IsRequired();
-            });
-
             builder.Entity<TeamMember>(obj =>
             {
                 obj.HasKey(x => new { x.TeamId, x.MemberId });

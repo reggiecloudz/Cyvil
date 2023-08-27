@@ -36,7 +36,6 @@ namespace Cyvil.Mvc.Domain
         public virtual Team? Team { get; set; }
 
         public virtual ICollection<ActionItem> Subtasks { get; set; } = new List<ActionItem>();
-        public virtual ICollection<Assignment> Assignees { get; set; } = new List<Assignment>();
 
         public int DaysPassed()
         {
