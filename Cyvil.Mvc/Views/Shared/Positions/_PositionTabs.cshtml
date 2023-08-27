@@ -1,0 +1,31 @@
+@model Position
+
+<ul class="nav nav-underline deal-details scrollbar flex-nowrap w-100 pb-1 mb-6" id="myTab" role="tablist" style="overflow-y: hidden;">
+    <li class="nav-item text-nowrap me-2" role="presentation">
+        <a class="nav-link active" id="1-tab" data-bs-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="false" tabindex="-1"> 
+            <span class="fa-solid fa-info-circle me-2 tab-icon-color"></span>Details
+        </a>
+    </li>
+    <li class="nav-item text-nowrap me-2" role="presentation">
+        <a class="nav-link" id="2-tab" data-bs-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false" tabindex="-1"> 
+            <span class="fa-solid fa-users me-2 tab-icon-color"></span>Applicants
+        </a>
+    </li>
+    <li class="nav-item text-nowrap me-2" role="presentation">
+        <a class="nav-link" id="3-tab" data-bs-toggle="tab" href="#tab-3" role="tab" aria-controls="tab-3" aria-selected="false" tabindex="-1"> 
+            <span class="fa-solid fa-user-check me-2 tab-icon-color"></span>Selected
+        </a>
+    </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade active show" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+        <p>@Model.Details</p>
+    </div>
+    <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab">
+        @await Component.InvokeAsync("ApplicantsList", new { positionId = Model.Id })
+    </div>
+    <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
+        ...
+    </div>
+</div>

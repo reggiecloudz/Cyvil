@@ -25,18 +25,25 @@
             </div>
         </div>
     </div>
-    <div id="ticket-details" class="card-body">
+    <div id="position-details" class="card-body">
         <div class="row g-4 g-xl-6">
             <div class="col-xl-5 col-xxl-4 border-end">
                 <div class="sticky-leads-sidebar">
                     <div class="row align-items-center g-3 mb-3 border-2 border-dashed pb-4 border-bottom">
-                       ...
+                       <h3 class="fw-bolder mb-2 line-clamp-1">@Model.Title</h3>
+                        <div class="d-flex align-items-center mb-4">
+                            <h5 class="fw-semi-bold">
+                                <span class="d-inline-block lh-sm me-1" data-feather="grid" style="height:16px;width:16px;"></span><span
+                                    class="d-inline-block lh-sm">@Model.Project!.Name
+                                </span>
+                            </h5>
+                        </div>
                     </div>
-                    ...
+                    @await Html.PartialAsync("Positions/_PositionData", Model)
                 </div>
             </div>
             <div class="col-xl-7 col-xxl-8">
-                ...
+                @await Html.PartialAsync("Positions/_PositionTabs", Model)
             </div>
         </div>
     </div>

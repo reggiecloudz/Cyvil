@@ -10,6 +10,8 @@ namespace Cyvil.Mvc.Domain
         Withdrawn,
         [Description("Interview")]
         Interview,
+        [Description("Selected")]
+        Selected,
         [Description("Closed")]
         Closed
     }

@@ -1,0 +1,78 @@
+@model IEnumerable<Applicant>
+
+<div class="d-flex align-items-center justify-content-end my-3">
+    <div class="ms-3" id="bulk-select-actions">
+        <div class="d-flex">
+            <select class="form-select form-select-sm" aria-label="Bulk actions">
+                <option selected="selected">Bulk actions</option>
+                <option value="Delete">Delete</option>
+                <option value="Archive">Archive</option>
+            </select>
+            <button class="btn btn-phoenix-primary btn-sm ms-2" type="button">Apply</button>
+        </div>
+    </div>
+</div>
+
+<div id="applicantsTable" data-list='{"valueNames":["applicant","status","date"],"page":5,"pagination":true}'>
+    <div class="table-responsive mx-n1 px-1">
+        <table class="table border-top border-200 fs--1 mb-0">
+             <thead>
+                <tr>
+                    <th class="white-space-nowrap fs--1 align-middle ps-0" style="max-width:20px; width:18px;">
+                        <div class="form-check mb-0 fs-0">
+                            <input class="form-check-input" id="bulk-select-applicants" type="checkbox" />
+                        </div>
+                    </th>
+                    <th class="sort align-middle ps-3" data-sort="applicant">Applicant</th>
+                    <th class="sort align-middle" data-sort="status">Status</th>
+                    <th class="sort align-middle" data-sort="date">Date</th>
+                    <th class="sort text-end align-middle pe-0" scope="col">ACTION</th>
+                </tr>
+             </thead>
+             <tbody class="list" id="bulk-select-body">
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td class="fs--1 align-middle">
+                            <div class="form-check mb-0 fs-0">
+                                <input class="form-check-input" type="checkbox" />
+                            </div>
+                        </td>
+                        <td class="align-middle ps-3 applicant">
+                            <a class="d-flex align-items-center text-900" href="#!">
+                                <div class="avatar avatar-l">
+                                    <img class="rounded-circle" src="~/media/members/@(item.User!.ProfileImage)" alt="" />
+                                </div>
+                                <h6 class="mb-0 ms-3 text-900">@item.User!.FullName</h6>
+                            </a>
+                        </td>
+                        <td id="applicant-status" class="align-middle status">@item.ApplicantStatus.GetEnumDescription()</td>
+                        <td class="align-middle date">@item.Created.ToString("MMM dd, yyyy")</td>
+                        <td class="align-middle white-space-nowrap text-end pe-0">
+                            <div class="font-sans-serif btn-reveal-trigger position-static">
+                                <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
+                                    <span class="fas fa-ellipsis-h fs--2"></span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end py-2">
+                                    <a class="dropdown-item" href="#!">View</a>
+                                    <a class="dropdown-item" href="#!">Message</a>
+                                    @if (item.ApplicantStatus == ApplicantStatus.Selected)
+                                    {
+                                        <a class="dropdown-item disabled" href="#!">Selected</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="dropdown-item" href="#!" data-select-applicant="@item.Id">Select</a>
+                                    }
+                                    
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-danger" href="#!">Close out</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+             </tbody>
+        </table>
+    </div> 
+</div>

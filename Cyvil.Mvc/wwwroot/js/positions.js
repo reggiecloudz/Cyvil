@@ -93,8 +93,8 @@ function getPositionDetails() {
             function handleSuccess(response) {
                 positionTitle.innerHTML = response.title;
                 positionDetails.innerHTML = response.details;
-                document.getElementById("TypeId").value = response.positionId;
-                document.getElementById("ManagerId").value = response.managerId;
+                document.getElementById("PositionId").value = response.positionId;
+                document.getElementById("ProjectId").value = response.projectId;
                 modal.show();
                 console.log('Request successful:', response);
             }

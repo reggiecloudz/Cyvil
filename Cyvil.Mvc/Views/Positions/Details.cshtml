@@ -11,60 +11,7 @@
 <div class="content mb-5">
     <div class="row">
         <div class="col-12 mb-4">
-            <div class="pb-4 card">
-                <div class="card-header">
-                    <div class="row align-items-center justify-content-between g-3 mb-4">
-                        <div class="col-12 col-md-auto">
-                            <h2 class="mb-0">@Model.Title</h2>
-                        </div>
-                        <div class="col-12 col-md-auto d-flex">
-                            <button class="btn btn-phoenix-secondary px-3 px-sm-5 me-2">
-                                <span class="fa-solid fa-edit me-sm-2"></span>
-                                <span class="d-none d-sm-inline">Edit </span>
-                            </button>
-                            <button class="btn btn-phoenix-danger me-2">
-                                <span class="fa-solid fa-trash me-2"></span>
-                                <span>Delete</span>
-                            </button>
-                            <div>
-                                <button class="btn px-3 btn-phoenix-secondary" type="button" data-bs-toggle="dropdown"
-                                    data-boundary="window" aria-haspopup="true" aria-expanded="false"
-                                    data-bs-reference="parent"><span class="fa-solid fa-ellipsis"></span></button>
-                                <ul class="dropdown-menu dropdown-menu-end p-0" style="z-index: 9999;">
-                                    <li><a class="dropdown-item" href="#!">View profile</a></li>
-                                    <li><a class="dropdown-item" href="#!">Report</a></li>
-                                    <li><a class="dropdown-item" href="#!">Manage notifications</a></li>
-                                    <li><a class="dropdown-item text-danger" href="#!">Delete Lead</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <p class="my-2">
-                        @Model.Details
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex flex-between-center">
-                        <div>
-                            Project: @Model.Project!.Name
-                        </div>
-                        <div>
-                            People needed: @Model.PeopleNeeded
-                        </div>
-                        <div>
-                            Positions filled: @Model.PositionsFilled
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-xl-6">
-            Add Something
-        </div>
-        <div class="col-12 col-xl-6">
-            Add Something
+            @await Html.PartialAsync("Positions/_PositionDetailsCard", Model)
         </div>
     </div>
 
@@ -83,8 +30,10 @@
 @section CustomScripts {
 <!-- <script src="~/assets/js/project-details.js"></script> -->
 <script src="~/js/app.js"></script>
+<script src="~/js/applicants.js"></script>
 <script>
     $(document).ready(function () {
+        selectApplicant();
     });
 </script>
 }

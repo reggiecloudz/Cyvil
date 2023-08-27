@@ -1,0 +1,35 @@
+@model Position
+
+<div>
+    <h4 class="mb-5">Position Information</h4>
+    <div class="row g-3">
+        <div class="col-12">
+            <div class="mb-4">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Open
+                        <span class="badge badge-light-primary rounded-pill">
+                            @if (Model.Closed)
+                            {
+                                @: False
+                            }
+                            else
+                            {
+                                @: True
+                            }
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        People needed<span id="people-needed" class="badge badge-light-primary rounded-pill">@Model.PeopleNeeded</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Positions filled<span id="positions-filled" class="badge badge-light-primary rounded-pill">@Model.PositionsFilled</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Applicants<span id="applicant-count" class="badge badge-light-primary rounded-pill">@await Component.InvokeAsync("ApplicantsCount", new { positionId = Model.Id })</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

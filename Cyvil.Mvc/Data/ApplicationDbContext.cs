@@ -36,8 +36,8 @@ namespace Cyvil.Mvc.Data
             builder.Entity<ApplicationUser>()
                 .HasAlternateKey(x => x.Slug);
 
-            builder.Entity<Project>()
-                .HasAlternateKey(x => x.Slug);
+            // builder.Entity<Project>()
+            //     .HasAlternateKey(x => x.Slug);
 
             builder.Entity<Project>()
                 .HasOne(p => p.Manager)

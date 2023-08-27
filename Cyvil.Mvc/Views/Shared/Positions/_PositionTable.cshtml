@@ -85,7 +85,7 @@
                                 </td>
                                 <td class="applicants align-middle white-space-nowrap fw-semi-bold text-1100 ps-4 py-0">
                                     <div class="d-flex align-items-center position-relative">
-                                        <a class="text-1000 fw-bold stretched-link" href="#!">0</a>
+                                        <a class="text-1000 fw-bold stretched-link" href="#!">@await Component.InvokeAsync("ApplicantsCount", new { positionId = item.Id })</a>
                                     </div>
                                 </td>
                                 <td class="align-middle white-space-nowrap text-end pe-0 ps-4">
