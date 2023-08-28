@@ -20,7 +20,7 @@ namespace Cyvil.Mvc.Domain
 
         public long TypeId { get; set; }
 
-        public InvitationType Type { get; set; }
+        public MeetingType Type { get; set; }
 
         public string FromUserId { get; set; } = string.Empty;
 

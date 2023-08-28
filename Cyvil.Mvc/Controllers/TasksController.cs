@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cyvil.Mvc.Data;
 using Cyvil.Mvc.Domain;
+using Cyvil.Mvc.Extensions;
 using Cyvil.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -93,7 +94,11 @@ namespace Cyvil.Mvc.Controllers
             return new JsonResult(new 
             {
                 Message = "Operation Successful",
-                Subtask = item.Name
+                TaskId = item.Id,
+                Subtask = item.Name,
+                Status = item.Status.GetEnumDescription(),
+                DeadlineDate = item.Deadline.ToString("MMM dd, yyyy"),
+                DeadlineTime = item.Deadline.ToString("hh:mm tt")
             });
         }
 
