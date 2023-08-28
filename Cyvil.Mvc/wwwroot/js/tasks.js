@@ -73,73 +73,28 @@ function saveActionItem() {
     });
 }
 
-function insertAssigneeFormData(data, itemId) {
-    var assignees = []
-    data.forEach(element => {
-        assignees.push(`<div class="form-check">
-            <input class="form-check-input" name="Selected" type="checkbox" value="${element.userId}" ${element.assigned ? 'checked' : '' } />
-            <label class="form-check-label">${element.name}</label>
-        </div>`);
-    });
-    var fields = $("#add-assignee-form").html(assignees);
-    fields.append(`<input name="ItemId" type="hidden" value="${ itemId }" />`);
-    return fields;
-}
-
-function getAssignees() {
-
-    var anchors = document.querySelectorAll('a[data-task]');
-    
-    anchors.forEach((a) => {
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
-            var target = e.target;
-
-            var myModalEl = document.getElementById('assigneeModal');
-            var modal = new bootstrap.Modal(myModalEl, {});
-            const taskId = target.dataset.task;
-            const url = `/Tasks/${taskId}/GetAssignees`;
-
-            function handleSuccess(response) {
-                console.log(response);
-                insertAssigneeFormData(response, taskId);
-                modal.show();
-              }
-              
-            function handleError(xhr, status, error) {
-                console.log('Request failed:', error);
-            }
-              
-            ajaxGet(url, handleSuccess, handleError);
-        });
-    });
-
-}
-
-function assign() {
-    var form = document.getElementById("add-assignee-form");
+function saveSubtask() {
+    var form = document.getElementById("subtask-form");
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        var myModalEl = document.getElementById('assigneeModal');
+        var myModalEl = document.getElementById('saveSubtaskModal');
         var modal = bootstrap.Modal.getInstance(myModalEl);
         const formData = new FormData(form);
-        var data = {
-            itemId: formData.get("ItemId"),
-            selected: formData.getAll("Selected")
-        }
-        const url = "/Tasks/Assign";
+        const url = "/Tasks/New-Subtask";
 
         function successCallback(response) {
             modal.hide();
+            form.reset();
             console.log(response);
         }
 
         function errorCallback(xhr, status, error) {
             modal.hide();
+            form.reset();
             console.log(error);
         }
 
-        sendAjaxRequest(url, data, successCallback, errorCallback);
+        ajaxFormPost(url, formData, successCallback, errorCallback);
     });
 }

@@ -16,7 +16,7 @@ ViewData["Title"] = "Tasks";
                     <h4 class="mb-0">Task details</h4>
                 </div>
                 <div class="col-12 col-md-auto d-flex">
-                    <button class="btn btn-sm btn-phoenix-primary px-3 px-sm-5 me-2">
+                    <button class="btn btn-sm btn-phoenix-primary px-3 px-sm-5 me-2" data-bs-toggle="modal" data-bs-target="#saveSubtaskModal">
                         <span class="fa-solid fa-plus me-sm-2"></span>
                         <span class="d-none d-sm-inline">Subtask </span>
                     </button>
@@ -127,6 +127,7 @@ ViewData["Title"] = "Tasks";
     <partial name="_Footer" />
 </div>
 
+@await Component.InvokeAsync("SaveSubtask", new { projectId = Model.ProjectId, teamId = Model.TeamId, parentId = Model.Id })
 <partial name="Tasks/_ChatModal" />
 
 @section ProjectNav {
@@ -141,13 +142,13 @@ ViewData["Title"] = "Tasks";
 }
 
 @section CustomScripts {
-@*
-<script src="~/assets/js/project-details.js"></script> *@
+<partial name="_ValidationScriptsPartial" />
 <script src="~/js/app.js"></script>
+<script src="~/js/tasks.js"></script>
 <script>
-    $(document).ready(function () {
-        //getAssignees();
-        //assign();
+    $(document).ready(() => {
+        $.validator.unobtrusive.parse($("#subtask-form"));
+        saveSubtask();
     });
 </script>
 }

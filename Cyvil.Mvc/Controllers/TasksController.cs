@@ -71,6 +71,32 @@ namespace Cyvil.Mvc.Controllers
             return new JsonResult(item);
         }
 
+        [Route("New-Subtask")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> NewSubtask([Bind("Id,Name,Details,Deadline,ProjectId,TeamId,ParentId")] ActionItem item)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var json = JsonConvert.SerializeObject(errors);
+
+                return Json(json);
+            }
+
+            await _context.AddAsync(item);
+            await _context.SaveChangesAsync();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation Successful",
+                Subtask = item.Name
+            });
+        }
+
         [Route("[action]")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

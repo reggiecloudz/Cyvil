@@ -1,7 +1,7 @@
 <ul class="nav nav-underline deal-details scrollbar flex-nowrap w-100 pb-1 mb-6" id="myTab" role="tablist" style="overflow-y: hidden;">
     <li class="nav-item text-nowrap me-2" role="presentation">
-        <a class="nav-link active" id="notes-tab" data-bs-toggle="tab" href="#tab-notes" role="tab" aria-controls="tab-notes" aria-selected="false" tabindex="-1"> 
-            <span class="fa-solid fa-clipboard me-2 tab-icon-color"></span>Notes
+        <a class="nav-link active" id="details-tab" data-bs-toggle="tab" href="#tab-details" role="tab" aria-controls="tab-details" aria-selected="true"> 
+            <span class="fa-solid fa-info-circle me-2 tab-icon-color"></span>Details
         </a>
     </li>
     <li class="nav-item text-nowrap me-2" role="presentation">
@@ -10,19 +10,30 @@
         </a>
     </li>
     <li class="nav-item text-nowrap me-2" role="presentation">
+        <a class="nav-link" id="notes-tab" data-bs-toggle="tab" href="#tab-notes" role="tab" aria-controls="tab-notes" aria-selected="false" tabindex="-1"> 
+            <span class="fa-solid fa-clipboard me-2 tab-icon-color"></span>Notes
+        </a>
+    </li>
+    <li class="nav-item text-nowrap me-2" role="presentation">
         <a class="nav-link" id="chat-tab" data-bs-toggle="tab" href="#tab-chat" role="tab" aria-controls="tab-chat" aria-selected="false" tabindex="-1"> 
             <span class="fa-solid fa-message me-2 tab-icon-color"></span>Chat
         </a>
     </li>
     <li class="nav-item text-nowrap me-2" role="presentation">
-        <a class="nav-link" id="attachments-tab" data-bs-toggle="tab" href="#tab-attachments" role="tab" aria-controls="tab-attachments" aria-selected="true"> 
+        <a class="nav-link" id="attachments-tab" data-bs-toggle="tab" href="#tab-attachments" role="tab" aria-controls="tab-attachments"  aria-selected="false" tabindex="-1"> 
             <span class="fa-solid fa-paperclip me-2 tab-icon-color"></span>Attachments
         </a>
     </li>
 </ul>
 
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade active show" id="tab-notes" role="tabpanel" aria-labelledby="notes-tab">
+    <div class="tab-pane fade active show" id="tab-details" role="tabpanel" aria-labelledby="details-tab">
+        @Model.Details
+    </div>
+    <div class="tab-pane fade" id="tab-subtasks" role="tabpanel" aria-labelledby="subtasks-tab">
+        @await Component.InvokeAsync("SubtasksList", new { parentId = Model.Id })
+    </div>
+    <div class="tab-pane fade" id="tab-notes" role="tabpanel" aria-labelledby="notes-tab">
         <h2 class="mb-4">Notes</h2>
         <textarea class="form-control mb-3" id="notes" rows="4"> </textarea>
         <div class="row gy-4">
@@ -41,9 +52,6 @@
                 </div> 
             </div>
         </div>
-    </div>
-    <div class="tab-pane fade" id="tab-subtasks" role="tabpanel" aria-labelledby="subtasks-tab">
-        ...
     </div>
     <div class="tab-pane fade" id="tab-chat" role="tabpanel" aria-labelledby="chat-tab">
         @* Onclick a fullscreen modal with there chat will appear *@
