@@ -95,10 +95,200 @@ namespace Cyvil.Mvc.Controllers
             {
                 Message = "Operation Successful",
                 TaskId = item.Id,
-                Subtask = item.Name,
+                Name = item.Name,
                 Status = item.Status.GetEnumDescription(),
                 DeadlineDate = item.Deadline.ToString("MMM dd, yyyy"),
                 DeadlineTime = item.Deadline.ToString("hh:mm tt")
+            });
+        }
+
+        [Route("{id}/Start")]
+        public async Task<JsonResult> Start(long? id)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            actionItem.Status = ProgressStatus.InProgress;
+            if (actionItem.StartDate == null)
+                actionItem.StartDate = DateTime.Now;
+
+            _context.Update(actionItem);
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation sucessful!",
+                Id = actionItem.Id,
+                Status = actionItem.Status.GetEnumDescription()
+            });
+        }
+
+
+        [Route("{id}/Restart")]
+        public async Task<JsonResult> Restart(long? id)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            actionItem.Status = ProgressStatus.InProgress;
+
+            _context.Update(actionItem);
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation sucessful!",
+                Id = actionItem.Id,
+                Status = actionItem.Status.GetEnumDescription()
+            });
+        }
+
+
+        [Route("{id}/Postpone")]
+        public async Task<JsonResult> Postpone(long? id)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            actionItem.Status = ProgressStatus.Postponed;
+
+            _context.Update(actionItem);
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation sucessful!",
+                Id = actionItem.Id,
+                Status = actionItem.Status.GetEnumDescription()
+            });
+        }
+        
+        [Route("{id}/Complete")]
+        public async Task<JsonResult> Complete(long? id)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            actionItem.Status = ProgressStatus.Completed;
+            actionItem.IsCompleted = true;
+            actionItem.EndDate = DateTime.Now;
+
+            _context.Update(actionItem);
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation sucessful!",
+                Status = actionItem.Status.GetEnumDescription()
+            });
+        }
+
+        [Route("{id}/GetActionItem")]
+        public async Task<JsonResult> GetActionItem(long? id)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            return new JsonResult(new
+            {
+                Id = actionItem.Id,
+                Name = actionItem.Name,
+                Details = actionItem.Details,
+                Deadline = actionItem.Deadline,
+                DeadlineDate = actionItem.Deadline.ToString("MMM dd, yyyy"),
+                DeadlineTime = actionItem.Deadline.ToString("hh:mm tt"),
+                StatusValue = actionItem.Status,
+                StatusText = actionItem.Status.GetEnumDescription()
+            });
+        }
+
+        [Route("{id}/Update-Subtask")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> UpdateSubtask(long? id, ActionItemEditModel model)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var json = JsonConvert.SerializeObject(errors);
+
+                return Json(json);
+            }
+
+            actionItem.Name = model.ModelName;
+            actionItem.Details = model.ModelDetails;
+            actionItem.Deadline = model.ModelDeadline;
+            actionItem.Status = model.ModelStatus;
+
+            _context.Update(actionItem);
+            _context.SaveChanges();
+
+            return new JsonResult(new
+            {
+                Message = "Operation Successful.",
+                Id = actionItem.Id,
+                Name = actionItem.Name,
+                Status = actionItem.Status.GetEnumDescription()
             });
         }
 

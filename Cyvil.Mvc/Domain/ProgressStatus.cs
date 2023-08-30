@@ -8,10 +8,10 @@ namespace Cyvil.Mvc.Domain
         Draft,
         [Description("Pending")]
         Pending,
-        [Description("Paused")]
-        Paused,
-        [Description("Ongoing")]
-        Ongoing,
+        [Description("Postponed")]
+        Postponed,
+        [Description("In progress")]
+        InProgress,
         [Description("Cancelled")]
         Cancelled,
         [Description("Completed")]

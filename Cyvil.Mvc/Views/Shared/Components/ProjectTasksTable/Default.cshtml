@@ -17,7 +17,7 @@
                 <ul class="nav nav-links mx-n2">
                     <li class="nav-item"><a class="nav-link px-2 py-1 active" aria-current="page"
                             href="#"><span>All</span><span class="text-700 fw-semi-bold">(32)</span></a></li>
-                    <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>Ongoing</span><span
+                    <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>In progress</span><span
                                 class="text-700 fw-semi-bold">(14)</span></a></li>
                     <li class="nav-item"><a class="nav-link px-2 py-1" href="#"><span>Cancelled</span><span
                                 class="text-700 fw-semi-bold">(2)</span></a></li>
@@ -42,7 +42,7 @@
         </div>
     </div>
     <div id="task-list" class="card-body scrollbar overflow-scroll" style="max-height:14rem;">
-        <div id="objective-tasks"
+        <div id="project-tasks"
         data-list='{"valueNames":["name","assignees","start","deadline","projectprogress","status","action"],"page":6,"pagination":true}'>
             <div class="table-responsive scrollbar">
                 <table class="table fs--1 mb-0 border-top border-200">
@@ -90,7 +90,7 @@
                                 </td>
                                 <td class="align-middle white-space-nowrap text-end status">
                                     <span class="badge badge-phoenix fs--2 badge-phoenix-primary">
-                                        Draft
+                                        @item.Status.GetEnumDescription()
                                     </span>
                                 </td>
                                 <td class="align-middle text-end white-space-nowrap pe-0 action">

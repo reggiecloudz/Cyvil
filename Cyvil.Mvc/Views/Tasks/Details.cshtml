@@ -16,18 +16,17 @@ ViewData["Title"] = "Tasks";
                     <h4 class="mb-0">Task details</h4>
                 </div>
                 <div class="col-12 col-md-auto d-flex">
-                    <button class="btn btn-sm btn-phoenix-primary px-3 px-sm-5 me-2" data-bs-toggle="modal" data-bs-target="#saveSubtaskModal">
-                        <span class="fa-solid fa-plus me-sm-2"></span>
-                        <span class="d-none d-sm-inline">Subtask </span>
-                    </button>
-                    <button class="btn btn-sm btn-phoenix-secondary me-2">
-                        <span class="fa-solid fa-edit me-sm-2"></span>
-                        <span class="d-none d-sm-inline">Edit </span>
-                    </button>
-                    <button class="btn btn-sm btn-phoenix-danger me-2">
-                        <span class="fa-solid fa-trash me-2"></span>
-                        <span>Delete</span>
-                    </button>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-phoenix-primary" data-bs-toggle="tooltip" data-bs-title="Add subtask" data-bs-toggle="modal" data-bs-target="#saveSubtaskModal">
+                            <span class="fa-solid fa-plus me-sm-2"></span>
+                        </button>
+                        <button type="button" class="btn btn-phoenix-info" data-bs-toggle="tooltip" data-bs-title="Edit task">
+                            <span class="fa-solid fa-edit me-sm-2"></span>
+                        </button>
+                        <button type="button" class="btn btn-phoenix-danger" data-bs-toggle="tooltip" data-bs-title="Delete task">
+                            <span class="fa-solid fa-trash me-sm-2"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,9 +39,8 @@ ViewData["Title"] = "Tasks";
                                 <h3 class="fw-bolder mb-2 line-clamp-1">@Model.Name</h3>
                                 <div class="d-flex align-items-center mb-4">
                                     <h5 class="fw-semi-bold">
-                                        <span class="d-inline-block lh-sm me-1" data-feather="grid" style="height:16px;width:16px;"></span><span
-                                            class="d-inline-block lh-sm">@Model.Team!.Name
-                                        </span>
+                                        <span class="d-inline-block lh-sm me-1 fa fa-users" style="height:16px;width:16px;"></span>
+                                        <span class="d-inline-block lh-sm">@Model.Team!.Name</span>
                                     </h5>
                                 </div>
                                 <div class="d-md-flex d-xl-block align-items-center justify-content-between mb-5">
@@ -84,10 +82,42 @@ ViewData["Title"] = "Tasks";
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <span class="badge badge-phoenix badge-phoenix-success me-2">Success</span>
-                                        <span class="badge badge-phoenix badge-phoenix-danger me-2">Lost</span>
-                                        <span class="badge badge-phoenix badge-phoenix-secondary">Close</span>
+                                    <div class="pt-3">
+                                        <p>
+                                            <strong>Status: </strong> 
+                                            <span id="task-status">@Model.Status.GetEnumDescription()</span>
+                                        </p>
+                                        <div id="action-buttons" data-task-actions="@Model.Id">
+                                            @if(Model.Status == ProgressStatus.Draft)
+                                            {
+                                                <button type="button" id="start-button" data-start-action="@Model.Id" class="btn btn-sm btn-phoenix-primary">
+                                                    <i class="fa-solid fa-play"></i> Start
+                                                </button>
+                                            }
+                                            else if(Model.Status == ProgressStatus.InProgress)
+                                            {
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" id="complete-button" data-complete-action="@Model.Id" class="btn btn-sm btn-phoenix-success">
+                                                        <i class="fa-solid fa-check"></i> Complete
+                                                    </button>
+                                                    <button type="button" id="postpone-button" data-postpone-action="@Model.Id" class="btn btn-sm btn-phoenix-danger">
+                                                        <i class="fa-solid fa-pause"></i> Postpone
+                                                    </button>
+                                                </div>
+                                            }
+                                            else if(Model.Status == ProgressStatus.Postponed)
+                                            {
+                                                <button type="button" id="restart-button" data-restart-action="@Model.Id" class="btn btn-sm btn-phoenix-info">
+                                                    <i class="fa-solid fa-arrows-rotate"></i> Restart
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="btn btn-sm btn-phoenix-secondary" disabled>
+                                                    <i class="fa-solid fa-ban"></i> Closed
+                                                </button>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="progress mb-2" style="height:5px">
@@ -129,6 +159,7 @@ ViewData["Title"] = "Tasks";
 
 @await Component.InvokeAsync("SaveSubtask", new { projectId = Model.ProjectId, teamId = Model.TeamId, parentId = Model.Id })
 <partial name="Tasks/_ChatModal" />
+@await Component.InvokeAsync("EditSubtask")
 
 @section ProjectNav {
 @await Html.PartialAsync("Projects/_ProjectNav", Model.Team!.ProjectId)
@@ -148,7 +179,15 @@ ViewData["Title"] = "Tasks";
 <script>
     $(document).ready(() => {
         $.validator.unobtrusive.parse($("#subtask-form"));
+        $.validator.unobtrusive.parse($("#edit-subtask-form"));
         saveSubtask();
+        completeSubtask();
+        getActionItem();
+        startAction();
+        postponeAction();
+        restartAction();
+        completeAction();
+        updateSubtask();
     });
 </script>
 }

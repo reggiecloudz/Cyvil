@@ -1,16 +1,36 @@
 @model IEnumerable<ActionItem>
 
+<div id="subtasks-list">
 @foreach (var item in Model)
 {
     <div class="d-flex hover-actions-trigger py-2 border-bottom">
-        <input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined" type="checkbox" id="checkbox-todo-0" data-event-propagation-prevent="data-event-propagation-prevent" />
-        <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-200 gx-0 flex-1 cursor-pointer" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        @if (item.Status == ProgressStatus.Completed)
+        {
+            <input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined" type="checkbox" checked="true" id="incomplete-task-@item.Id" data-event-propagation-prevent="data-event-propagation-prevent" />    
+        }
+        else
+        {
+            <input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined" type="checkbox" id="incomplete-task-@item.Id" data-event-propagation-prevent="data-event-propagation-prevent" />
+        }
+        
+        <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-200 gx-0 flex-1 cursor-pointer get-subtask-btn" data-subtask-id="@item.Id">
             <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
                 <div class="mb-1 mb-md-0 d-flex align-items-center lh-1">
-                    <label class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
-                        @item.Name
-                    </label>
-                    <span class="badge badge-phoenix ms-auto fs--2 badge-phoenix-primary">DRAFT</span>
+                    
+                        @if (item.Status == ProgressStatus.Completed)
+                        {
+                            <label id="subtask-@item.Id-label" class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
+                                <del>@item.Name</del>
+                            </label>
+                        }
+                        else
+                        {
+                            <label id="subtask-@item.Id-label" class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
+                                @item.Name
+                            </label>
+                        }
+                    
+                    <span id="subtask-@item.Id-status" class="badge badge-phoenix ms-auto fs--2 badge-phoenix-primary">@item.Status.GetEnumDescription()</span>
                 </div>
             </div>
             <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
@@ -39,3 +59,4 @@
         </div>
     </div>
 }
+</div>

@@ -20,7 +20,7 @@ namespace Cyvil.Mvc.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(long projectId)
         {
             var tasks = await _context.ActionItems
-                .Where(a => a.ProjectId == projectId)
+                .Where(a => a.ProjectId == projectId && a.ParentId == null)
                 .ToListAsync();
 
             return View(tasks);

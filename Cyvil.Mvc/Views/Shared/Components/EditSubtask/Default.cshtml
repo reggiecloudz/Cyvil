@@ -1,0 +1,40 @@
+@model ActionItemEditModel
+
+<div class="modal fade" id="editSubtaskModal" tabindex="-1" aria-labelledby="editSubtaskLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSubtaskLabel">Edit Subtask</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-subtask-form" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ModelId" />
+                    <div class="form-group mb-3">
+                        <label asp-for="ModelName" class="control-label"></label>
+                        <input asp-for="ModelName" class="form-control" />
+                        <span asp-validation-for="ModelName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ModelDetails" class="control-label"></label>
+                        <textarea asp-for="ModelDetails" class="form-control"></textarea>
+                        <span asp-validation-for="ModelDetails" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ModelDeadline" class="control-label"></label>
+                        <input asp-for="ModelDeadline" class="form-control" />
+                        <span asp-validation-for="ModelDeadline" class="text-danger"></span>
+                    </div>
+                    <div id="status-choices" class="form-group mb-3">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="edit-subtask-btn" form="edit-subtask-form" class="btn btn-primary">Edit</button>
+                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
