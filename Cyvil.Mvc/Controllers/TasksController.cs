@@ -118,8 +118,7 @@ namespace Cyvil.Mvc.Controllers
             }
 
             actionItem.Status = ProgressStatus.InProgress;
-            if (actionItem.StartDate == null)
-                actionItem.StartDate = DateTime.Now;
+            actionItem.StartDate = DateTime.Now;
 
             _context.Update(actionItem);
             _context.SaveChanges();

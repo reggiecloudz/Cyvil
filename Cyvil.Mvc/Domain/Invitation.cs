@@ -18,9 +18,9 @@ namespace Cyvil.Mvc.Domain
 
         public string Response { get; set; } = string.Empty;
 
-        public long TypeId { get; set; }
+        public long MeetingId { get; set; }
 
-        public MeetingType Type { get; set; }
+        public virtual Meeting? Meeting { get; set; }
 
         public string FromUserId { get; set; } = string.Empty;
 

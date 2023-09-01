@@ -27,18 +27,15 @@ namespace Cyvil.Mvc.Domain
         public string Description { get; set; } = string.Empty;
 
         [Range(0, long.MaxValue)]
-        public int MaxAttendees { get; set; }
-
-        public bool IsPublic { get; set; } = false;
-
-        public bool IsPrivate { get; set; } = false;
+        public int Capacity { get; set; } = 1;
 
         public long? MeetingTypeId { get; set; } = null;
-        public MeetingType MeetingType { get; set; } = MeetingType.Project;
+        public MeetingType MeetingType { get; set; } = MeetingType.Public;
 
-        public long ProjectId { get; set; }
-        public virtual Project? Project { get; set; }
+        public string CreatorId { get; set; } = string.Empty;
+        public virtual ApplicationUser? Creator { get; set; }
 
+        public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
         public virtual ICollection<Attendee> Attendees { get; set; } = new List<Attendee>();
     }
 }

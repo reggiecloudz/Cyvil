@@ -38,7 +38,7 @@ namespace Cyvil.Mvc.Controllers
             return View(user);
         }
 
-        [Route("{id}/[action]")]
+        [Route("{id}/Projects")]
         public async Task<IActionResult> Projects(string id)
         {
             if (id == null || _context.Users == null)
@@ -57,6 +57,27 @@ namespace Cyvil.Mvc.Controllers
 
             ViewData["CauseId"] = new SelectList(_context.Causes, "Id", "Name");
             ViewData["States"] = new SelectList(_context.States, "Id", "Name");
+
+            return View(user);
+        }
+
+        [Route("{id}/Events")]
+        public async Task<IActionResult> Events(string id)
+        {
+            if (id == null || _context.Users == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .Include(x => x.Meetings)
+                .Include(x => x.Events)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            
+            if (user == null)
+            {
+                return NotFound();
+            }
 
             return View(user);
         }

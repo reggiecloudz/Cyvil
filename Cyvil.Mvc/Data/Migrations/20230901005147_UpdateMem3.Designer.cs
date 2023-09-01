@@ -3,6 +3,7 @@ using System;
 using Cyvil.Mvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyvil.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230901005147_UpdateMem3")]
+    partial class UpdateMem3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,9 +345,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
 
@@ -363,6 +362,9 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("MaxAttendees")
+                        .HasColumnType("int");
 
                     b.Property<int>("MeetingType")
                         .HasColumnType("int");

@@ -3,6 +3,7 @@ using System;
 using Cyvil.Mvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyvil.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230901003718_UpdateMem2")]
+    partial class UpdateMem2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -304,9 +306,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<long>("MeetingId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -323,14 +322,18 @@ namespace Cyvil.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("TypeId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FromUserId");
-
-                    b.HasIndex("MeetingId");
 
                     b.HasIndex("ToUserId");
 
@@ -342,9 +345,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
@@ -360,9 +360,18 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("MaxAttendees")
+                        .HasColumnType("int");
 
                     b.Property<int>("MeetingType")
                         .HasColumnType("int");
@@ -851,12 +860,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cyvil.Mvc.Domain.Meeting", "Meeting")
-                        .WithMany("Invitations")
-                        .HasForeignKey("MeetingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "ToUser")
                         .WithMany()
                         .HasForeignKey("ToUserId")
@@ -864,8 +867,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("FromUser");
-
-                    b.Navigation("Meeting");
 
                     b.Navigation("ToUser");
                 });
@@ -1073,8 +1074,6 @@ namespace Cyvil.Mvc.Data.Migrations
             modelBuilder.Entity("Cyvil.Mvc.Domain.Meeting", b =>
                 {
                     b.Navigation("Attendees");
-
-                    b.Navigation("Invitations");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>

@@ -14,5 +14,8 @@ namespace Cyvil.Mvc.Domain
         Project,
         [Description("Team")]
         Team,
+        [Description("Task")]
+        Task
+
     }
 }

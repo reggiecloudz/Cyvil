@@ -20,6 +20,8 @@ namespace Cyvil.Mvc.Domain
 
         public bool IsMember { get; set; } = true;
 
+        public bool OnCreativeHold { get; set;} = false;
+
         public string ProfileImage { get; set; } = "noimage.png";
 
         [NotMapped]
@@ -29,6 +31,7 @@ namespace Cyvil.Mvc.Domain
         public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
         public virtual ICollection<ProjectParticipant> Participations { get; set; } = new List<ProjectParticipant>();
         public virtual ICollection<TeamMember> Teams { get; set; } = new List<TeamMember>();
+        public virtual ICollection<Meeting> Events { get; set; } = new List<Meeting>();
         public virtual ICollection<Attendee> Meetings { get; set; } = new List<Attendee>();
         public virtual ICollection<Applicant> Applications { get; set; } = new List<Applicant>();
         // public virtual ICollection<UserNotification> Notifications { get; set; } = new List<UserNotification>();

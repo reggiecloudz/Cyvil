@@ -34,20 +34,44 @@
         </li>
         <li class="nav-item has-submenu">
             <a class="nav-link text-secondary" href="#"> 
-                <i class="fa-solid fa-life-ring me-2"></i> Volunteer 
+                <i class="fa-solid fa-life-ring me-2"></i> Volunteer
             </a>
             <ul class="submenu collapse list-unstyled">
                 <li>
-                    <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Positions" asp-action="Index">
-                       <i class="fa-solid fa-newspaper me-2"></i> Help Wanted 
+                    <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Projects" asp-action="Index">
+                        <i class="fa-solid fa-newspaper me-2"></i> Help Wanted
                     </a>
                 </li>
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li>
-                        <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#">
-                            <i class="fa-solid fa-clipboard-list me-2"></i> 
-                            Applications
+                        <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Members" asp-action="Projects" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)!.Value">
+                            <i class="fa-solid fa-clipboard me-2"></i> Applications 
+                        </a>
+                    </li>
+                }
+            </ul>
+        </li>
+        <li class="nav-item has-submenu">
+            <a class="nav-link text-secondary" href="#"> 
+                <i class="fa-solid fa-calendar me-2"></i> Events
+            </a>
+            <ul class="submenu collapse list-unstyled">
+                <li>
+                    <a style="padding-left: 2rem;" class="nav-link text-secondary" href="#!">
+                        <i class="fa-solid fa-earth-americas me-2"></i> Public Events 
+                    </a>
+                </li>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li>
+                        <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Members" asp-action="Events" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)!.Value">
+                            <i class="fa-solid fa-calendar-check me-2"></i> My Events 
+                        </a>
+                    </li>
+                    <li>
+                        <a style="padding-left: 2rem;" class="nav-link text-secondary" asp-controller="Members" asp-action="Projects" asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)!.Value">
+                            <i class="fa-solid fa-envelope-open-text me-2"></i> Invitations 
                         </a>
                     </li>
                 }
