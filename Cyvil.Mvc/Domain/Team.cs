@@ -13,6 +13,8 @@ namespace Cyvil.Mvc.Domain
 
         public string Name { get; set; } = string.Empty;
 
+        public string ProjectManagerId { get; set; } = string.Empty;
+
         public long ProjectId { get; set; }
         public virtual Project? Project { get; set; }
 

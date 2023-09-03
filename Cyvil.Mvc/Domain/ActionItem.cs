@@ -26,11 +26,14 @@ namespace Cyvil.Mvc.Domain
         public bool IsCompleted { get; set; } = false;
 
         public ProgressStatus Status { get; set; } = ProgressStatus.Draft;
+        
+        public long ProjectId { get; set; }
+        public string ProjectManagerId { get; set; } = string.Empty;
 
         public long? ParentId { get; set; } = null;
         public virtual ActionItem? Parent { get; set; }
 
-        public long ProjectId { get; set; }
+        
 
         public long TeamId { get; set; }
         public virtual Team? Team { get; set; }

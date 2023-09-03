@@ -9,6 +9,8 @@ namespace Cyvil.Mvc.Domain
 {
     public class Meeting : Entity
     {
+        public Meeting() {}
+        
         public long Id { get; set; }
 
         [Required]

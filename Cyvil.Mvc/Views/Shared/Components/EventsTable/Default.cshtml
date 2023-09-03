@@ -7,7 +7,7 @@
             <h2 class="mb-0">Events<span class="fw-normal text-700 ms-3">(32)</span></h2>
         </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-primary px-5" data-bs-toggle="modal" data-bs-target="#saveProjectModal">
+            <button type="button" class="btn btn-primary px-5" data-bs-toggle="modal" data-bs-target="#saveMeetingModal">
                 <i class="fa-solid fa-plus me-2"></i>New event
             </button>
         </div>
@@ -25,12 +25,6 @@
                     <a class="nav-link px-2 py-1" href="#">
                         <span>Public</span>
                         <span class="text-700 fw-semi-bold">(14)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link px-2 py-1" href="#">
-                        <span>Private</span>
-                        <span class="text-700 fw-semi-bold">(2)</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -126,53 +120,53 @@
                 <tr>
                     <th class="sort white-space-nowrap align-middle ps-0" scope="col" data-sort="projectName"
                         style="width:30%;">EVENT NAME</th>
-                    <th class="sort align-middle ps-3" scope="col" data-sort="volunteers" style="width:10%;">
+                    <th class="sort align-middle ps-3" scope="col" data-sort="type" style="width:5%;">
                         TYPE</th>
-                    <th class="sort align-middle ps-3" scope="col" data-sort="start" style="width:10%;">ATTENDEES
+                    <th class="sort align-middle ps-3" scope="col" data-sort="attendees" style="width:5%;">ATTENDEES
                     </th>
-                    <th class="sort align-middle ps-3" scope="col" data-sort="deadline" style="width:10%;">START TIME
+                    <th class="sort align-middle ps-3" scope="col" data-sort="startDate" style="width:5%;">START TIME
                     </th>
-                    <th class="sort align-middle ps-3" scope="col" data-sort="projectprogress" style="width:10%;">
+                    <th class="sort align-middle ps-3" scope="col" data-sort="endDate" style="width:5%;">
                         END TIME</th>
-                    <th class="sort align-middle text-end" scope="col" data-sort="statuses" style="width:10%;">
+                    <th class="sort align-middle ps-3" scope="col" data-sort="capacity" style="width:5%;">
                         CAPACITY</th>
-                    <th class="sort align-middle text-end" scope="col" style="width:10%;">
+                    <th class="sort align-middle ps-3" scope="col" data-sort="location" style="width:10%;">
                         LOCATION</th>
                     <th class="sort align-middle text-end" scope="col" style="width:10%;">ACTIONS</th>
                 </tr>
             </thead>
-            <tbody id="event-list-table" class="list" id="event-list-table-body">
+            <tbody id="event-list-table" class="list">
                 @foreach (var item in Model)
                 {
                     <tr class="position-static">
                         <td class="align-middle time white-space-nowrap ps-0 eventName py-4">
-                            <a class="fw-bold fs-0" asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">
+                            <a class="fw-bold fs-0" asp-controller="Events" asp-action="Details" asp-route-id="@item.Id">
                                 @item.Name
                             </a>
                         </td>
-                        <td class="align-middle white-space-nowrap text-end type">
-                            <p class="mb-0 fs--1 text-900">
+                        <td class="align-middle white-space-nowrap type py-4">
+                            <p class="mb-0 fs--1 text-900 text-center">
                                 @item.MeetingType.GetEnumDescription()
                             </p>
                         </td>
-                        <td class="align-middle white-space-nowrap attendees ps-3 py-4">
-                            0
+                        <td class="align-middle white-space-nowrap attendees py-4">
+                             <p class="mb-0 fs--1 text-900 text-center">0</p>
                         </td>
-                        <td class="align-middle white-space-nowrap startDate ps-3 py-4">
-                            <p class="mb-0 fs--1 text-900">
+                        <td class="align-middle white-space-nowrap startDate py-4">
+                            <p class="mb-0 fs--1 text-900 text-center">
                                 @item.StartDate.ToString("MMM dd, yyyy hh:mm tt")
                             </p>
                         </td>
-                        <td class="align-middle white-space-nowrap endDate ps-3 py-4">
-                            <p class="mb-0 fs--1 text-900">
+                        <td class="align-middle white-space-nowrap endDate py-4">
+                            <p class="mb-0 fs--1 text-900 text-center">
                                 @item.EndDate.ToString("MMM dd, yyyy hh:mm tt")
                             </p>
                         </td>
-                        <td class="align-middle white-space-nowrap ps-3 capacity">
-                            <p class="text-800 fs--2 mb-0">@item.Capacity</p>
+                        <td class="align-middle white-space-nowrap py-4 capacity">
+                            <p class="mb-0 fs--1 text-900 text-center">@item.Capacity</p>
                         </td>
-                        <td class="align-middle text-end white-space-nowrap pe-0 location">
-                            <p class="text-800 fs--2 mb-0">@item.Location</p>
+                        <td class="align-middle white-space-nowrap ps-3 py-4 location">
+                            <p class="mb-0 fs--1 text-900">@item.Location </p>
                         </td>
                         <td class="align-middle text-end white-space-nowrap pe-0 action">
                             <div class="font-sans-serif btn-reveal-trigger position-static">

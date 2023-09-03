@@ -3,6 +3,7 @@ using System;
 using Cyvil.Mvc.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyvil.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230901211304_UpdateMem6")]
+    partial class UpdateMem6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,10 +52,6 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("ProjectManagerId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
@@ -416,10 +414,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ProjectManagerId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -607,10 +601,6 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("ProjectManagerId")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");

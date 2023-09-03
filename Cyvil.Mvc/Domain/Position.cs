@@ -25,6 +25,8 @@ namespace Cyvil.Mvc.Domain
 
         public uint PositionsFilled { get; set; } = 0;
 
+        public string ProjectManagerId { get; set; } = string.Empty;
+
         public long ProjectId { get; set; }
         public virtual Project? Project { get; set; }
 

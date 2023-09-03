@@ -1,0 +1,16 @@
+@model IEnumerable<InviteeListModel>
+
+
+@if(Model.Any())
+{
+    <ul>
+        @foreach(var item in Model)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No users to invite</p>
+}
