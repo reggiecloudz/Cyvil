@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cyvil.Mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230823041830_Update3")]
-    partial class Update3
+    [Migration("20230905033852_Reset")]
+    partial class Reset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,6 +52,10 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("ProjectManagerId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
@@ -152,6 +156,13 @@ namespace Cyvil.Mvc.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
+                    b.Property<bool>("OnCreativeHold")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Organization")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
 
@@ -175,6 +186,9 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("UseOrganizationName")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
@@ -193,27 +207,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Assignment", b =>
-                {
-                    b.Property<long>("ActionItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("AssigneeId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("ActionItemId", "AssigneeId");
-
-                    b.HasIndex("AssigneeId");
-
-                    b.ToTable("Assignments");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Attendee", b =>
                 {
                     b.Property<long>("MeetingId")
@@ -224,6 +217,9 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
@@ -301,64 +297,21 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.ToTable("Cities");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Invitation", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("FromUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<bool>("IsAccepted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Response")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ToUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<long>("TypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FromUserId");
-
-                    b.HasIndex("ToUserId");
-
-                    b.ToTable("Invitations");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Meeting", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -367,18 +320,9 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<bool>("IsPrivate")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("MaxAttendees")
-                        .HasColumnType("int");
 
                     b.Property<int>("MeetingType")
                         .HasColumnType("int");
@@ -390,9 +334,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
@@ -401,7 +342,7 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Meetings");
                 });
@@ -430,6 +371,10 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("ProjectManagerId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -488,7 +433,7 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -497,8 +442,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("Slug");
 
                     b.HasIndex("CauseId");
 
@@ -620,6 +563,10 @@ namespace Cyvil.Mvc.Data.Migrations
 
                     b.Property<long>("ProjectId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("ProjectManagerId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime(6)");
@@ -820,25 +767,6 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Assignment", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.ActionItem", "ActionItem")
-                        .WithMany("Assignees")
-                        .HasForeignKey("ActionItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "Assignee")
-                        .WithMany("Assignments")
-                        .HasForeignKey("AssigneeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ActionItem");
-
-                    b.Navigation("Assignee");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Attendee", b =>
                 {
                     b.HasOne("Cyvil.Mvc.Domain.Meeting", "Meeting")
@@ -878,34 +806,15 @@ namespace Cyvil.Mvc.Data.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("Cyvil.Mvc.Domain.Invitation", b =>
-                {
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "FromUser")
-                        .WithMany()
-                        .HasForeignKey("FromUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "ToUser")
-                        .WithMany()
-                        .HasForeignKey("ToUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FromUser");
-
-                    b.Navigation("ToUser");
-                });
-
             modelBuilder.Entity("Cyvil.Mvc.Domain.Meeting", b =>
                 {
-                    b.HasOne("Cyvil.Mvc.Domain.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
+                    b.HasOne("Cyvil.Mvc.Domain.ApplicationUser", "Creator")
+                        .WithMany("Events")
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Project");
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.Position", b =>
@@ -1059,8 +968,6 @@ namespace Cyvil.Mvc.Data.Migrations
 
             modelBuilder.Entity("Cyvil.Mvc.Domain.ActionItem", b =>
                 {
-                    b.Navigation("Assignees");
-
                     b.Navigation("Subtasks");
                 });
 
@@ -1068,7 +975,7 @@ namespace Cyvil.Mvc.Data.Migrations
                 {
                     b.Navigation("Applications");
 
-                    b.Navigation("Assignments");
+                    b.Navigation("Events");
 
                     b.Navigation("Meetings");
 

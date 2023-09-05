@@ -1,4 +1,5 @@
 using Cyvil.Mvc.Data;
+using Cyvil.Mvc.Data.Services;
 using Cyvil.Mvc.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<IMeetingService, MeetingService>();
 // builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN"); 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt => 
     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

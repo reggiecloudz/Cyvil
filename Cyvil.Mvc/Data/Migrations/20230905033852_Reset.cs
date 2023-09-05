@@ -6,7 +6,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Cyvil.Mvc.Data.Migrations
 {
-    public partial class NewDay : Migration
+    public partial class Reset : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,11 @@ namespace Cyvil.Mvc.Data.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false),
                     FullName = table.Column<string>(type: "longtext", nullable: false),
+                    Organization = table.Column<string>(type: "longtext", nullable: false),
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false),
+                    UseOrganizationName = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     IsMember = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    OnCreativeHold = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     ProfileImage = table.Column<string>(type: "longtext", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
@@ -54,6 +58,7 @@ namespace Cyvil.Mvc.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.UniqueConstraint("AK_AspNetUsers_Slug", x => x.Slug);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -209,34 +214,29 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Invitations",
+                name: "Meetings",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Title = table.Column<string>(type: "longtext", nullable: false),
-                    Message = table.Column<string>(type: "longtext", nullable: false),
-                    Response = table.Column<string>(type: "longtext", nullable: false),
-                    TypeId = table.Column<long>(type: "bigint", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    FromUserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    ToUserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    IsAccepted = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Location = table.Column<string>(type: "longtext", nullable: false),
+                    Description = table.Column<string>(type: "longtext", nullable: false),
+                    Capacity = table.Column<int>(type: "int", nullable: false),
+                    MeetingTypeId = table.Column<long>(type: "bigint", nullable: true),
+                    MeetingType = table.Column<int>(type: "int", nullable: false),
+                    CreatorId = table.Column<string>(type: "varchar(255)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invitations", x => x.Id);
+                    table.PrimaryKey("PK_Meetings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invitations_AspNetUsers_FromUserId",
-                        column: x => x.FromUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Invitations_AspNetUsers_ToUserId",
-                        column: x => x.ToUserId,
+                        name: "FK_Meetings_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -264,6 +264,34 @@ namespace Cyvil.Mvc.Data.Migrations
                         name: "FK_Cities_States_StateId",
                         column: x => x.StateId,
                         principalTable: "States",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Attendees",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
+                    MeetingId = table.Column<long>(type: "bigint", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendees", x => new { x.MeetingId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_Attendees_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Attendees_Meetings_MeetingId",
+                        column: x => x.MeetingId,
+                        principalTable: "Meetings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -313,38 +341,6 @@ namespace Cyvil.Mvc.Data.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Meetings",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Location = table.Column<string>(type: "longtext", nullable: false),
-                    Description = table.Column<string>(type: "longtext", nullable: false),
-                    MaxAttendees = table.Column<int>(type: "int", nullable: false),
-                    IsPublic = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    IsPrivate = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    MeetingTypeId = table.Column<long>(type: "bigint", nullable: true),
-                    MeetingType = table.Column<int>(type: "int", nullable: false),
-                    ProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Meetings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Meetings_Projects_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Positions",
                 columns: table => new
                 {
@@ -356,6 +352,7 @@ namespace Cyvil.Mvc.Data.Migrations
                     Closed = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     PeopleNeeded = table.Column<uint>(type: "int unsigned", nullable: false),
                     PositionsFilled = table.Column<uint>(type: "int unsigned", nullable: false),
+                    ProjectManagerId = table.Column<string>(type: "longtext", nullable: false),
                     ProjectId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -435,6 +432,7 @@ namespace Cyvil.Mvc.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "longtext", nullable: false),
+                    ProjectManagerId = table.Column<string>(type: "longtext", nullable: false),
                     ProjectId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -446,33 +444,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         name: "FK_Teams_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Attendees",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    MeetingId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Attendees", x => new { x.MeetingId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_Attendees_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Attendees_Meetings_MeetingId",
-                        column: x => x.MeetingId,
-                        principalTable: "Meetings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -523,8 +494,9 @@ namespace Cyvil.Mvc.Data.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IsCompleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: false),
                     ProjectId = table.Column<long>(type: "bigint", nullable: false),
+                    ProjectManagerId = table.Column<string>(type: "longtext", nullable: false),
+                    ParentId = table.Column<long>(type: "bigint", nullable: true),
                     TeamId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -536,8 +508,7 @@ namespace Cyvil.Mvc.Data.Migrations
                         name: "FK_ActionItems_ActionItems_ParentId",
                         column: x => x.ParentId,
                         principalTable: "ActionItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ActionItems_Teams_TeamId",
                         column: x => x.TeamId,
@@ -570,33 +541,6 @@ namespace Cyvil.Mvc.Data.Migrations
                         name: "FK_TeamMembers_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Assignments",
-                columns: table => new
-                {
-                    ActionItemId = table.Column<long>(type: "bigint", nullable: false),
-                    AssigneeId = table.Column<string>(type: "varchar(255)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Assignments", x => new { x.ActionItemId, x.AssigneeId });
-                    table.ForeignKey(
-                        name: "FK_Assignments_ActionItems_ActionItemId",
-                        column: x => x.ActionItemId,
-                        principalTable: "ActionItems",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Assignments_AspNetUsers_AssigneeId",
-                        column: x => x.AssigneeId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -660,11 +604,6 @@ namespace Cyvil.Mvc.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Assignments_AssigneeId",
-                table: "Assignments",
-                column: "AssigneeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Attendees_UserId",
                 table: "Attendees",
                 column: "UserId");
@@ -680,19 +619,9 @@ namespace Cyvil.Mvc.Data.Migrations
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invitations_FromUserId",
-                table: "Invitations",
-                column: "FromUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invitations_ToUserId",
-                table: "Invitations",
-                column: "ToUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Meetings_ProjectId",
+                name: "IX_Meetings_CreatorId",
                 table: "Meetings",
-                column: "ProjectId");
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Positions_ProjectId",
@@ -739,6 +668,9 @@ namespace Cyvil.Mvc.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ActionItems");
+
+            migrationBuilder.DropTable(
                 name: "Applicants");
 
             migrationBuilder.DropTable(
@@ -757,13 +689,7 @@ namespace Cyvil.Mvc.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Assignments");
-
-            migrationBuilder.DropTable(
                 name: "Attendees");
-
-            migrationBuilder.DropTable(
-                name: "Invitations");
 
             migrationBuilder.DropTable(
                 name: "ProjectParticipants");
@@ -779,9 +705,6 @@ namespace Cyvil.Mvc.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "ActionItems");
 
             migrationBuilder.DropTable(
                 name: "Meetings");

@@ -37,7 +37,6 @@ namespace Cyvil.Mvc.Domain
         public string CreatorId { get; set; } = string.Empty;
         public virtual ApplicationUser? Creator { get; set; }
 
-        public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
         public virtual ICollection<Attendee> Attendees { get; set; } = new List<Attendee>();
     }
 }

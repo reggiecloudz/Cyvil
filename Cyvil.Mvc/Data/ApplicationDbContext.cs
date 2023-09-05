@@ -25,7 +25,6 @@ namespace Cyvil.Mvc.Data
         public DbSet<Proposal> Proposals { get; set; }
         public DbSet<ActionItem> ActionItems { get; set; }
         public DbSet<Meeting> Meetings { get; set; }
-        public DbSet<Invitation> Invitations { get; set; }
         public DbSet<Attendee> Attendees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -7,6 +7,8 @@ namespace Cyvil.Mvc.Domain
 {
     public class Attendee : Entity
     {
+        public MeetingAttendanceStatus Status { get; set; } = MeetingAttendanceStatus.Pending;
+
         public string UserId { get; set; } = string.Empty;
         public virtual ApplicationUser? User { get; set; }
 

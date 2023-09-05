@@ -68,6 +68,50 @@ namespace Cyvil.Mvc.Controllers
 
             return View(meeting);
         }
+
+        [Route("{id}/Invite")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> Invite(long? id, string[] selectedUsers)
+        {
+            if (id == null)
+            {
+                return new JsonResult(new 
+                {
+                    Message = "Not found."
+                });
+            }
+
+            var meeting = await _context.Meetings.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (meeting == null)
+            {
+                return new JsonResult(new 
+                {
+                    Message = "Not found."
+                });
+            }
+
+            if (selectedUsers != null)
+            {
+                foreach (var user in selectedUsers)
+                {
+                    meeting.Attendees.Add(new Attendee { UserId = user });
+                }
+                _context.Update(meeting);
+                _context.SaveChanges();
+
+                return new JsonResult(new 
+                {
+                    Message = "Operation Successful"
+                });
+            }
+
+            return new JsonResult(new 
+            {
+                Message = "No users selected."
+            });
+        }
         
         [Route("{eventType}/GetEventTypeObjects")]
         [HttpGet]
