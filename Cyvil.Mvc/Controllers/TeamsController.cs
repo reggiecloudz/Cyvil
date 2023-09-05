@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Cyvil.Mvc.Data;
 using Cyvil.Mvc.Domain;
@@ -41,7 +42,7 @@ namespace Cyvil.Mvc.Controllers
 
                 return Json(json);
             }
-
+            team.ProjectManagerId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             await _context.AddAsync(team);
             await _context.SaveChangesAsync();
 

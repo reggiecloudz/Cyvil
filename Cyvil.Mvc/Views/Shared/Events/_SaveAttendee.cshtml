@@ -1,0 +1,22 @@
+@model Meeting
+
+<div class="modal fade" id="saveAttendeeModal" tabindex="-1" aria-labelledby="saveAttendeeLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="saveAttendeeLabel">Save Attendee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="attendee-form" method="post">
+                    @await Component.InvokeAsync("GetInvitees", new { eventType = Model.MeetingType, id = Model.MeetingTypeId })
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="attendee-form" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

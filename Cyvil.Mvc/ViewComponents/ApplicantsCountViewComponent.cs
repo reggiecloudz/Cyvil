@@ -21,7 +21,7 @@ namespace Cyvil.Mvc.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(long positionId)
         {
             var count = await _context.Applicants
-                .Where(a => a.PositionId == positionId && a.ApplicantStatus == ApplicantStatus.Applied)
+                .Where(a => a.PositionId == positionId && a.ApplicantStatus != ApplicantStatus.Selected)
                 .Select(a => a.Id)
                 .LongCountAsync();
 

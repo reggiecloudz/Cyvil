@@ -18,6 +18,11 @@ namespace Cyvil.Mvc.Data.Services
 
         public async Task<List<InviteeListModel>> GetInvitees(int eventType, long id)
         {
+            var attendees = await _context.Attendees
+                .Where(m => m.MeetingId == id)
+                .Select(m => m.UserId)
+                .ToListAsync();
+
             switch (eventType)
             {
                 case 1:
@@ -28,7 +33,8 @@ namespace Cyvil.Mvc.Data.Services
                         { 
                             Id = p.ParticipantId,
                             Name = p.Participant!.FullName,
-                            Role = p.Position
+                            Role = p.Position,
+                            Selected = attendees.Contains(p.ParticipantId)
                         })
                         .ToListAsync();
                     return participants;
@@ -39,7 +45,8 @@ namespace Cyvil.Mvc.Data.Services
                         .Select(a => new InviteeListModel
                         {
                             Id = a.UserId,
-                            Name = a.User!.FullName
+                            Name = a.User!.FullName,
+                            Selected = attendees.Contains(a.UserId)
                         })
                         .ToListAsync();
                     return applicants;
@@ -51,7 +58,8 @@ namespace Cyvil.Mvc.Data.Services
                         {
                             Id = t.MemberId,
                             Name = t.Member!.FullName,
-                            Role = t.Role
+                            Role = t.Role,
+                            Selected = attendees.Contains(t.MemberId)
                         })
                         .ToListAsync();
                     return members;
@@ -68,7 +76,8 @@ namespace Cyvil.Mvc.Data.Services
                         {
                             Id = item.MemberId,
                             Name = item.Member!.FullName,
-                            Role = item.Role
+                            Role = item.Role,
+                            Selected = attendees.Contains(item.MemberId)
                         });
                     }
                     return invitees;

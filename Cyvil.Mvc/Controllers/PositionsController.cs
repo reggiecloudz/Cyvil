@@ -56,6 +56,7 @@ namespace Cyvil.Mvc.Controllers
             }
 
             position.Slug = FriendlyUrlHelper.GetFriendlyTitle(position.Title);
+            position.ProjectManagerId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             await _context.AddAsync(position);
             await _context.SaveChangesAsync();
             _context.SaveChanges();

@@ -25,6 +25,34 @@ function saveApplicant() {
     });
 }
 
+function interviewApplicant() {
+
+    var anchors = document.querySelectorAll('a[data-interview-applicant]');
+    
+    anchors.forEach((a) => {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            var target = e.target;
+
+            const applicantId = target.dataset.interviewApplicant;
+            const url = `/Applicants/${applicantId}/Interview`;
+
+            function handleSuccess(response) {
+                document.getElementById("applicant-status").innerHTML = response.status;
+                target.classList.add("disabled");
+                console.log(response.message);
+              }
+              
+            function handleError(xhr, status, error) {
+                console.log('Request failed:', error);
+            }
+              
+            ajaxGet(url, handleSuccess, handleError);
+        });
+    });
+
+}
+
 function selectApplicant() {
 
     var anchors = document.querySelectorAll('a[data-select-applicant]');

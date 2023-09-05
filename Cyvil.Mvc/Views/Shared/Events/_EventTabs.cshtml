@@ -8,12 +8,7 @@
     </li>
     <li class="nav-item text-nowrap me-2" role="presentation">
         <a class="nav-link" id="subtasks-tab" data-bs-toggle="tab" href="#tab-subtasks" role="tab" aria-controls="tab-subtasks" aria-selected="false" tabindex="-1"> 
-            <span class="fa-solid fa-envelope-open-text me-2 tab-icon-color"></span>Invitations
-        </a>
-    </li>
-    <li class="nav-item text-nowrap me-2" role="presentation">
-        <a class="nav-link" id="notes-tab" data-bs-toggle="tab" href="#tab-notes" role="tab" aria-controls="tab-notes" aria-selected="false" tabindex="-1"> 
-            <span class="fa-solid fa-people-roof me-2 tab-icon-color"></span>Attendees
+            <span class="fa-solid fa-envelope-open-text me-2 tab-icon-color"></span>Attendees
         </a>
     </li>
     <li class="nav-item text-nowrap me-2" role="presentation">
@@ -28,9 +23,6 @@
         @Model.Description
     </div>
     <div class="tab-pane fade" id="tab-subtasks" role="tabpanel" aria-labelledby="subtasks-tab">
-        @await Component.InvokeAsync("GetInvitees", new { eventType = Model.MeetingType, id = Model.MeetingTypeId })
-    </div>
-    <div class="tab-pane fade" id="tab-notes" role="tabpanel" aria-labelledby="notes-tab">
         ...
     </div>
     <div class="tab-pane fade" id="tab-chat" role="tabpanel" aria-labelledby="chat-tab">

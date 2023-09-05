@@ -51,7 +51,33 @@ namespace Cyvil.Mvc.Controllers
             return new JsonResult("Operation Successful");
         }
 
-        [Route("{id}/[action]")]
+        [Route("{id}/Interview")]
+        public async Task<JsonResult> Interview(long? id)
+        {
+            if (id == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            var applicant = await _context.Applicants.Include(x => x.Position).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (applicant == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            applicant.ApplicantStatus = ApplicantStatus.Interview;
+            _context.Update(applicant);
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation Successful",
+                Status = applicant.ApplicantStatus.GetEnumDescription()
+            });
+        }
+
+        [Route("{id}/Select")]
         public async Task<JsonResult> Select(long? id)
         {
             if (id == null)

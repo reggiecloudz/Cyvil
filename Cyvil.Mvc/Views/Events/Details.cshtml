@@ -16,7 +16,7 @@ ViewData["Title"] = "Meeting";
                 </div>
                 <div class="col-12 col-md-auto d-flex">
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-phoenix-primary" data-bs-toggle="tooltip" data-bs-title="Send invitation" data-bs-toggle="modal" data-bs-target="#saveSubtaskModal">
+                        <button type="button" class="btn btn-phoenix-primary" data-bs-toggle="modal" data-bs-target="#saveAttendeeModal">
                             <span class="fa-solid fa-paper-plane me-sm-2"></span>
                         </button>
                         <button type="button" class="btn btn-phoenix-info" data-bs-toggle="tooltip" data-bs-title="Edit event">
@@ -66,7 +66,7 @@ ViewData["Title"] = "Meeting";
     <partial name="_Footer" />
 </div>
 
-
+@await Html.PartialAsync("Events/_SaveAttendee", Model)
 
 @section VendorScripts {
 }
