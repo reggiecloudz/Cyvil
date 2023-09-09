@@ -42,6 +42,18 @@ function insertMemberTableData(data) {
                 </a>
             </td>
             <td class="align-middle">${data.role}</td>
+            <td class="align-middle">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Assignments
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </td>
             <td class="align-middle white-space-nowrap text-end pe-0">
                 <div class="font-sans-serif btn-reveal-trigger position-static">
                     <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">
@@ -108,6 +120,7 @@ function addMember() {
 
         function successCallback(response) {
             modal.hide();
+            $('input[name="MemberId"]').filter(':checked').parent().remove();
             form.reset();
             insertMemberTableData(response);
             console.log(response);

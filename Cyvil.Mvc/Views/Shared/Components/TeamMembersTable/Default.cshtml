@@ -11,12 +11,13 @@
 </div>
 
 <div>
-    <div class="table-responsive mx-n1 px-1">
+    <div class="mx-n1 px-1">
         <table class="table border-top border-200 fs--1 mb-0">
              <thead>
                 <tr>
                     <th class="align-middle ps-3" scope="col">Member</th>
                     <th class="align-middle" scope="col">Role</th>
+                    <th class="align-middle" scope="col">Assignments</th>
                     <th class="text-end align-middle pe-0" scope="col">Actions</th>
                 </tr>
              </thead>
@@ -33,6 +34,10 @@
                             </a>
                         </td>
                         <td class="align-middle">@item.Role</td>
+                        <td class="align-middle pe-3">
+                            @await Component.InvokeAsync("SelectableActionItem", new { teamId = item.TeamId })
+                        </td>
+                        
                         <td class="align-middle white-space-nowrap text-end pe-0">
                             <div class="font-sans-serif btn-reveal-trigger position-static">
                                 <button class="btn btn-sm dropdown-toggle dropdown-caret-none transition-none btn-reveal fs--2" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent">

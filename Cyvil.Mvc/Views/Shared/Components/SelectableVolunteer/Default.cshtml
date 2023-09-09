@@ -2,7 +2,7 @@
 
 <div class="modal fade" id="volunteerModal" tabindex="-1" aria-labelledby="volunteerLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="volunteerLabel">Add Member</h5>
@@ -10,16 +10,17 @@
             </div>
             <div class="modal-body">
                 <form id="add-member-form" method="post">
+                    <input asp-for="TeamId" type="hidden" value="@Model.TeamId" />
+
                     <div class="mb-3">
-                        <label asp-for="Role" class="form-label">Role</label>
-                        <input type="text" class="form-control" asp-for="Role"  placeholder="User's role on team" />
+                        <label asp-for="Role" class="control-label">Role</label>
+                        <input class="form-control" asp-for="Role"  placeholder="User's role on team" />
                     </div>
 
-                    <input asp-for="TeamId" type="hidden" value="@Model.TeamId" />
                     
                     @foreach (var item in Model.Volunteers)
                     {
-                        <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline p-0">
                             <input class="form-check-input opacity-0" id="MemberId_@item.Value" asp-for="MemberId" type="radio" value="@item.Value" />
                             <label class="btn btn-outline-primary control-me" for="MemberId_@item.Value">
                                 <div class="avatar avatar-m">

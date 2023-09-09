@@ -599,3 +599,67 @@ public IActionResult CheckRelationship(int studentId, int courseId)
     return NotFound("The relationship does not exist.");
 }
 ```
+
+To group sub-categories by their parent using C# and Entity Framework, you can use the `GroupBy` method provided by LINQ. Here's an example:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+// Assuming you have the following Category class
+public class Category
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int ParentId { get; set; }
+}
+
+// Assuming you have a list of categories
+List<Category> categories = new List<Category>
+{
+    new Category { Id = 1, Name = "Category 1", ParentId = 0 },
+    new Category { Id = 2, Name = "Category 2", ParentId = 0 },
+    new Category { Id = 3, Name = "Sub-category 1", ParentId = 1 },
+    new Category { Id = 4, Name = "Sub-category 2", ParentId = 1 },
+    new Category { Id = 5, Name = "Sub-category 3", ParentId = 2 },
+    new Category { Id = 6, Name = "Sub-category 4", ParentId = 2 },
+};
+
+// Group sub-categories by their parent
+var groupedCategories = categories.GroupBy(c => c.ParentId);
+
+// Print the grouped categories
+foreach (var group in groupedCategories)
+{
+    Console.WriteLine($"Parent Category ID: {group.Key}");
+    foreach (var category in group)
+    {
+        Console.WriteLine($"- Sub-category ID: {category.Id}, Name: {category.Name}");
+    }
+    Console.WriteLine();
+}
+```
+
+This code assumes you have a `Category` class with properties `Id`, `Name`, and `ParentId`. You can replace it with your actual class and properties.
+
+The `GroupBy` method groups the categories based on their `ParentId` property. The result is a collection of groups, where each group has a key representing the parent category ID and a collection of sub-categories.
+
+The code then prints the grouped categories, displaying the parent category ID and the sub-category ID and name.
+
+Make sure to include the necessary namespaces and adjust the code according to your specific requirements.
+
+```javascript
+function handleCheckboxClick(event) {
+  const checkbox = event.target;
+  const selector = checkbox.name;
+  
+  // Do something with the selector
+  console.log(`Checkbox with name "${selector}" was clicked.`);
+}
+
+// Add event listeners to all checkboxes
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+checkboxes.forEach((checkbox) => {
+  checkbox.addEventListener('click', handleCheckboxClick);
+});

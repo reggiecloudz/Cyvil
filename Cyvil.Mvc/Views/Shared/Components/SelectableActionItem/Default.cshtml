@@ -1,0 +1,24 @@
+@model IEnumerable<GroupedTasksModel>
+
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Assignments
+  </button>
+  <div class="dropdown-menu">
+    <form class="px-2 py-2" style="width: 100%;">
+        @foreach (var group in Model)
+        {
+            <strong>@group.Task!.Name</strong>
+            @foreach (var subtask in group.Subtasks)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="@subtask.Id" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        @subtask.Name
+                    </label>
+                </div>
+            }
+        }
+    </form>
+  </div>
+</div>

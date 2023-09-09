@@ -16,7 +16,7 @@ namespace Cyvil.Mvc.Data.Services
             _context = context;
         }
 
-        public async Task<List<InviteeListModel>> GetInvitees(int eventType, long id)
+        public async Task<List<SelectableUserModel>> GetInvitees(int eventType, long id)
         {
             var attendees = await _context.Attendees
                 .Where(m => m.MeetingId == id)
@@ -29,7 +29,7 @@ namespace Cyvil.Mvc.Data.Services
                     var participants = await _context.ProjectParticipants
                         .Where(p => p.ProjectId == id)
                         .Include(p => p.Participant)
-                        .Select(p => new InviteeListModel
+                        .Select(p => new SelectableUserModel
                         { 
                             Id = p.ParticipantId,
                             Name = p.Participant!.FullName,
@@ -42,7 +42,7 @@ namespace Cyvil.Mvc.Data.Services
                     var applicants = await _context.Applicants
                         .Where(a => a.PositionId == id && a.ApplicantStatus == ApplicantStatus.Interview)
                         .Include(a => a.User)
-                        .Select(a => new InviteeListModel
+                        .Select(a => new SelectableUserModel
                         {
                             Id = a.UserId,
                             Name = a.User!.FullName,
@@ -54,7 +54,7 @@ namespace Cyvil.Mvc.Data.Services
                     var members = await _context.TeamMembers
                         .Where(t => t.TeamId == id)
                         .Include(t => t.Member)
-                        .Select(t => new InviteeListModel
+                        .Select(t => new SelectableUserModel
                         {
                             Id = t.MemberId,
                             Name = t.Member!.FullName,
@@ -64,7 +64,7 @@ namespace Cyvil.Mvc.Data.Services
                         .ToListAsync();
                     return members;
                 case 4:
-                    var invitees = new List<InviteeListModel>();
+                    var invitees = new List<SelectableUserModel>();
                     var actionItem = await _context.ActionItems
                         .Include(a => a.Team)
                             .ThenInclude(t => t!.Members)
@@ -72,7 +72,7 @@ namespace Cyvil.Mvc.Data.Services
                         .FirstOrDefaultAsync(a => a.Id == id);
                     foreach (var item in actionItem!.Team!.Members)
                     {
-                        invitees.Add(new InviteeListModel
+                        invitees.Add(new SelectableUserModel
                         {
                             Id = item.MemberId,
                             Name = item.Member!.FullName,
@@ -82,7 +82,7 @@ namespace Cyvil.Mvc.Data.Services
                     }
                     return invitees;
                 default:
-                    return new List<InviteeListModel>();
+                    return new List<SelectableUserModel>();
             }
         }
 

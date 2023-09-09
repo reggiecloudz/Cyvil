@@ -1,8 +1,8 @@
 namespace Cyvil.Mvc.Models
 {
-    public class InviteeListModel
+    public class SelectableUserModel
     {
-        public InviteeListModel(){}
+        public SelectableUserModel(){}
 
         public string Id { get; set; } = string.Empty;
 

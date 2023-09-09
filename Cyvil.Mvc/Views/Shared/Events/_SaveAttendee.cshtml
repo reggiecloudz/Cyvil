@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="attendee-form" method="post">
+                <form data-meeting-attendance="@Model.Id" id="attendee-form" method="post">
                     @await Component.InvokeAsync("GetInvitees", new { eventType = Model.MeetingType, id = Model.MeetingTypeId })
                 </form>
             </div>

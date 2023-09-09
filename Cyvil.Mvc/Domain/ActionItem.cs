@@ -33,12 +33,11 @@ namespace Cyvil.Mvc.Domain
         public long? ParentId { get; set; } = null;
         public virtual ActionItem? Parent { get; set; }
 
-        
-
         public long TeamId { get; set; }
         public virtual Team? Team { get; set; }
 
         public virtual ICollection<ActionItem> Subtasks { get; set; } = new List<ActionItem>();
+        public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
         public int DaysPassed()
         {

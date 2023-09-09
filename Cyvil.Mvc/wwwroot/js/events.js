@@ -103,3 +103,33 @@ function saveEvent() {
 
     });
 }
+
+function saveAttendee() {
+    var form = document.getElementById("attendee-form");
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        var myModalEl = document.getElementById('saveAttendeeModal');
+        var modal = bootstrap.Modal.getInstance(myModalEl);
+        const formData = new FormData(form);
+        const meetingId = form.dataset.meetingAttendance;
+        const url = `/Events/${meetingId}/Invite`;
+
+        function successCallback(response) {
+            
+            modal.hide();
+            $('input[name="selectedUsers"]').filter(':checked').parent().remove();
+            form.reset();
+            console.log(response.message);
+        }
+
+        function errorCallback(xhr, status, error) {
+            modal.hide();
+            form.reset();
+            console.log(error);
+        }
+
+        ajaxFormPost(url, formData, successCallback, errorCallback);
+
+    });
+}

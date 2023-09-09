@@ -10,7 +10,7 @@ namespace Cyvil.Mvc.Data.Services
     public interface IMeetingService
     {
         // Add specific methods for the Category repository here
-        Task<List<InviteeListModel>> GetInvitees(int eventType, long id);
+        Task<List<SelectableUserModel>> GetInvitees(int eventType, long id);
     }
 
 }

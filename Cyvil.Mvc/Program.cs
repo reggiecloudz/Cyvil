@@ -41,6 +41,7 @@ builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IMeetingService, MeetingService>();
+builder.Services.AddTransient<IActionItemService, ActionItemService>();
 // builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN"); 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(opt => 
     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
