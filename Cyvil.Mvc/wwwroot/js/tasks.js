@@ -433,3 +433,41 @@ function updateSubtask() {
         ajaxFormPost(url, formData, successCallback, errorCallback);
     });
 }
+
+function memberAssignment() {
+    var forms = document.querySelectorAll("form.assignment-form");
+
+    forms.forEach(form => {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const url = `/Tasks/Assign-Member-To-Task`;
+
+            function successCallback(response) {
+                console.log(response);
+            }
+
+            function errorCallback(xhr, status, error) {
+                form.reset();
+                console.log(error);
+            }
+
+            ajaxFormPost(url, formData, successCallback, errorCallback);
+        });
+    });
+}
+
+
+function getAssignments() {
+    var assignmentBtns = document.querySelectorAll(".get-assignments-btn");
+
+    assignmentBtns.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const taskId = btn.dataset.assignTaskId;
+            const url = `/Tasks/${taskId}/GetAssignments`;
+
+
+        });
+    });
+}

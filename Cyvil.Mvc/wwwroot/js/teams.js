@@ -162,3 +162,25 @@ function assignTeam() {
         ajaxFormPost(url, formData, successCallback, errorCallback);
     });
 }
+
+function memberAssignment() {
+    var forms = document.querySelectorAll("form[data-assignee-team]");
+
+    forms.forEach(form => {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const url = `/Teams/${form.dataset.assigneeTeam}/Assign-Member-To-Task`;
+            function successCallback(response) {
+                console.log(response);
+            }
+
+            function errorCallback(xhr, status, error) {
+                form.reset();
+                console.log(error);
+            }
+
+            ajaxFormPost(url, formData, successCallback, errorCallback);
+        });
+    });
+}

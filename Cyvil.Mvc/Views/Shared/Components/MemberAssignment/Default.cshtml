@@ -1,0 +1,20 @@
+@model IEnumerable<SelectableUserModel>
+
+@foreach (var item in Model)
+    {
+        <div class="px-2 px-sm-3 py-3 border-300 notification-card position-relative read">
+            <div class="d-flex align-items-center justify-content-between position-relative">
+                <div class="d-flex">
+                    <div class="status-online me-3">
+                        <input class="form-check-input" type="checkbox" checked="@item.Selected" value="@item.Id" name="SelectedUsers">
+                    </div>
+                    <div class="flex-1 me-sm-3">
+                        <h4 class="fs--1 text-black">@item.Name</h4>
+                        <p class="text-800 fs--2 mb-0">
+                            <span class="fw-bold">Role </span>@item.Role
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }

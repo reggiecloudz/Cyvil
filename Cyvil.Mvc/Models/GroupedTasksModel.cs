@@ -5,6 +5,6 @@ namespace Cyvil.Mvc.Models
     public class GroupedTasksModel
     {
         public ActionItem? Task { get; set; }
-        public IEnumerable<ActionItem> Subtasks { get; set; } = new List<ActionItem>();
+        public IEnumerable<SelectableItemModel> Subtasks { get; set; } = new List<SelectableItemModel>();
     }
 }

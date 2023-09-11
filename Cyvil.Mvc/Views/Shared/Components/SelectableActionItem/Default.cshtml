@@ -1,24 +1,27 @@
 @model IEnumerable<GroupedTasksModel>
 
-<div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Assignments
-  </button>
-  <div class="dropdown-menu">
-    <form class="px-2 py-2" style="width: 100%;">
-        @foreach (var group in Model)
-        {
-            <strong>@group.Task!.Name</strong>
-            @foreach (var subtask in group.Subtasks)
-            {
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="@subtask.Id" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        @subtask.Name
-                    </label>
+@foreach (var group in Model)
+{
+    @foreach (var subtask in group.Subtasks)
+    {
+        <div class="px-2 px-sm-3 py-3 border-300 notification-card position-relative read">
+            <div class="d-flex align-items-center justify-content-between position-relative">
+                <div class="d-flex">
+                    <div class="status-online me-3">
+                        <input class="form-check-input" type="checkbox" checked="@subtask.IsSelected" value="@subtask.Value" name="SelectedTasks">
+                    </div>
+                    <div class="flex-1 me-sm-3">
+                        <div class="flex-1 me-sm-3">
+                            <h4 class="fs--1 text-black">@subtask.Text</h4>
+                            <span class="me-1 fs--2 fas fa-square-check"></span>@group.Task!.Name
+                        </div>
+                        <p class="text-800 fs--2 mb-0">
+                            <span class="me-1 fas fa-clock"></span>
+                            <span class="fw-bold">10:41 AM </span>August 7,2021
+                        </p>
+                    </div>
                 </div>
-            }
-        }
-    </form>
-  </div>
-</div>
+            </div>
+        </div>
+    }
+}

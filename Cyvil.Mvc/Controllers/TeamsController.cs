@@ -49,6 +49,54 @@ namespace Cyvil.Mvc.Controllers
             return new JsonResult(team);
         }
 
+        [Route("{id}/Assign-Member-To-Task")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AssignMemberToTask(MemberAssignmentModel model, long? id)
+        {
+            if (id == null || _context.Teams == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            var team = await _context.Teams.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (team == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var json = JsonConvert.SerializeObject(errors);
+
+                return Json(json);
+            }
+
+            foreach (var task in model.SelectedTasks)
+            {
+                
+                if (!await _context.Assignments.Where(x => x.ActionItemId == task && x.AssigneeId == model.AssigneeId).AnyAsync())
+                {
+                    _context.Assignments.Add(new Assignment
+                    {
+                        AssigneeId = model.AssigneeId,
+                        ActionItemId = task
+                    });
+                }
+            }
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation Successful"
+            });
+        }
+
         [Route("{id}/Details")]
         public async Task<IActionResult> Details(long? id)
         {

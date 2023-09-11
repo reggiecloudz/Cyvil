@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,6 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Cyvil.Mvc.Data;
+using Cyvil.Mvc.Data.Services;
 using Cyvil.Mvc.Domain;
 using Cyvil.Mvc.Extensions;
 using Cyvil.Mvc.Models;
@@ -21,13 +23,14 @@ namespace Cyvil.Mvc.Controllers
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext _context;
-        
+        private readonly IActionItemService _service;
         private readonly ILogger<TasksController> _logger;
 
-        public TasksController(ILogger<TasksController> logger, ApplicationDbContext context)
+        public TasksController(ILogger<TasksController> logger, ApplicationDbContext context, IActionItemService service)
         {
             _logger = logger;
             _context = context;
+            _service = service;
         }
 
         [Route("{id}/Details")]
@@ -292,6 +295,64 @@ namespace Cyvil.Mvc.Controllers
             });
         }
 
+        [Route("Assign-Member-To-Task")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> AssignMemberToTask(AssignmentInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToList();
+
+                var json = JsonConvert.SerializeObject(errors);
+
+                return Json(json);
+            }
+
+            await _service.RemoveUnchecked(model.SelectedUsers, model.ActionItemId);
+
+            foreach (var user in model.SelectedUsers)
+            {
+                
+                if (!await _context.Assignments.Where(x => x.ActionItemId == model.ActionItemId && x.AssigneeId == user).AnyAsync())
+                {
+                    _context.Assignments.Add(new Assignment
+                    {
+                        AssigneeId = user,
+                        ActionItemId = model.ActionItemId
+                    });
+                }
+            }
+            _context.SaveChanges();
+
+            return new JsonResult(new 
+            {
+                Message = "Operation Successful"
+            });
+        }
+        
+        [Route("{id}/GetAssignments")]
+        public async Task<JsonResult> GetAssignments(long? id)
+        {
+            if (id == null) 
+            {
+                return new JsonResult("Not found");
+            }
+
+            var actionItem = await _context.ActionItems.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (actionItem == null)
+            {
+                return new JsonResult("Not found");
+            }
+
+            var assignments = await _service.GetSelectedUsersAsync(actionItem.Id);
+
+            return new JsonResult(assignments);
+        }
+        
         [Route("[action]")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

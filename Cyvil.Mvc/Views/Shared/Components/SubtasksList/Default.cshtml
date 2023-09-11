@@ -13,24 +13,52 @@
             <input class="form-check-input form-check-input-todolist flex-shrink-0 my-1 me-2 form-check-input-undefined" type="checkbox" id="incomplete-task-@item.Id" data-event-propagation-prevent="data-event-propagation-prevent" />
         }
         
-        <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-200 gx-0 flex-1 cursor-pointer get-subtask-btn" data-subtask-id="@item.Id">
+        <div class="row justify-content-between align-items-md-center btn-reveal-trigger border-200 gx-0 flex-1 cursor-pointer">
             <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
-                <div class="mb-1 mb-md-0 d-flex align-items-center lh-1">
+                <div class="mb-1 mb-md-0 d-flex align-items-center justify-content-between lh-1">
                     
                         @if (item.Status == ProgressStatus.Completed)
                         {
-                            <label id="subtask-@item.Id-label" class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
+                            <label data-subtask-id="@item.Id" id="subtask-@item.Id-label" class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
                                 <del>@item.Name</del>
                             </label>
                         }
                         else
                         {
-                            <label id="subtask-@item.Id-label" class="form-check-label mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
-                                @item.Name
+                            <label data-subtask-id="@item.Id" id="subtask-@item.Id-label" class="form-check-label get-subtask-btn mb-1 mb-md-0 mb-xl-1 mb-xxl-0 fs-0 me-2 line-clamp-1 text-900 cursor-pointer">
+                                @item.Name 
                             </label>
                         }
-                    
-                    <span id="subtask-@item.Id-status" class="badge badge-phoenix ms-auto fs--2 badge-phoenix-primary">@item.Status.GetEnumDescription()</span>
+                    <div class="dropstart">
+                        <button id="subtask-@item.Id-assign" class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Assignments
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border border-300 navbar-dropdown-caret">
+                            <div class="card position-relative border-0">
+                                <div class="card-header p-2">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="text-black mb-0">Tasks</h5>
+                                        <a class="p-0 fs--1 fw-normal text-decoration-none" href="#!">View all</a>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="scrollbar-overlay" style="max-height: 25vh;">
+                                        <div class="border-300">
+                                            <form class="assignment-form" id="task-@item.Id-form" method="post">
+                                                <input name="ActionItemId" type="hidden" value="@item.Id" />
+                                                @await Component.InvokeAsync("MemberAssignment", new { actionItemId = item.Id })
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-0 border-top border-0">
+                                    <div class="my-2 text-center fw-bold fs--2 text-600">
+                                        <button class="fw-bolder btn btn-link text-decoration-none" form="task-@item.Id-form" type="submit">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-12 col-md-auto col-xl-12 col-xxl-auto">
@@ -41,9 +69,10 @@
                     <p class="text-700 fs--2 mb-md-0 me-2 me-md-3 me-xl-2 me-xxl-3 mb-0">@item.Deadline.ToString("MMM dd, yyyy")</p>
                     <div class="hover-md-hide hover-xl-show hover-xxl-hide">
                         <p class="text-700 fs--2 fw-bold mb-md-0 mb-0 ps-md-3 ps-xl-0 ps-xxl-3 border-start-md border-xl-0 border-start-xxl border-300">
-                            @item.Deadline.ToString("hh:mm tt")
+                            @item.Deadline.ToString("hh:mm tt")  <span id="subtask-@item.Id-status" class="badge badge-phoenix me-2 fs--3 badge-phoenix-primary">@item.Status.GetEnumDescription()</span>
                         </p>
                     </div>
+                   
                 </div>
             </div>
         </div>

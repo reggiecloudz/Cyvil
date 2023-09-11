@@ -35,7 +35,36 @@
                         </td>
                         <td class="align-middle">@item.Role</td>
                         <td class="align-middle pe-3">
-                            @await Component.InvokeAsync("SelectableActionItem", new { teamId = item.TeamId })
+                            <div class="dropstart">
+                                <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Assignments
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border border-300 navbar-dropdown-caret">
+                                    <div class="card position-relative border-0">
+                                        <div class="card-header p-2">
+                                            <div class="d-flex justify-content-between">
+                                                <h5 class="text-black mb-0">Tasks</h5>
+                                                <a class="p-0 fs--1 fw-normal text-decoration-none" href="#!">View all</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="scrollbar-overlay" style="max-height: 25vh;">
+                                                <div class="border-300">
+                                                    <form data-assignee-team="@item.TeamId" id="assignee-@item.MemberId-form" method="post">
+                                                        <input name="AssigneeId" type="hidden" value="@item.MemberId" />
+                                                        @await Component.InvokeAsync("SelectableActionItem", new { teamId = item.TeamId, assigneeId = item.MemberId })
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer p-0 border-top border-0">
+                                            <div class="my-2 text-center fw-bold fs--2 text-600">
+                                                <button class="fw-bolder btn btn-link text-decoration-none" form="assignee-@item.MemberId-form" type="submit">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                         
                         <td class="align-middle white-space-nowrap text-end pe-0">
